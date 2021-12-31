@@ -6,7 +6,7 @@ const Home: NextPage = () => {
     <>
       <Header />
       <div className='mx-20 px-6 py-6'>
-        <div className=' text-red-800 font-bold'>Hello World!</div>
+        <div className=' text-v9-pink font-bold text-6xl'>Hello World!</div>
       </div>
     </>
   )
