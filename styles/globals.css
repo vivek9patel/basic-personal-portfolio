@@ -18,7 +18,7 @@
     box-shadow: inset calc(var(--size) * 0.33) calc(var(--size) * -0.25) 0;
     border-radius: 999px;
     color: #162447;
-    transition: all 500ms;
+    transition: all 1000ms;
   }
   .themeToggle:checked {
     --ray-size: calc(var(--size) * -0.4);
