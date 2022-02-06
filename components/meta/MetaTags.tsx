@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Meta() {
+export default function MetaTags() {
     return (
         <>
             <link rel="apple-touch-icon" sizes="180x180" href="/meta/apple-touch-icon.png" />

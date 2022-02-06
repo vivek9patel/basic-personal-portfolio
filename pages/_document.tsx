@@ -1,12 +1,12 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
-import Meta from '../components/meta/Meta';
+import MetaTags from '../components/meta/MetaTags';
 
 class MyDocument extends Document {
   render() {
     return (
       <Html className='dark'>
         <Head >
-          <Meta />
+          <MetaTags />
         </Head>
         <body className='bg-white dark:bg-black transition-colors duration-500'>
           <Main />
