@@ -146,7 +146,7 @@ const JoinRoomForm = ({roomId}: joinRoomProps) => {
                         </div>
                         </div>
                         <div className="p-6">
-                        <h5 className="text-gray-900 text-center text-xl font-medium mb-2">Join vivek's Room</h5>
+                        <h5 className="text-gray-900 text-center text-xl font-medium mb-2">Join vivek&apos;s Room</h5>
                         <div className="flex justify-center">
                             <div className="mb-3 xl:w-96">
                                 <input
