@@ -11,20 +11,20 @@ export default function MetaTags() {
             <meta name="msapplication-TileColor" content="#2b5797" />
             <meta name="theme-color" content="#162447" />
 
-            <title>Vivek Patel&apos;s Personal Website</title>
-            <meta name="title" content="Vivek Patel's Personal Website | Blogs " />
-            <meta name="description" content="vivek9patel's personal website with blogs on the topics of  React.js, CSS, website designing & making." />
+            <title>V9 Meet</title>
+            <meta name="title" content="Chat with vivek9patel | V9 Meet" />
+            <meta name="description" content="vivek9patel's personal video conferencing application" />
 
             <meta property="og:type" content="website" />
-            <meta property="og:url" content="https://vivek9patel.dev/" />
-            <meta property="og:title" content="Vivek Patel's Personal Website | Blogs " />
-            <meta property="og:description" content="vivek9patel's personal website with blogs on the topics of  React.js, CSS, website designing & making." />
+            <meta property="og:url" content="https://meet.vivek9patel.dev/" />
+            <meta property="og:title" content="Chat with vivek9patel | V9 Meet" />
+            <meta property="og:description" content="vivek9patel's personal video conferencing application" />
             <meta property="og:image" content="/meta/meta-social-image.png" />
 
             <meta property="twitter:card" content="summary_large_image" />
-            <meta property="twitter:url" content="https://vivek9patel.dev/" />
-            <meta property="twitter:title" content="Vivek Patel's Personal Website | Blogs " />
-            <meta property="twitter:description" content="vivek9patel's personal website with blogs on the topics of  React.js, CSS, website designing & making." />
+            <meta property="twitter:url" content="https://meet.vivek9patel.dev/" />
+            <meta property="twitter:title" content="Chat with vivek9patel | V9 Meet" />
+            <meta property="twitter:description" content="vivek9patel's personal video conferencing application" />
             <meta property="twitter:image" content="/meta/meta-social-image.png" />
         </>
     )

@@ -23,14 +23,14 @@ const Header: NextPage = () => {
     <div className='border-b-4 sticky top-0 left-0 bg-white dark:bg-black transition-none border-black dark:text-white dark:border-white'>
      <div className="mx-20 px-6 py-4 flex justify-between">
       <Link href='/'>
-          <a  className='font-semibold text-xl no-underline'>v9 blogs</a>
+          <a  className='font-semibold text-xl no-underline'>V9 meet</a>
           </Link>
         <div className="flex items-center">
             <Link href='/'>
               <a className="mx-2">Home</a>
             </Link>
-            <Link href='/blogs'>
-              <a className="mx-2">Blogs</a>
+            <Link href='https://www.vivek9patel.dev'>
+              <a className="mx-2">Personal site</a>
             </Link>
             <input onClick={toggleThemeMode} defaultChecked={themeMode==="light"} className="themeToggle mx-2" type="checkbox"></input>
         </div>
