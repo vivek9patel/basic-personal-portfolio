@@ -1,14 +1,14 @@
-import { uuid } from 'uuidv4';
+import { v4 } from 'uuid';
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function getAuthToken(req:NextApiRequest, res:NextApiResponse) {
   try {
     const { role, roomId } = JSON.parse(req.body);
 
-    await fetch(`${process.env.NEXT_PUBLIC_HMS_TOKEN_ENDPOINT}api/token`, {
+    await fetch(`${process.env.HMS_TOKEN_ENDPOINT}api/token`, {
       method: 'POST',
       body: JSON.stringify({
-        user_id: uuid(),
+        user_id: v4(),
         room_id: roomId,
         role,
       }),

@@ -5,7 +5,7 @@ import Header from '../../components/Header'
 
 const JoinRoom: NextPage = () => {
 
-    const [roomId, setRoomId] = useState<string>('62501040903d857ab8ec2ccd');
+    const [roomId, setRoomId] = useState<string>('');
 
   return (
     <>
