@@ -8,7 +8,7 @@ class MyDocument extends Document {
         <Head >
           <MetaTags />
         </Head>
-        <body className='bg-white dark:bg-black transition-colors duration-500'>
+        <body className='bg-white dark:bg-black dark:text-white transition-colors duration-500'>
           <Main />
           <NextScript />
         </body>
