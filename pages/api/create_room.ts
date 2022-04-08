@@ -38,7 +38,7 @@ export default async function createRoom(req:NextApiRequest, res:NextApiResponse
       body: JSON.stringify({
         name,
         description,
-        template: 'meet_createown_a9bb894f-fc82-4f62-95ae-8526b7364eed'
+        template: process.env.HMS_TEMPLATE_NAME
       }),
     }).then((response) => {
       if (response.status !== 200) {

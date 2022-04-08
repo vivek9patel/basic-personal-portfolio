@@ -6,7 +6,6 @@ const VideoCall: NextPage = () => {
 
   return (
     <div className='p-6 flex flex-col justify-center items-center'>
-        <Link href={'/create'}>Create Room</Link>
         <Link href={'/join'}>Join Room</Link>
     </div>
   )
