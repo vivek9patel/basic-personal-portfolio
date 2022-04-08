@@ -4,7 +4,7 @@ import MetaTags from '../components/meta/MetaTags';
 class MyDocument extends Document {
   render() {
     return (
-      <Html className='dark'>
+      <Html>
         <Head >
           <MetaTags />
         </Head>

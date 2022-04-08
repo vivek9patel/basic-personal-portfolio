@@ -1,5 +1,5 @@
 {
-  "name": "personal-site",
+  "name": "personal-video-conferencing-site",
   "private": true,
   "scripts": {
     "dev": "next dev",

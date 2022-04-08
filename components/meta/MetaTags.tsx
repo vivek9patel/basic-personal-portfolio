@@ -13,18 +13,18 @@ export default function MetaTags() {
 
             <title>V9 Meet</title>
             <meta name="title" content="Chat with vivek9patel | V9 Meet" />
-            <meta name="description" content="vivek9patel's personal video conferencing application" />
+            <meta name="description" content="vivek9patel's video conferencing application" />
 
             <meta property="og:type" content="website" />
             <meta property="og:url" content="https://meet.vivek9patel.dev/" />
             <meta property="og:title" content="Chat with vivek9patel | V9 Meet" />
-            <meta property="og:description" content="vivek9patel's personal video conferencing application" />
+            <meta property="og:description" content="vivek9patel's video conferencing application" />
             <meta property="og:image" content="/meta/meta-social-image.png" />
 
             <meta property="twitter:card" content="summary_large_image" />
             <meta property="twitter:url" content="https://meet.vivek9patel.dev/" />
             <meta property="twitter:title" content="Chat with vivek9patel | V9 Meet" />
-            <meta property="twitter:description" content="vivek9patel's personal video conferencing application" />
+            <meta property="twitter:description" content="vivek9patel's video conferencing application" />
             <meta property="twitter:image" content="/meta/meta-social-image.png" />
         </>
     )
