@@ -9,12 +9,14 @@ const Room = () => {
   const peers = useHMSStore(selectPeers);
   return (
       <>
-    <main>
+
+      <div className='p-4 flex flex-wrap justify-evenly items-center'>
       {peers.map((peer) => (
         <Peer key={peer.id} peer={peer} />
       ))}
-    </main>
-    <Footer />
+      </div>
+
+      <Footer />
     </>
   );
 };

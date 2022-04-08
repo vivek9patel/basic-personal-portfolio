@@ -1,8 +1,7 @@
-import React, {useState, useEffect} from 'react'
-import { NextPage } from "next"
+import React, {useState} from 'react'
 import Link from 'next/link'
 
-const Header: NextPage = () => {
+const Header = ({loader = false}: {loader?: boolean}) => {
 
   const [themeMode, setThemeMode] = useState<'light' | 'dark'>('light');
 
@@ -20,7 +19,7 @@ const Header: NextPage = () => {
   }
 
   return (
-    <div className='border-b-4 sticky top-0 left-0 bg-white dark:bg-black transition-none border-black dark:text-white dark:border-white'>
+    <div className='sticky top-0 left-0 bg-white dark:bg-black transition-none dark:text-white '>
      <div className="mx-20 px-6 py-4 flex justify-between">
       <Link href='/'>
           <a  className='font-semibold text-xl no-underline'>V9 meet</a>
@@ -35,6 +34,9 @@ const Header: NextPage = () => {
             <input onClick={toggleThemeMode} defaultChecked={themeMode==="light"} className="themeToggle mx-2" type="checkbox"></input>
         </div>
      </div>
+     <div className="w-full dark:bg-gray-200 bg-black h-1">
+      <div className={`bg-v9-pink w-0 h-1 ${loader ? "triggerLoader" : ""}`}></div>
+      </div>
     </div>
   )
 }
