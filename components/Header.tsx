@@ -31,7 +31,7 @@ const Header = ({loader = false}: {loader?: boolean}) => {
             <Link href='https://www.vivek9patel.dev'>
               <a className="mx-2">Personal site</a>
             </Link>
-            <input onClick={toggleThemeMode} defaultChecked={themeMode==="light"} className="themeToggle mx-2" type="checkbox"></input>
+            <input onClick={toggleThemeMode} defaultChecked={themeMode==="dark"} className="themeToggle mx-2" type="checkbox"></input>
         </div>
      </div>
      <div className="w-full dark:bg-gray-200 bg-black h-1">
