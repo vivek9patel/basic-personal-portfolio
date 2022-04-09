@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import Header from "../../components/Header"
 import { useRouter } from 'next/router';
 import { useHMSActions, useHMSStore, selectRoomState} from '@100mslive/react-sdk';
 import Room from "../../components/Room";
@@ -47,7 +46,7 @@ export default function Conference() : JSX.Element {
 
     return (
         <>
-        <Header loader={roomState === 'Connecting'} />
+        {/* <Header loader={roomState === 'Connecting'} /> */}
         <div className="mt-4">
         {getRoomStateJSX()}
         </div>

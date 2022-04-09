@@ -1,7 +1,6 @@
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import Header from '../../components/Header'
 
 const CreateRoom: NextPage = () => {
     const router = useRouter();
@@ -30,7 +29,6 @@ const CreateRoom: NextPage = () => {
 
   return (
     <>
-      <Header />
         <form onSubmit={(e) =>{
             e.preventDefault();
             createRoom();
