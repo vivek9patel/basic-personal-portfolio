@@ -1,26 +1,44 @@
 import {
+  selectIsSomeoneScreenSharing,
   selectPeers,
-  useHMSStore,
+  selectPeerScreenSharing,
+  useHMSStore
 } from '@100mslive/react-sdk';
 import Footer from './Footer';
 import { Peer } from './Peer';
+import SharedScreen from './SharedScreen';
 
-const Room = () => {
-  const peers = useHMSStore(selectPeers);
+const Room = () => {  
   return (
       <>
-
-      <div className='p-4 flex flex-wrap justify-evenly items-center'>
-      {peers.map((peer) => (
-        <Peer key={peer.id} peer={peer} />
-      ))}
-      </div>
-
+      <RoomLayout />
       <Footer />
     </>
   );
 };
 
+const RoomLayout = () => {
+  const peers = useHMSStore(selectPeers);
+  const screenshareOn = useHMSStore(selectIsSomeoneScreenSharing);
+  const presenter = useHMSStore(selectPeerScreenSharing);
 
+
+  return (
+    <div className={` ${screenshareOn ? "presenter-layout" : "participants-layout"} transition-all duration-300 flex-1`}>
+      <div className='presenter-view'>
+        {
+          presenter  && <SharedScreen presenter={presenter} />
+        }
+      </div>
+      <div className='participants-view'>
+        <div className='video-gallery  overflow-scroll h-full w-full'>
+          {peers.map((peer, index) => (
+            <Peer key={index} peer={peer} />
+          ))} 
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export default Room;

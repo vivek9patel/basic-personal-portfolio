@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 export default async function getAuthToken(req:NextApiRequest, res:NextApiResponse) {
   try {
     const { role, roomId } = JSON.parse(req.body);
-
+    
     await fetch(`${process.env.HMS_TOKEN_ENDPOINT}api/token`, {
       method: 'POST',
       body: JSON.stringify({

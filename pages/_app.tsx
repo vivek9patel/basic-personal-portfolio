@@ -2,9 +2,32 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { HMSRoomProvider } from '@100mslive/react-sdk';
 import Layout from '../components/Layout';
+import AppContext from '../contexts/AppContext';
+import { useState } from 'react';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <HMSRoomProvider><Layout><Component {...pageProps} /></Layout></HMSRoomProvider>
+  const [loader, setLoader] = useState<boolean>(false);
+  const [meetActivate, setMeetActivate] = useState<boolean>(false);
+  return (
+    <HMSRoomProvider>
+      <AppContext.Provider 
+        value={{
+          state: {
+            loader,
+            meetActivate
+          },
+          actions: {
+            setLoader,
+            setMeetActivate
+          }
+        }}
+      >
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+      </AppContext.Provider>
+    </HMSRoomProvider>
+  )
 }
 
 export default MyApp

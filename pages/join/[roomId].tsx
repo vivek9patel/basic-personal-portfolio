@@ -1,129 +1,139 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useRouter } from 'next/router';
-import { useHMSActions, useHMSStore, selectRoomState} from '@100mslive/react-sdk';
+import { useHMSActions, useHMSStore, selectRoomState, selectLocalPeer, useAVToggle, useVideo} from '@100mslive/react-sdk';
 import Room from "../../components/Room";
 import {v4} from 'uuid';
 
 import { BiMicrophone,BiMicrophoneOff,BiVideoOff,BiVideo,BiPhoneCall } from "react-icons/bi";
 import Avatar from "boring-avatars";
+import AppContext from "../../contexts/AppContext";
+import { Video } from "../../components/Peer";
 
 const randomName = v4();
 
 export default function Conference() : JSX.Element {
-    const router = useRouter();
+    const appState = useContext(AppContext);
     const roomState = useHMSStore(selectRoomState);
-    const [roomId, setRoomId] = useState('');
     
-
-    useEffect(() => {
-       const currentRoommId = window.location.href.split('/').pop();
-        if(currentRoommId){
-            setRoomId(currentRoommId);
-        }
-        else{
-            router.push({
-                pathname: '/join'
-            });
-        }
-    },[])
+    const {setLoader, setMeetActivate} = appState.actions;
 
     const getRoomStateJSX = () => {
         switch(roomState){
             case "Connected":
+                setLoader(false);
+                setMeetActivate(true);
                 return <Room />
             case "Connecting":
-                return "Connecting..."
+                setLoader(true);
+                return null
             case "Disconnecting":
-                return "Disconnecting..."
+                setLoader(true);
+                setMeetActivate(false);
+                return null
             case "Reconnecting":
-                return "Reconnecting..."
+                setLoader(true);
+                return null
             default:
+                setLoader(false);
+                setMeetActivate(false);
                 return (
-                    <JoinRoomForm roomId={roomId} />
+                    <JoinRoomForm />
                 )
         }
     }
 
     return (
         <>
-        {/* <Header loader={roomState === 'Connecting'} /> */}
-        <div className="mt-4">
         {getRoomStateJSX()}
-        </div>
         </>
     )
 }
 
-type joinRoomProps = {
-    roomId: string
-}
-
-const JoinRoomForm = ({roomId}: joinRoomProps) => {
+const JoinRoomForm = () => {
     const [name, setName] = useState('');
-    const [muteMic, setMuteMic] = useState(false)
-    const [muteWebCam, setMuteWebCam] = useState(false)
+    const [token, setToken] = useState('');
+
+    const {
+        isLocalAudioEnabled,
+        isLocalVideoEnabled,
+        toggleAudio,
+        toggleVideo,
+      } = useAVToggle();
+
     const hmsActions = useHMSActions();
+    const localPeer = useHMSStore(selectLocalPeer);
+    const router = useRouter();
 
     useEffect(() => {
-        return stopWebCam
+        joinPreview();
     },[])
 
-    useEffect(() => {
-        if(muteWebCam) stopWebCam()
-        else startWebCam();
-    },[muteWebCam])
+    const getCurrentRoomId = () => {
+        let currentRoommId: string | undefined;
 
-    const joinRoom = async () => {
+        if(router.query.hasOwnProperty('roomId')) {
+            currentRoommId = router.query['roomId'] as string;
+        }
+        else{
+            currentRoommId = window.location.href.split('/').pop();
+        }
+        console.log("currentRoommId10", currentRoommId);
+
+        if(currentRoommId){
+            return currentRoommId
+        }
+        else{
+            router.push({
+                pathname: '/join'
+            });
+        }
+    }
+
+    const joinPreview = async () => {
         try {
+            let userName = 'guest', role = 'guest';
+            if(name){
+                if(name === process.env.NEXT_PUBLIC_ADMIN_NAME){
+                    userName = 'vivek';
+                    role = process.env.NEXT_PUBLIC_ADMIN_ROLE as string;
+                }
+                else userName = name
+            }
+
+            const roomId = getCurrentRoomId();
+
             const response = await fetch('/api/token', {
                 method: 'POST',
-                body: JSON.stringify({ role: 'guest', roomId }),
+                body: JSON.stringify({ role, roomId }),
             });
+
             const { token } = await response.json();
-            hmsActions.join({
-                userName: name || 'Anonymous',
+            setToken(token);
+
+            const config = {
+                userName: 'guest',
                 authToken: token,
                 settings: {
-                    isAudioMuted: muteMic,
-                    isVideoMuted: muteWebCam
+                    isAudioMuted: isLocalAudioEnabled,
+                    isVideoMuted: isLocalVideoEnabled
                 },
-            });
+            };
+            await hmsActions.preview(config); 
           } catch (error) {
             console.error(error);
         }
     }
 
-    const startWebCam = () => {
-        var video: HTMLVideoElement | null = document.querySelector("#webCamEle");
-
-        if (navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true })
-            .then(function (stream) {
-                if(video) video.srcObject = stream;
-            })
-            .catch(function (err) {
-                console.log("Something went wrong!", err);
-                stopWebCam();
-            });
-        }
+    const joinRoom = async () => {
+        hmsActions.join({
+            userName: name,
+            authToken: token,
+            settings: {
+                isAudioMuted: isLocalAudioEnabled,
+                isVideoMuted: isLocalVideoEnabled
+            },
+        });
     }
-
-    const stopWebCam = () => {
-        var video: HTMLVideoElement | null = document.querySelector("#webCamEle");
-        if(video){
-            var stream = video.srcObject;
-            if(!stream) return;
-            // @ts-ignore
-            var tracks = stream.getTracks();
-        
-            for (var i = 0; i < tracks.length; i++) {
-                var track = tracks[i];
-                track.stop();
-            }
-        
-            video.srcObject = null;
-        }
-      }
 
     return (
         <form className="flex justify-center"
@@ -134,8 +144,8 @@ const JoinRoomForm = ({roomId}: joinRoomProps) => {
                     >
                     <div className="rounded-lg overflow-hidden shadow-lg bg-white max-w-sm">
                         <div className="w-96 h-72 relative">
-                        <video className="w-full h-full" autoPlay id="webCamEle"></video>
-                        <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${muteWebCam ? "visible" : "invisible"}`}>
+                        {localPeer && <Video mirror={localPeer.isLocal} videoTrack={localPeer.videoTrack} />}
+                        <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${isLocalVideoEnabled ? "invisible" : "visible"}`}>
                             <Avatar
                                 size={200}
                                 name={randomName}
@@ -177,14 +187,12 @@ const JoinRoomForm = ({roomId}: joinRoomProps) => {
                             </div>
                             </div>
                         <div className="flex mt-4 justify-evenly items-center w-full dark:text-black">
-                            <button className={`${muteMic ? " bg-v9-pink " : ""} w-10 h-10 flex items-center justify-center rounded-full shadow-lg transition duration-300 ease-in-out`} type="button" onClick={() => {
-                                setMuteMic(!muteMic)
-                            }} >
+                            <button className={`${isLocalAudioEnabled ? "" : "bg-v9-pink"} w-10 h-10 flex items-center justify-center rounded-full shadow-lg transition duration-300 ease-in-out`} type="button" onClick={toggleAudio} >
                                 {
-                                    muteMic ?
-                                    <BiMicrophoneOff color="white" size={'24px'} />
-                                    :
+                                    isLocalAudioEnabled ?
                                     <BiMicrophone size={'24px'} />
+                                    :
+                                    <BiMicrophoneOff color="white" size={'24px'} />
                                 }
                             </button>
                             <button
@@ -195,14 +203,12 @@ const JoinRoomForm = ({roomId}: joinRoomProps) => {
                             >
                                 <BiPhoneCall size={'24px'} />
                             </button>
-                            <button className={`${muteWebCam ? " bg-v9-pink " : ""} w-10 h-10 flex items-center justify-center rounded-full shadow-lg transition duration-300 ease-in-out`} type="button" onClick={() => {
-                                setMuteWebCam(!muteWebCam)
-                            }} >
+                            <button className={`${isLocalVideoEnabled ? "" : "bg-v9-pink"} w-10 h-10 flex items-center justify-center rounded-full shadow-lg transition duration-300 ease-in-out`} type="button" onClick={toggleVideo} >
                                 {
-                                    muteWebCam ?
-                                    <BiVideoOff color="white" size={'24px'} />
-                                    :
+                                    isLocalVideoEnabled ?
                                     <BiVideo size={'24px'} />
+                                    :
+                                    <BiVideoOff color="white" size={'24px'} />
                                 }
                             </button>
                         </div>
