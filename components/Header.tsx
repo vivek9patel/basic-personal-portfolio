@@ -32,6 +32,9 @@ const Header: NextPage = () => {
             <Link href='/blogs'>
               <a className="mx-2">Blogs</a>
             </Link>
+            <Link href='https://meet.vivek9patel.dev/schedule'>
+              <a target="_blank" className="mx-2">Let's chat</a>
+            </Link>
             <input onClick={toggleThemeMode} defaultChecked={themeMode==="light"} className="themeToggle mx-2" type="checkbox"></input>
         </div>
      </div>
