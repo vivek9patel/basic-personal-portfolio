@@ -2,7 +2,7 @@ import React from 'react'
 import { NextPage } from "next"
 import Link from 'next/link'
 
-const VideoCall: NextPage = () => {
+const VideoCall = () => {
 
   return (
     <div className='p-6 flex flex-col justify-center items-center'>

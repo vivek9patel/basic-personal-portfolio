@@ -105,3 +105,12 @@
   flex: 1;
   max-height: calc(100vh - 150px);
 }
+
+.peer-speaking-shadow{
+  box-shadow: rgba(253, 58, 105, 0.5) 0px 5px 20px 0px;
+}
+
+.chat-message a{
+  color: blue;
+  text-decoration: underline;
+}

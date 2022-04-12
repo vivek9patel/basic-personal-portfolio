@@ -1,7 +1,6 @@
-import type { NextPage } from 'next'
 import VideoCall from '../components/VideoCall'
 
-const Home: NextPage = () => {
+const Home = () => {
   return (
     <>
       <VideoCall />

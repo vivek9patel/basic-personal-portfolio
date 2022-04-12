@@ -44,7 +44,7 @@ const Header = () => {
               <a className="mx-2">Home</a>
             </Link>
             <Link href='https://www.vivek9patel.dev'>
-              <a className="mx-2">Personal site</a>
+              <a className="mx-2">About Me</a>
             </Link>
             </div>
           <input onChange={toggleThemeMode} checked={themeMode === 'dark'} className="themeToggle mx-2" type="checkbox"></input>

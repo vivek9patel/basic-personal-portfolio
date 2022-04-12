@@ -1,12 +1,19 @@
-import { useVideo, HMSPeer, useHMSStore, selectIsPeerAudioEnabled, selectIsPeerVideoEnabled, HMSTrack } from "@100mslive/react-sdk";
+import { useVideo, HMSPeer, useHMSStore, selectIsPeerAudioEnabled, selectIsPeerVideoEnabled, HMSTrack, useAudioLevelStyles, selectPeerAudioByID } from "@100mslive/react-sdk";
 import { BiMicrophone,BiMicrophoneOff } from "react-icons/bi";
 import Avatar from "boring-avatars";
+import { useEffect } from "react";
 
 export const Peer: React.FC<{ peer: HMSPeer }> = ({ peer }) => {
-    const isAudioOn = useHMSStore(selectIsPeerAudioEnabled(peer.id));
+  const isAudioOn = useHMSStore(selectIsPeerAudioEnabled(peer.id));
   const isVideoOn = useHMSStore(selectIsPeerVideoEnabled(peer.id));
+  const audioLevel = useHMSStore(selectPeerAudioByID(peer.id));
+
+  useEffect(() => {
+    console.log("audioLevel", audioLevel)
+  },[audioLevel])
+
   return (
-    <div className="m-2 relative rounded-lg overflow-hidden shadow-md" style={{ minWidth: "250px", minHeight: "250px" }}>
+    <div className={`m-2 relative rounded-lg shadow-md ${audioLevel > 0 ? " peer-speaking-shadow " : ""}`} >
         <Video mirror={peer.isLocal} videoTrack={peer.videoTrack} />
         <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${isVideoOn ? "invisible" : "visible"}`}>
             <Avatar
@@ -30,8 +37,10 @@ export const Peer: React.FC<{ peer: HMSPeer }> = ({ peer }) => {
       const { videoRef } = useVideo({
         trackId: videoTrack,
       });
+      
       return (
         <video
+          style={{minWidth: "250px", minHeight: "250px" }} 
           className={` h-full w-full ${mirror ? 'mirror' : ''}`}
           ref={videoRef}
           autoPlay
