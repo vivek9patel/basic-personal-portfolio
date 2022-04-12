@@ -5,7 +5,7 @@ import Layout from '../components/Layout';
 import AppContext from '../contexts/AppContext';
 import { useState } from 'react';
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: any) {
   const [loader, setLoader] = useState<boolean>(false);
   const [meetActivate, setMeetActivate] = useState<boolean>(false);
   const [leftOnce, setLeftOnce] = useState<boolean>(false);
