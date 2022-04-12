@@ -2,6 +2,8 @@ import { selectIsLocalScreenShared, selectIsSomeoneScreenSharing, selectPeerScre
 import { HangUpIcon} from '@100mslive/react-icons';
 import { BiMicrophone,BiMicrophoneOff,BiVideoOff,BiVideo,BiPhoneCall } from "react-icons/bi";
 import { MdStopScreenShare, MdScreenShare } from "react-icons/md";
+import { useContext } from 'react';
+import AppContext from '../contexts/AppContext';
 
 
 function Footer() {
@@ -15,6 +17,7 @@ function Footer() {
     toggleVideo,
   } = useAVToggle();
   const actions = useHMSActions();
+  const appState = useContext(AppContext);
 
   const toggleScreenShare = async () => {
     if(screenshareOn){
@@ -53,7 +56,12 @@ function Footer() {
       <button className={`${isLocalVideoEnabled ? "bg-white dark:bg-transparent" : "bg-v9-pink"} ml-5 mr-10 h-10 w-10 flex justify-center items-center rounded-full shadow-lg transition duration-300 ease-in-out`} onClick={toggleVideo}>
         {isLocalVideoEnabled ? <BiVideo size={24} /> : <BiVideoOff color='white' size={24} />}
       </button>
-      <button className={` bg-violet-900 h-10 w-10 flex justify-center items-center rounded-full shadow-lg transition duration-300 ease-in-out`} onClick={() => actions.leave()}>
+      <button className={` bg-violet-900 h-10 w-10 flex justify-center items-center rounded-full shadow-lg transition duration-300 ease-in-out`} 
+        onClick={() => {
+          appState.actions.setLeftOnce(true);
+          actions.leave()
+        }}
+      >
         <HangUpIcon color='white' />
       </button>
     </footer>

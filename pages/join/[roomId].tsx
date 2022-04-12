@@ -51,7 +51,8 @@ export default function Conference() : JSX.Element {
 
 const JoinRoomForm = () => {
     const [name, setName] = useState('');
-    const [token, setToken] = useState('');
+    const [token, setToken] = useState<string | null>(null);
+    const appState = useContext(AppContext);
 
     const {
         isLocalAudioEnabled,
@@ -65,7 +66,7 @@ const JoinRoomForm = () => {
     const router = useRouter();
 
     useEffect(() => {
-        joinPreview();
+        if(!appState.state.leftOnce) joinPreview();
     },[])
 
     const getCurrentRoomId = () => {
@@ -89,8 +90,8 @@ const JoinRoomForm = () => {
         }
     }
 
-    const joinPreview = async () => {
-        try {
+    const getClientSideToken: () => Promise<string> = async () => {
+        try{
             let userName = 'guest', role = 'guest';
             if(name){
                 if(name === process.env.NEXT_PUBLIC_ADMIN_NAME){
@@ -108,26 +109,43 @@ const JoinRoomForm = () => {
             });
 
             const { token } = await response.json();
-            setToken(token);
+            return token;
+        }
+        catch(e){
+            alert("Error! Please refresh the page!");
+        }
+    }
 
+    const joinPreview = async () => {
+        try {
+            const authToken = await getAuthToken();
             const config = {
                 userName: 'guest',
-                authToken: token,
+                authToken,
                 settings: {
                     isAudioMuted: isLocalAudioEnabled,
                     isVideoMuted: isLocalVideoEnabled
                 },
             };
-            await hmsActions.preview(config); 
+            await hmsActions.preview(config);
           } catch (error) {
             console.error(error);
         }
     }
 
+    const getAuthToken: () => Promise<string> = async () => {
+        if(token === null){
+            const newToken = await getClientSideToken();
+            return newToken;
+        }
+        return token;
+    }
+
     const joinRoom = async () => {
+        const authToken = await getAuthToken();
         hmsActions.join({
             userName: name,
-            authToken: token,
+            authToken,
             settings: {
                 isAudioMuted: isLocalAudioEnabled,
                 isVideoMuted: isLocalVideoEnabled

@@ -8,17 +8,20 @@ import { useState } from 'react';
 function MyApp({ Component, pageProps }: AppProps) {
   const [loader, setLoader] = useState<boolean>(false);
   const [meetActivate, setMeetActivate] = useState<boolean>(false);
+  const [leftOnce, setLeftOnce] = useState<boolean>(false);
   return (
     <HMSRoomProvider>
       <AppContext.Provider 
         value={{
           state: {
             loader,
-            meetActivate
+            meetActivate,
+            leftOnce
           },
           actions: {
             setLoader,
-            setMeetActivate
+            setMeetActivate,
+            setLeftOnce
           }
         }}
       >

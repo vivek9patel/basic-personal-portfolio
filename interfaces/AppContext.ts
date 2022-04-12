@@ -6,11 +6,9 @@ export interface AppContextInterface {
 }
 
 interface AppStateInterface {
-    loader: boolean;
-    meetActivate: boolean;
+    [stateName: string]: boolean
 }
 
 interface AppActionsInterface {
-    setLoader: Dispatch<SetStateAction<boolean>>;
-    setMeetActivate: Dispatch<SetStateAction<boolean>>;
+    [actionName: string]: Dispatch<SetStateAction<boolean>>
 }
