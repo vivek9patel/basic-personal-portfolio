@@ -7,8 +7,8 @@ export default function SharedScreen({presenter}: {presenter: HMSPeer}) {
   });
   return (
     <video
-      className={`flex-1 `}
-      style={{maxHeight: "calc(100vh - 200px)"}}
+      className={`flex-1`}
+      style={{maxHeight: "calc(100vh - 150px)"}}
       ref={videoRef}
       autoPlay
       muted

@@ -16,7 +16,6 @@ const CreateRoom: NextPage = () => {
             });
             const data = await response.json();
             if(data && data.id) {
-                console.log("data", data)
                 router.push({
                     pathname: `/join/${data.id}`,
                 })

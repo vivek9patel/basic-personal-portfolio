@@ -2,13 +2,24 @@ import {
   selectIsSomeoneScreenSharing,
   selectPeers,
   selectPeerScreenSharing,
+  useHMSActions,
   useHMSStore
 } from '@100mslive/react-sdk';
+import { useContext, useEffect } from 'react';
+import AppContext from '../contexts/AppContext';
 import Footer from './Footer';
 import { Peer } from './Peer';
 import SharedScreen from './SharedScreen';
 
 const Room = () => {  
+  const actions = useHMSActions();
+  const appState = useContext(AppContext);
+  useEffect(() => {
+    return () => {
+      appState.actions.setLeftOnce(true);
+      actions.leave()
+    }
+  }, [])
   return (
       <>
       <RoomLayout />
@@ -24,7 +35,7 @@ const RoomLayout = () => {
 
 
   return (
-    <div className={` ${screenshareOn ? "presenter-layout" : "participants-layout"} transition-all duration-300 flex-1`}>
+    <div className={` ${screenshareOn ? "presenter-layout" : "participants-layout"} transition-all duration-300 w-full h-full `}>
       <div className='presenter-view'>
         {
           presenter  && <SharedScreen presenter={presenter} />

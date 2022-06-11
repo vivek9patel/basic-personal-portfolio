@@ -5,6 +5,7 @@ import { MdStopScreenShare, MdScreenShare } from "react-icons/md";
 import { useContext, useState } from 'react';
 import AppContext from '../contexts/AppContext';
 import ChatWidget from './ChatBox';
+import { useRouter } from 'next/router';
 
 
 function Footer() {
@@ -19,6 +20,7 @@ function Footer() {
   } = useAVToggle();
   const actions = useHMSActions();
   const appState = useContext(AppContext);
+  const router = useRouter()
 
   const toggleScreenShare = async () => {
     if(screenshareOn){
@@ -63,8 +65,7 @@ function Footer() {
       </div>
       <button className={` bg-violet-900 h-10 w-16 flex justify-center items-center rounded-md shadow-lg transition duration-300 ease-in-out`} 
         onClick={() => {
-          appState.actions.setLeftOnce(true);
-          actions.leave()
+          router.push('/')
         }}
       >
         <HangUpIcon color='white' />

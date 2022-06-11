@@ -87,27 +87,20 @@
   align-items: center;
 }
 
-.participants-view{
-  grid-area: participants-view;
-}
-
 .participants-layout .participants-view{
+  grid-area: participants-view;
   height: 100%;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .video-gallery{
   display: flex;
   flex-wrap: wrap;
-}
-
-.video-gallery > div {
-  flex: 1;
-  max-height: calc(100vh - 150px);
-}
-
-.peer-speaking-shadow{
-  box-shadow: rgba(253, 58, 105, 0.5) 0px 5px 20px 0px;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .chat-message a{

@@ -33,10 +33,12 @@ const Header = () => {
   }
 
   return (
-    <div className='sticky z-50 mb-4 top-0 left-0 bg-white dark:bg-black transition-none dark:text-white '>
+    <div className='sticky z-50 top-0 left-0 transition-none dark:text-white '>
      <div className="mx-20 px-6 py-4 flex justify-between">
       <Link href='/'>
-          <a  className={`font-semibold text-xl no-underline text-center w-20 transition ease-linear duration-1000 ${meetActivate ? "animateFullWidth" : "animateNormalWidth"}`}>V9 meet</a>
+          <div className={`font-semibold text-xl no-underline text-center w-20 transition ease-linear duration-1000 ${meetActivate ? "animateFullWidth" : "animateNormalWidth"}`}>
+            <a className='cursor-pointer'>V9 meet</a>
+          </div>
       </Link>
       <div className="flex items-center">
             <div className={`transition-none ${meetActivate ? "w-0 h-0 invisible" : ""}`}>

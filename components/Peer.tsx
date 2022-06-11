@@ -8,14 +8,12 @@ export const Peer: React.FC<{ peer: HMSPeer }> = ({ peer }) => {
   const isVideoOn = useHMSStore(selectIsPeerVideoEnabled(peer.id));
   const audioLevel = useHMSStore(selectPeerAudioByID(peer.id));
 
-  useEffect(() => {
-    console.log("audioLevel", audioLevel)
-  },[audioLevel])
-
   return (
-    <div className={`m-2 relative rounded-lg shadow-md ${audioLevel > 0 ? " peer-speaking-shadow " : ""}`} >
-        <Video mirror={peer.isLocal} videoTrack={peer.videoTrack} />
-        <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${isVideoOn ? "invisible" : "visible"}`}>
+    <div 
+      style={{minHeight: "300px", maxHeight: "calc(100vh - 150px)"}}
+      className={`m-2 relative rounded-lg shadow-md border-4 transition duration-500 overflow-hidden aspect-square ${audioLevel > 0 ? " border-v9-pink" : "border-transparent dark:border-white "}`} >
+        <Video videoTrack={peer.videoTrack} />
+        <div className={`absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${isVideoOn ? "invisible" : "visible"}`}>
             <Avatar
                 size={200}
                 name={peer.name}
@@ -33,15 +31,14 @@ export const Peer: React.FC<{ peer: HMSPeer }> = ({ peer }) => {
   );
   };
   
- export const Video = ({ videoTrack, mirror }: any) => {
+ export const Video = ({ videoTrack }: any) => {
       const { videoRef } = useVideo({
         trackId: videoTrack,
       });
-      
+
       return (
         <video
-          style={{minWidth: "250px", minHeight: "250px" }} 
-          className={` h-full w-full ${mirror ? 'mirror' : ''}`}
+          className="h-full w-full z-0" 
           ref={videoRef}
           autoPlay
           muted

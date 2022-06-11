@@ -9,6 +9,7 @@ function MyApp({ Component, pageProps }: any) {
   const [loader, setLoader] = useState<boolean>(false);
   const [meetActivate, setMeetActivate] = useState<boolean>(false);
   const [leftOnce, setLeftOnce] = useState<boolean>(false);
+  const [isOwner, setIsOwner] = useState<boolean>(false);
   return (
     <HMSRoomProvider>
       <AppContext.Provider 
@@ -16,12 +17,14 @@ function MyApp({ Component, pageProps }: any) {
           state: {
             loader,
             meetActivate,
-            leftOnce
+            leftOnce,
+            isOwner
           },
           actions: {
             setLoader,
             setMeetActivate,
-            setLeftOnce
+            setLeftOnce,
+            setIsOwner
           }
         }}
       >
