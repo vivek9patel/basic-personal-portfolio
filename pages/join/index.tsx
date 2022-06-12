@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 const JoinRoom: NextPage = () => {
 
-    const [roomId, setRoomId] = useState<string>('');
+  const [roomId, setRoomId] = useState<string>('');
 
   return (
     <>

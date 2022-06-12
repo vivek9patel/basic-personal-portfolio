@@ -2,6 +2,7 @@ import '../styles/globals.css'
 import { HMSRoomProvider } from '@100mslive/react-sdk';
 import Layout from '../components/Layout';
 import AppContext from '../contexts/AppContext';
+import Notifications from '../components/Notifications';
 import { useState } from 'react';
 
 function MyApp({ Component, pageProps }: any) {
@@ -38,6 +39,7 @@ function MyApp({ Component, pageProps }: any) {
         }}
       >
       <Layout>
+        <Notifications />
         <Component {...pageProps} />
       </Layout>
       </AppContext.Provider>

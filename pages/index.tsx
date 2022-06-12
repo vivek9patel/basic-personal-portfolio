@@ -1,5 +1,4 @@
 import VideoCall from '../components/VideoCall'
-
 const Home = () => {
   return (
     <>

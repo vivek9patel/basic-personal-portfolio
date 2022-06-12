@@ -72,7 +72,7 @@ const JoinRoomForm: () => JSX.Element = () => {
             setName(appState.state.isOwner ? "vivek" : prevName);
         }
 
-        if(!appState.state.leftOnce) joinPreview();
+        // if(!appState.state.leftOnce) joinPreview();
     },[])
 
     const getCurrentRoomId = () => {
