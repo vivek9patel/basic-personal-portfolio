@@ -4,6 +4,15 @@
 @tailwind components;
 @tailwind utilities;
 
+.video-gallery .peerTile{
+  /* set background image */
+  background-image: url('https://picsum.photos/1000');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+}
+
 /* Theme toggle button style */
 .themeToggle {
     --size: 1.2rem;
@@ -78,13 +87,15 @@
   grid-template-columns: 8fr 2fr;
   grid-template-areas: "presenter-view participants-view";
   grid-column-gap: 1em;
+  
 }
   
 .presenter-view{
   grid-area: presenter-view;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  margin-top: 10px;
 }
 
 .participants-layout .participants-view{
@@ -101,6 +112,7 @@
   flex-wrap: wrap;
   justify-content: space-evenly;
   align-items: center;
+  max-height: calc(100vh - 130px);
 }
 
 .chat-message a{

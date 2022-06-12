@@ -17,6 +17,7 @@ export default function Conference() : JSX.Element {
     const {setLoader, setMeetActivate} = appState.actions;
     
     const getRoomStateJSX = () => {
+        console.log(roomState);
         switch(roomState){
             case "Connected":
                 setLoader(false);
@@ -42,7 +43,7 @@ export default function Conference() : JSX.Element {
     }
 
     return (
-        <div style={{height: "calc(100vh - 120px)"}} className=" w-full flex justify-center items-center overflow-y-scroll">
+        <div style={{height: "calc(100vh - 130px)"}} className=" w-full flex justify-center items-center overflow-hidden">
             {getRoomStateJSX()}
         </div>
     )
@@ -72,7 +73,7 @@ const JoinRoomForm: () => JSX.Element = () => {
             setName(appState.state.isOwner ? "vivek" : prevName);
         }
 
-        // if(!appState.state.leftOnce) joinPreview();
+        if(!appState.state.leftOnce) joinPreview();
     },[])
 
     const getCurrentRoomId = () => {

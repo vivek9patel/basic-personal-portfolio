@@ -59,7 +59,7 @@ function Footer() {
       <button className={`${isLocalVideoEnabled ? "bg-white dark:bg-transparent" : "bg-v9-pink"} ml-5 mr-10 h-10 w-10 flex justify-center items-center rounded-full shadow-lg transition duration-300 ease-in-out`} onClick={toggleVideo}>
         {isLocalVideoEnabled ? <BiVideo size={24} /> : <BiVideoOff color='white' size={24} />}
       </button>
-      <button disabled={someoneIsSharingScreen && !screenshareOn} title={`${someoneIsSharingScreen ? "Can't share screen" : `${screenshareOn ? "Stop" : "Start"} Screen Share`}`} className={`${screenshareOn ? "bg-v9-pink" : (someoneIsSharingScreen ? " opacity-50 bg-gray-100" : "bg-white dark:bg-transparent")} h-10 w-10 flex justify-center items-center rounded-full shadow-lg transition duration-300 ease-in-out`} onClick={toggleScreenShare}>
+      <button disabled={someoneIsSharingScreen && !screenshareOn} title={`${someoneIsSharingScreen ? "Can't share screen" : `${screenshareOn ? "Stop" : "Start"} Screen Share`}`} className={`${screenshareOn ? "bg-v9-pink" : (someoneIsSharingScreen ? "cursor-not-allowed dark:bg-gray-500 bg-gray-100 opacity-50" : "bg-white dark:bg-transparent")} h-10 w-10 flex justify-center items-center rounded-full shadow-lg transition duration-300 ease-in-out`} onClick={toggleScreenShare}>
         {screenshareOn ? <MdStopScreenShare color='white' size={24} /> : <MdScreenShare size={24} />}
       </button>
       </div>
