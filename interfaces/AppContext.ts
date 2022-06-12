@@ -6,9 +6,9 @@ export interface AppContextInterface {
 }
 
 interface AppStateInterface {
-    [stateName: string]: boolean
+    [stateName: string]: any
 }
 
 interface AppActionsInterface {
-    [actionName: string]: Dispatch<SetStateAction<boolean>>
+    [actionName: string]: Dispatch<SetStateAction<any>>
 }

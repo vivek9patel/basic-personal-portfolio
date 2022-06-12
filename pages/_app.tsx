@@ -1,5 +1,4 @@
 import '../styles/globals.css'
-import type { AppProps } from 'next/app'
 import { HMSRoomProvider } from '@100mslive/react-sdk';
 import Layout from '../components/Layout';
 import AppContext from '../contexts/AppContext';
@@ -10,6 +9,14 @@ function MyApp({ Component, pageProps }: any) {
   const [meetActivate, setMeetActivate] = useState<boolean>(false);
   const [leftOnce, setLeftOnce] = useState<boolean>(false);
   const [isOwner, setIsOwner] = useState<boolean>(false);
+  const [peerDimension, setPeerDimension] = useState<{
+    width: number,
+    height: number,
+  }>({
+    width: 700,
+    height: 300,
+  });
+
   return (
     <HMSRoomProvider>
       <AppContext.Provider 
@@ -18,13 +25,15 @@ function MyApp({ Component, pageProps }: any) {
             loader,
             meetActivate,
             leftOnce,
-            isOwner
+            isOwner,
+            peerDimension
           },
           actions: {
             setLoader,
             setMeetActivate,
             setLeftOnce,
-            setIsOwner
+            setIsOwner,
+            setPeerDimension
           }
         }}
       >

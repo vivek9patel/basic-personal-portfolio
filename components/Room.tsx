@@ -14,10 +14,13 @@ import SharedScreen from './SharedScreen';
 const Room = () => {  
   const actions = useHMSActions();
   const appState = useContext(AppContext);
+
   useEffect(() => {
+    
     return () => {
       appState.actions.setLeftOnce(true);
       actions.leave()
+      appState.actions.setMeetActivate(false);
     }
   }, [])
   return (
@@ -32,7 +35,26 @@ const RoomLayout = () => {
   const peers = useHMSStore(selectPeers);
   const screenshareOn = useHMSStore(selectIsSomeoneScreenSharing);
   const presenter = useHMSStore(selectPeerScreenSharing);
+  const appState = useContext(AppContext);
 
+  useEffect(() => {
+    // set window resize observer
+    const handleResize = () => {
+      const numberOfRows = (Math.floor((peers.length / 4)) + 1)
+      const peerWidth = Math.floor((window.innerWidth - 50) / peers.length)
+      const peerHeight = Math.floor(numberOfRows > 1 ? (window.innerHeight - 150) / numberOfRows : peerWidth * (9/16) )
+      appState.actions.setPeerDimension({
+        width: peerWidth,
+        height: peerHeight,
+        numberOfRows
+      });
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    }
+  }, [peers])
 
   return (
     <div className={` ${screenshareOn ? "presenter-layout" : "participants-layout"} transition-all duration-300 w-full h-full `}>

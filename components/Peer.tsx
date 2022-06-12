@@ -1,18 +1,27 @@
-import { useVideo, HMSPeer, useHMSStore, selectIsPeerAudioEnabled, selectIsPeerVideoEnabled, HMSTrack, useAudioLevelStyles, selectPeerAudioByID } from "@100mslive/react-sdk";
+import { HMSPeer, useHMSStore, selectIsPeerAudioEnabled, selectIsPeerVideoEnabled, selectPeerAudioByID, selectCameraStreamByPeerID, useHMSActions } from "@100mslive/react-sdk";
 import { BiMicrophone,BiMicrophoneOff } from "react-icons/bi";
 import Avatar from "boring-avatars";
-import { useEffect } from "react";
+import { MutableRefObject, useContext, useEffect, useRef } from "react";
+import AppContext from "../contexts/AppContext";
 
 export const Peer: React.FC<{ peer: HMSPeer }> = ({ peer }) => {
   const isAudioOn = useHMSStore(selectIsPeerAudioEnabled(peer.id));
   const isVideoOn = useHMSStore(selectIsPeerVideoEnabled(peer.id));
   const audioLevel = useHMSStore(selectPeerAudioByID(peer.id));
+  const videoRef = useRef(null);
+  const {state: {peerDimension}} = useContext(AppContext);
 
   return (
     <div 
-      style={{minHeight: "300px", maxHeight: "calc(100vh - 150px)"}}
-      className={`m-2 relative rounded-lg shadow-md border-4 transition duration-500 overflow-hidden aspect-square ${audioLevel > 0 ? " border-v9-pink" : "border-transparent dark:border-white "}`} >
-        <Video videoTrack={peer.videoTrack} />
+      style={{
+        height: peerDimension.height,
+        width: peerDimension.width,
+        minHeight: "300px", 
+        maxHeight: "calc(100vh - 150px)",
+        flex: peerDimension.numberOfRows > 1 ? "0 0 24%" : ""
+      }}
+      className={`m-2 relative rounded-lg shadow-md border-4 transition duration-500 overflow-hidden flex justify-center items-center ${audioLevel > 0 ? " border-v9-pink" : "border-transparent dark:border-white "}`} >
+        <Video videoRef={videoRef} peer={peer} />
         <div className={`absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${isVideoOn ? "invisible" : "visible"}`}>
             <Avatar
                 size={200}
@@ -31,14 +40,24 @@ export const Peer: React.FC<{ peer: HMSPeer }> = ({ peer }) => {
   );
   };
   
- export const Video = ({ videoTrack }: any) => {
-      const { videoRef } = useVideo({
-        trackId: videoTrack,
-      });
+ export const Video = ({ peer, videoRef }: { peer: HMSPeer, videoRef: MutableRefObject<null> }) => {
+   
+    const hmsActions = useHMSActions();
+    const videoTrack = useHMSStore(selectCameraStreamByPeerID(peer.id));
+
+    useEffect(() => {
+      if (videoRef.current && videoTrack) {
+        if (videoTrack.enabled) {
+            hmsActions.attachVideo(videoTrack.id, videoRef.current);
+        } else {
+            hmsActions.detachVideo(videoTrack.id, videoRef.current);
+        }
+    }
+    },[videoTrack, hmsActions])
 
       return (
         <video
-          className="h-full w-full z-0" 
+          className="z-0 flex-1" 
           ref={videoRef}
           autoPlay
           muted

@@ -1,6 +1,6 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { useRouter } from 'next/router';
-import { useHMSActions, useHMSStore, selectRoomState, selectLocalPeer, useAVToggle, useVideo} from '@100mslive/react-sdk';
+import { useHMSActions, useHMSStore, selectRoomState, selectLocalPeer, useAVToggle} from '@100mslive/react-sdk';
 import Room from "../../../components/Room";
 import {v4} from 'uuid';
 
@@ -14,7 +14,6 @@ const randomName = v4();
 export default function Conference() : JSX.Element {
     const appState = useContext(AppContext);
     const roomState = useHMSStore(selectRoomState);
-    const router = useRouter();
     const {setLoader, setMeetActivate} = appState.actions;
     
     const getRoomStateJSX = () => {
@@ -53,7 +52,7 @@ const JoinRoomForm: () => JSX.Element = () => {
     const [name, setName] = useState('');
     const [token, setToken] = useState<string | null>(null);
     const appState = useContext(AppContext);
-
+    const videoRef = useRef(null)
     const {
         isLocalAudioEnabled,
         isLocalVideoEnabled,
@@ -159,8 +158,8 @@ const JoinRoomForm: () => JSX.Element = () => {
                     }}
                     >
                     <div className="rounded-lg overflow-hidden shadow-lg bg-white border-2 dark:border-gray-300 dark:bg-transparent dark:text-white text-gray-900 max-w-sm">
-                        <div className="w-96 h-96 relative">
-                        {localPeer && <Video mirror={localPeer.isLocal} videoTrack={localPeer.videoTrack} />}
+                        <div className="w-96 h-96 relative flex justify-center items-center">
+                        {localPeer && <Video videoRef={videoRef} peer={localPeer} />}
                         <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${isLocalVideoEnabled ? "invisible" : "visible"}`}>
                             <Avatar
                                 size={200}
