@@ -1,43 +1,59 @@
-import React, {useState, useEffect} from 'react'
-import { NextPage } from "next"
+import React, {useEffect, useState} from 'react'
 import Link from 'next/link'
 
-const Header: NextPage = () => {
-
+const Header = () => {
   const [themeMode, setThemeMode] = useState<'light' | 'dark'>('light');
+  const [headerBGColor, setHeaderBGColor] = useState('transperent');
+  // const {loader, meetActivate} = appState.state;
+
+  useEffect(() => {
+    const oldThemeMode = localStorage.getItem('themeMode');
+    if(oldThemeMode) setThemeMode(oldThemeMode as 'light' | 'dark');
+    else{
+      const html = document.querySelector('html');
+      if(html) {
+        setThemeMode(html.classList.contains('dark') ? 'dark' : 'light');
+      }
+    }
+
+  },[])
+
+  useEffect(() => {
+    const html = document.querySelector('html');
+    if(html) {
+      if(themeMode === 'dark') html.classList.add('dark');
+      else html.classList.remove('dark');
+    }
+    localStorage.setItem('themeMode', themeMode);
+  },[themeMode])
 
   const toggleThemeMode = () => {
-    const html = document.querySelector('html');
-    if(html){
-    if (html.classList.contains('dark')) {
-        html.classList.remove('dark');
-        setThemeMode('light');
-    } else {
-        html.classList.add('dark');
-        setThemeMode('dark');
-    }
-    }
+      setThemeMode(themeMode === 'dark' ? 'light' : 'dark');
   }
 
   return (
-    <div className='border-b-4 sticky top-0 left-0 bg-white dark:bg-black transition-none border-black dark:text-white dark:border-white'>
+    <div className={`sticky z-50 top-0 left-0 transition-none transform dark:text-white bg-${themeMode === 'dark' ? "black" : "white"}`}>
      <div className="mx-20 px-6 py-4 flex justify-between">
       <Link href='/'>
-          <a  className='font-semibold text-xl no-underline'>v9 blogs</a>
-          </Link>
-        <div className="flex items-center">
+          <div className={`font-semibold text-xl no-underline text-center w-24 transition ease-linear duration-1000 ${false ? "animateFullWidth" : "animateNormalWidth"}`}>
+            <a className='cursor-pointer'>V9 blogs</a>
+          </div>
+      </Link>
+      <div className="flex items-center">
+            <div className={`transition-none ${false ? "w-0 h-0 invisible" : ""}`}>
             <Link href='/'>
               <a className="mx-2">Home</a>
             </Link>
-            <Link href='/blogs'>
-              <a className="mx-2">Blogs</a>
-            </Link>
             <Link href='https://meet.vivek9patel.dev/schedule'>
-              <a target="_blank" className="mx-2">Let&apos;s chat</a>
+              <a target={"_blank"} className="mx-2">Let's chat</a>
             </Link>
-            <input onClick={toggleThemeMode} defaultChecked={themeMode==="light"} className="themeToggle mx-2" type="checkbox"></input>
-        </div>
+            </div>
+          <input onChange={toggleThemeMode} checked={themeMode === 'dark'} className="themeToggle mx-2" type="checkbox"></input>
+      </div>
      </div>
+     <div className="w-full dark:bg-gray-200 bg-black h-1">
+      <div className={`bg-v9-pink w-0 h-1 ${false ? "triggerLoader" : ""}`}></div>
+      </div>
     </div>
   )
 }

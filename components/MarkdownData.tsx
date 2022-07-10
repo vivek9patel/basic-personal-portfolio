@@ -1,4 +1,5 @@
 import { MDXRemote } from 'next-mdx-remote'
+import Header from './Header'
 import type { MDXRemoteSerializeResult } from 'next-mdx-remote'
 
 export default function MarkdownData({content}: {content: MDXRemoteSerializeResult}) {

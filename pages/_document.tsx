@@ -7,8 +7,9 @@ class MyDocument extends Document {
       <Html className='dark'>
         <Head >
           <MetaTags />
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark.min.css"></link>
         </Head>
-        <body className='bg-white dark:bg-black transition-colors duration-500'>
+        <body className='bg-white dark:bg-black transition-colors duration-300'>
           <Main />
           <NextScript />
         </body>

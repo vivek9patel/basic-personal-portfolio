@@ -10,11 +10,15 @@ module.exports = {
         sans: ["Wotfard", "sans-serif"],
       },
       colors: {
+        "v9-dark-grey": "#182635",
         "v9-purple": "#162447",
         "v9-cyan": "#00FFFF",
         "v9-teal": "#64FFDA",
         "v9-dark-teal": "#00FFC2",
         "v9-pink": "#FD3A69",
+        "v9-yellow": "#FED644",
+        "v9-green": "#30C85E",
+        "v9-blue": "#4A97FE"
       },
       typography: ({ theme }) => ({
         dark: {

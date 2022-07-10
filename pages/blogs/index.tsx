@@ -18,7 +18,6 @@ const Blogs: NextPage<Props> = ({blogList}) => {
   
   return (
     <>
-      <Header />
       <div className='mx-20 px-6 py-6'>
         {
           blogList.map(({slug, frontmatter}) => {
