@@ -1,5 +1,5 @@
 /* @import url('../fonts/Wotfard/wotfard.css'); */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -83,5 +83,14 @@
   --offset-diagonal: calc(var(--size) * 0.45);
   transform: scale(0.75);
   color: #ffaa00;
-  box-shadow: inset 0 0 0 var(--size), calc(var(--offset-orthogonal) * -1) 0 0 var(--ray-size), var(--offset-orthogonal) 0 0 var(--ray-size), 0 calc(var(--offset-orthogonal) * -1) 0 var(--ray-size), 0 var(--offset-orthogonal) 0 var(--ray-size), calc(var(--offset-diagonal) * -1) calc(var(--offset-diagonal) * -1) 0 var(--ray-size), var(--offset-diagonal) var(--offset-diagonal) 0 var(--ray-size), calc(var(--offset-diagonal) * -1) var(--offset-diagonal) 0 var(--ray-size), var(--offset-diagonal) calc(var(--offset-diagonal) * -1) 0 var(--ray-size);
+  box-shadow: inset 0 0 0 var(--size),
+    calc(var(--offset-orthogonal) * -1) 0 0 var(--ray-size),
+    var(--offset-orthogonal) 0 0 var(--ray-size),
+    0 calc(var(--offset-orthogonal) * -1) 0 var(--ray-size),
+    0 var(--offset-orthogonal) 0 var(--ray-size),
+    calc(var(--offset-diagonal) * -1) calc(var(--offset-diagonal) * -1) 0
+      var(--ray-size),
+    var(--offset-diagonal) var(--offset-diagonal) 0 var(--ray-size),
+    calc(var(--offset-diagonal) * -1) var(--offset-diagonal) 0 var(--ray-size),
+    var(--offset-diagonal) calc(var(--offset-diagonal) * -1) 0 var(--ray-size);
 }
