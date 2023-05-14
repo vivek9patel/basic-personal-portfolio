@@ -49,7 +49,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }: any) {
   const blog = fs.readFileSync(
-    path.join("data", `${params.slug}.mdx`),
+    path.join("blogs", `${params.slug}.mdx`),
     "utf-8"
   );
   const { data: frontmatter, content } = matter(blog);

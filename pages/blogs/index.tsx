@@ -36,11 +36,11 @@ const Blogs: NextPage<Props> = ({ blogList }) => {
 export default Blogs;
 
 export async function getStaticProps() {
-  const blogs = fs.readdirSync(path.join("data"));
-
+  const blogs = fs.readdirSync(path.join("blogs"));
+  console.log(blogs);
   const blogList = blogs.map((blog) => {
     const slug = blog.replace(".mdx", "");
-    const fileData = fs.readFileSync(path.join("data", blog), "utf-8");
+    const fileData = fs.readFileSync(path.join("blogs", blog), "utf-8");
     let { data: frontmatter } = matter(fileData);
     return {
       slug,

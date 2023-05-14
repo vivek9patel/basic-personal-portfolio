@@ -1,9 +1,10 @@
 import type { NextPage } from "next";
-import { Anchor, Hr } from "../components/CustomHtml";
+import { Anchor } from "../components/CustomHtml";
 import ProjectCard from "../components/ProjectCard";
 import { ProjectCardProps } from "../components/ProjectCard";
 import { useContext, useEffect } from "react";
 import { ProjectListContext } from "../context";
+import projectsData from "../data/projects.json";
 
 type Props = {
   projectsSortedByStars: Array<ProjectCardProps>;
@@ -67,14 +68,8 @@ const Home: NextPage<Props> = ({ projectsSortedByStars }) => {
 
 export default Home;
 
-export async function getStaticProps() {
-  const url = "http://localhost:3000/api/projects";
-  const res = await fetch(url, {
-    headers: {
-      Accept: "application/json",
-    },
-  });
-  const projectsList: ProjectCardProps[] = await res.json();
+export async function getServerSideProps() {
+  const projectsList: ProjectCardProps[] = projectsData;
   // fetch stars for each project and sort by stars
   for (let i = 0; i < projectsList.length; i++) {
     const project = projectsList[i];
