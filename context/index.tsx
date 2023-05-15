@@ -1,7 +1,8 @@
 "use client";
 
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { ProjectCardProps } from "../components/ProjectCard";
+import projectsData from "../data/projects.json";
 
 export const ProjectListContext = createContext<{
   projectList: ProjectCardProps[];
@@ -12,7 +13,8 @@ export const ProjectListContext = createContext<{
 });
 
 export default function Context({ children }: { children: React.ReactNode }) {
-  const [projectList, setProjectList] = useState<ProjectCardProps[]>([]);
+  const [projectList, setProjectList] =
+    useState<ProjectCardProps[]>(projectsData);
 
   return (
     <ProjectListContext.Provider value={{ projectList, setProjectList }}>

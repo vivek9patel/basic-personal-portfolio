@@ -1,24 +1,32 @@
 import type { NextPage } from "next";
-import { Anchor } from "../components/CustomHtml";
+import { Anchor, Button } from "../components/CustomHtml";
 import ProjectCard from "../components/ProjectCard";
 import { ProjectCardProps } from "../components/ProjectCard";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ProjectListContext } from "../context";
-import projectsData from "../data/projects.json";
+import { fetchProjectsStar } from "../helpers/helpers";
+import { useRouter } from "next/router";
 
-type Props = {
-  projectsSortedByStars: Array<ProjectCardProps>;
-};
-
-const Home: NextPage<Props> = ({ projectsSortedByStars }) => {
-  const { setProjectList } = useContext(ProjectListContext);
+const Home: NextPage = () => {
+  const { projectList, setProjectList } = useContext(ProjectListContext);
+  const [top6Projects, setTop6Projects] = useState<ProjectCardProps[]>([]);
+  const clientRouter = useRouter();
 
   useEffect(() => {
-    setProjectList(projectsSortedByStars);
-  }, [projectsSortedByStars]);
+    setTop6Projects(
+      projectList.sort((a, b) => b.priority - a.priority).slice(0, 6)
+    );
+  }, [projectList]);
+
+  useEffect(() => {
+    (async () => {
+      const updatedProjectsListWithStars = await fetchProjectsStar();
+      setProjectList([...updatedProjectsListWithStars]);
+    })();
+  }, []);
 
   return (
-    <div className="margin-wrapper my-10">
+    <div className="margin-wrapper my-20">
       <div className="mt-20 flex">
         <div className="">
           <div className="text-5xl font-medium">
@@ -51,15 +59,18 @@ const Home: NextPage<Props> = ({ projectsSortedByStars }) => {
       <div className="mt-20">
         <div className="flex justify-between mb-10 items-center">
           <div className="text-5xl font-medium">Projects</div>
-          <button className="text-lg font-light bg-v9-secondary-black hover:border-v9-pink px-3 py-1 border-2 rounded-md border-opacity-5 hover:border-opacity-30 transition-colors">
-            View All
-          </button>
+          <Button
+            onClick={() => {
+              clientRouter.push("/projects");
+            }}
+          >
+            View all
+          </Button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 grid-rows-auto auto-rows-fr gap-x-5 gap-y-5">
-          {projectsSortedByStars &&
-            projectsSortedByStars.map((project: ProjectCardProps, i) => (
-              <ProjectCard key={i} {...project} />
-            ))}
+          {top6Projects.map((project: ProjectCardProps, i) => (
+            <ProjectCard key={i} {...project} />
+          ))}
         </div>
       </div>
     </div>
@@ -67,32 +78,3 @@ const Home: NextPage<Props> = ({ projectsSortedByStars }) => {
 };
 
 export default Home;
-
-export async function getServerSideProps() {
-  const projectsList: ProjectCardProps[] = projectsData;
-  // fetch stars for each project and sort by stars
-  for (let i = 0; i < projectsList.length; i++) {
-    const project = projectsList[i];
-    const starsUrl =
-      "https://api.github.com/repos/" +
-      project.github_url.split("/").slice(-2).join("/");
-
-    const starsRes = await fetch(starsUrl, {
-      headers: {
-        Accept: "application/vnd.github.v3+json",
-        Authorization: "token " + process.env.GITHUB_PERSONAL_ACCESS_TOKEN,
-      },
-    });
-    const projectDetail = await starsRes.json();
-    if (projectDetail && projectDetail.hasOwnProperty("stargazers_count")) {
-      project.stars = projectDetail.stargazers_count;
-    } else project.stars = 0;
-  }
-  projectsList.sort((a, b) => b.stars - a.stars);
-
-  return {
-    props: {
-      projectsSortedByStars: projectsList,
-    },
-  };
-}

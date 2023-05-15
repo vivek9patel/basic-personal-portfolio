@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
-const Header = () => {
+const Header = ({ currentLink = "", loading = false }) => {
   const [themeMode, setThemeMode] = useState<"light" | "dark">("light");
 
   useEffect(() => {
@@ -49,10 +49,28 @@ const Header = () => {
             className={`transition-none ${false ? "w-0 h-0 invisible" : ""}`}
           >
             <Link href="/">
-              <a className="mx-2">Home</a>
+              <a
+                className={`mx-2 ${
+                  currentLink === "" ? "text-v9-yellow" : ""
+                } hover:underline underline-offset-2`}
+              >
+                Home
+              </a>
+            </Link>
+            <Link href="/projects">
+              <a
+                className={`mx-2 ${
+                  currentLink === "projects" ? "text-v9-yellow" : ""
+                } hover:underline underline-offset-2`}
+              >
+                Projects
+              </a>
             </Link>
             <Link href="https://meet.vivek9patel.dev/schedule">
-              <a target={"_blank"} className="mx-2">
+              <a
+                target={"_blank"}
+                className="mx-2 hover:underline hover:underline-offset-2"
+              >
                 Let's chat
               </a>
             </Link>
@@ -67,7 +85,9 @@ const Header = () => {
       </div>
       <div className="w-full dark:bg-gray-200 bg-black h-1">
         <div
-          className={`bg-v9-pink w-0 h-1 ${false ? "triggerLoader" : ""}`}
+          className={`bg-v9-pink w-0 h-1 ${
+            loading ? "triggerLoader" : "trigeerLoaderDone"
+          }`}
         ></div>
       </div>
     </div>

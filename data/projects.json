@@ -12,9 +12,11 @@
       "Azure",
       "Postgre"
     ],
-    "github_url": "https://github.com/vivek9patel/CSE-578-Project-Frontend",
+    "github_url": "https://github.com/vivek9patel/CSE-508-Project-Frontend",
     "demo_url": "",
-    "stars": 0
+    "stars": 0,
+    "priority": 5,
+    "category": "Web Project"
   },
   {
     "title": "Code-Connect: Interview Tool",
@@ -23,7 +25,9 @@
     "badges": ["React", "Chakra UI", "Express", "MongoDB", "Docker", "AWS"],
     "github_url": "https://github.com/vivek9patel/CodeConnect-frontend",
     "demo_url": "https://codeconnect.vercel.app/",
-    "stars": 0
+    "stars": 0,
+    "priority": 4,
+    "category": "Web Project"
   },
   {
     "title": "Web Simulation of UbuntuOS",
@@ -32,7 +36,9 @@
     "badges": ["Next.js", "Tailwind CSS", "Vercel"],
     "github_url": "https://github.com/vivek9patel/vivek9patel.github.io",
     "demo_url": "https://vivek9patel.github.io",
-    "stars": 0
+    "stars": 0,
+    "priority": 6,
+    "category": "Web Project"
   },
   {
     "title": "Meditech Healthcare Webapp",
@@ -41,7 +47,9 @@
     "badges": ["Javascript", "Tensorflow", "Firebase", "SCSS", "Auth0"],
     "github_url": "https://github.com/vivek9patel/Meditech-Healthcare",
     "demo_url": "https://meditech-healthcare.web.app/user.html",
-    "stars": 0
+    "stars": 0,
+    "priority": 0,
+    "category": "Web Project"
   },
   {
     "title": "Ad-free-spotify",
@@ -50,7 +58,9 @@
     "badges": ["Javascript", "Chrome extension"],
     "github_url": "https://github.com/vivek9patel/ad-free-spotify",
     "demo_url": "",
-    "stars": 0
+    "stars": 0,
+    "priority": 0,
+    "category": "Web Project"
   },
   {
     "title": "Economist.com-unlocked",
@@ -59,7 +69,9 @@
     "badges": ["Javascript", "Chrome extension"],
     "github_url": "https://github.com/vivek9patel/economist.com-unlocked",
     "demo_url": "",
-    "stars": 0
+    "stars": 0,
+    "priority": 3,
+    "category": "Web Project"
   },
   {
     "title": "Transaction Management Application",
@@ -67,8 +79,10 @@
     "year": 2021,
     "badges": ["Flutter", "Dart", "Firebase Authentication", "Firestore"],
     "github_url": "https://github.com/vivek9patel/flutter-banking-app",
-    "demo_url": "github.com/vivek9patel/flutter-banking-app/releases/download/1.0.0/app-release.apk",
-    "stars": 0
+    "demo_url": "https://github.com/vivek9patel/flutter-banking-app/releases/download/1.0.0/app-release.apk",
+    "stars": 0,
+    "priority": 1,
+    "category": "Web Project"
   },
   {
     "title": "CPU Scheduling Tasks Visualiser",
@@ -77,7 +91,9 @@
     "badges": ["React Native", "JavaScript", "Expo"],
     "github_url": "https://github.com/vivek9patel/CPU-Scheduling-APP-React-Native",
     "demo_url": "https://cpuscheduling-app.web.app/",
-    "stars": 0
+    "stars": 0,
+    "priority": 2,
+    "category": "Web Project"
   },
   {
     "title": "Gre Word List",
@@ -85,8 +101,10 @@
     "year": 2022,
     "badges": ["React", "JavaScript", "Chakra UI", "Auth0"],
     "github_url": "https://github.com/vivek9patel/gre-words-list",
-    "demo_url": "http://gre-words-list.vercel.app/",
-    "stars": 0
+    "demo_url": "https://gre-words-list.vercel.app/",
+    "stars": 0,
+    "priority": 0,
+    "category": "Web Project"
   },
   {
     "title": "Space Lust",
@@ -94,8 +112,10 @@
     "year": 2023,
     "badges": ["React", "JavaScript", "D3", "Tailwind CSS"],
     "github_url": "https://github.com/vivek9patel/Space-lust-data-visuaization",
-    "demo_url": "https://cse-578-assignment-4.vercel.app/",
-    "stars": 0
+    "demo_url": "https://space-lust-data-visuaization.vercel.app/",
+    "stars": 0,
+    "priority": 0,
+    "category": "Web Project"
   },
   {
     "title": "Narration of Sugar Consumption in the US",
@@ -104,7 +124,9 @@
     "badges": ["React", "JavaScript", "D3", "Tailwind CSS"],
     "github_url": "https://github.com/vivek9patel/Sugar-consumption-data-visulization",
     "demo_url": "https://sugar-consumption-data-visulization.vercel.app/",
-    "stars": 0
+    "stars": 0,
+    "priority": 0,
+    "category": "Web Project"
   },
   {
     "title": "YT Productive",
@@ -113,7 +135,9 @@
     "badges": ["JavaScript", "Chrome extension"],
     "github_url": "https://github.com/vivek9patel/YT-productive",
     "demo_url": "",
-    "stars": 0
+    "stars": 0,
+    "priority": 0,
+    "category": "Web Project"
   },
   {
     "title": "React Boilerplate for Chrome Extension",
@@ -122,7 +146,9 @@
     "badges": ["React", "Webpack", "JavaScript", "Chrome extension"],
     "github_url": "https://github.com/vivek9patel/chrome-extension-react-boilerplate",
     "demo_url": "",
-    "stars": 0
+    "stars": 0,
+    "priority": 0,
+    "category": "Web Project"
   },
   {
     "title": "Improve Codeforces",
@@ -131,7 +157,9 @@
     "badges": ["Python", "Django", "Codeforces API"],
     "github_url": "https://github.com/vivek9patel/Improve-Codeforces",
     "demo_url": "",
-    "stars": 0
+    "stars": 0,
+    "priority": 0,
+    "category": "Web Project"
   },
   {
     "title": "Face detection using JAVA",
@@ -140,7 +168,9 @@
     "badges": ["Java", "OpenCV"],
     "github_url": "https://github.com/vivek9patel/Face-detection-using-JAVA-with-GUI",
     "demo_url": "",
-    "stars": 0
+    "stars": 0,
+    "priority": 0,
+    "category": "Web Project"
   },
   {
     "title": "Screen Recorder using Python",
@@ -149,7 +179,9 @@
     "badges": ["Python", "OpenCV", "Tkinter"],
     "github_url": "https://github.com/vivek9patel/screen-recorder-using-python",
     "demo_url": "",
-    "stars": 0
+    "stars": 0,
+    "priority": 0,
+    "category": "Web Project"
   },
   {
     "title": "Currency Converter Using Python",
@@ -158,6 +190,8 @@
     "badges": ["Python", "Tkinter"],
     "github_url": "https://github.com/vivek9patel/Currency-Converter-Using-Python",
     "demo_url": "",
-    "stars": 0
+    "stars": 0,
+    "priority": 0,
+    "category": "Web Project"
   }
 ]

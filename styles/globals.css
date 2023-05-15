@@ -28,36 +28,42 @@
 }
 
 .margin-wrapper {
-  margin: 0 20px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 @media screen and (min-width: 400px) {
   .margin-wrapper {
-    margin: 0 50px;
+    margin-left: 50px;
+    margin-right: 50px;
   }
 }
 
 @media screen and (min-width: 768px) {
   .margin-wrapper {
-    margin: 0 100px;
+    margin-left: 100px;
+    margin-right: 100px;
   }
 }
 
 @media screen and (min-width: 1000px) {
   .margin-wrapper {
-    margin: 0 200px;
+    margin-left: 200px;
+    margin-right: 200px;
   }
 }
 
 @media screen and (min-width: 1500px) {
   .margin-wrapper {
-    margin: 0 300px;
+    margin-left: 300px;
+    margin-right: 300px;
   }
 }
 
 @media screen and (min-width: 2000px) {
   .margin-wrapper {
-    margin: 0 500px;
+    margin-left: 500px;
+    margin-right: 500px;
   }
 }
 
@@ -88,9 +94,80 @@
     var(--offset-orthogonal) 0 0 var(--ray-size),
     0 calc(var(--offset-orthogonal) * -1) 0 var(--ray-size),
     0 var(--offset-orthogonal) 0 var(--ray-size),
-    calc(var(--offset-diagonal) * -1) calc(var(--offset-diagonal) * -1) 0
-      var(--ray-size),
+    calc(var(--offset-diagonal) * -1) calc(var(--offset-diagonal) * -1) 0 var(--ray-size),
     var(--offset-diagonal) var(--offset-diagonal) 0 var(--ray-size),
     calc(var(--offset-diagonal) * -1) var(--offset-diagonal) 0 var(--ray-size),
     var(--offset-diagonal) calc(var(--offset-diagonal) * -1) 0 var(--ray-size);
+}
+
+.triggerLoader {
+  animation: width-animate-90 3000ms forwards;
+}
+
+.trigeerLoaderDone {
+  animation: width-animate-90-to-full 300ms forwards;
+}
+
+.animateFullWidth {
+  animation: width-animate-full 1000ms forwards;
+}
+
+.animateNormalWidth {
+  animation: width-animate-80px 1000ms;
+}
+
+@keyframes width-animate-90 {
+  0% {
+    width: 0%;
+  }
+
+  20% {
+    width: 40%;
+  }
+
+  40% {
+    width: 60%;
+  }
+
+  80% {
+    width: 60%;
+  }
+
+  100% {
+    width: 90%;
+  }
+}
+
+@keyframes width-animate-90-to-full {
+  0% {
+    width: 90%;
+  }
+
+  99% {
+    width: 100%;
+  }
+
+  100% {
+    width: 0%;
+  }
+}
+
+@keyframes width-animate-full {
+  0% {
+    width: 80px;
+  }
+
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes width-animate-80px {
+  0% {
+    width: 80%;
+  }
+
+  100% {
+    width: 80px;
+  }
 }

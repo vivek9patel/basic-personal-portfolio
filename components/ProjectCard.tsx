@@ -1,3 +1,5 @@
+import { badgeImage } from "../helpers/helpers";
+
 export type ProjectCardProps = {
   title: string;
   tagline: string;
@@ -6,6 +8,8 @@ export type ProjectCardProps = {
   github_url: string;
   demo_url: string;
   stars: number;
+  priority: number;
+  category: string;
 };
 
 export default function ProjectCard(props: ProjectCardProps) {
@@ -13,10 +17,10 @@ export default function ProjectCard(props: ProjectCardProps) {
     <div className=" flex flex-col justify-between py-6 px-6 border border-opacity-10 rounded-md bg-v9-secondary-black transition-colors">
       <div>
         <div className="flex items-center justify-between">
-          <div className="text-v9-pink">{props.year}</div>
+          <div className="text-v9-pink text-sm 2xl:text-base">{props.year}</div>
           {props.stars ? (
             <div className=" text-v9-yellow flex items-center">
-              <span className="mr-2">{props.stars}</span>
+              <span className="mr-2 text-sm 2xl:text-base">{props.stars}</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"
@@ -32,18 +36,19 @@ export default function ProjectCard(props: ProjectCardProps) {
             </div>
           ) : null}
         </div>
-        <div className="text-2xl mt-2">{props.title}</div>
-        <div className=" text-v9-light-grey mt-2">{props.tagline}</div>
+        <div className=" text-lg 2xl:text-2xl mt-2">{props.title}</div>
+        <div className=" text-sm 2xl:text-base text-v9-light-grey mt-2">
+          {props.tagline}
+        </div>
       </div>
       <div>
         <div className="flex custom-scroll-bar-y justify-start items-center mt-3">
           {props.badges.map((badge, i) => (
-            <div
-              key={i}
-              className=" rounded whitespace-nowrap mr-2 mb-2 p-1 font-light text-sm text-v9-light-grey border-opacity-20"
-            >
-              {badge}
-            </div>
+            <img
+              className="m-1 opacity-80"
+              src={`${badgeImage[badge.toLowerCase()]}`}
+              alt={`${badge} badge image`}
+            />
           ))}
         </div>
         <div className="flex items-center">
@@ -52,7 +57,7 @@ export default function ProjectCard(props: ProjectCardProps) {
               onClick={() => {
                 window.open(props.github_url, "_blank");
               }}
-              className="text-sm flex mx-1 justify-center items-center font-light bg-v9-secondary-black hover:border-v9-pink px-3 py-1.5 flex-1 border-2 rounded-md border-opacity-5 hover:border-opacity-30 transition-colors mt-4"
+              className="text-xs 2xl:text-sm flex mx-1 justify-center items-center font-light bg-v9-secondary-black hover:border-v9-pink px-3 py-1.5 flex-1 border-2 rounded-md border-opacity-5 hover:border-opacity-30 transition-colors mt-4"
             >
               <span className="mr-2">View Project</span>
               <svg
@@ -77,7 +82,7 @@ export default function ProjectCard(props: ProjectCardProps) {
               onClick={() => {
                 window.open(props.demo_url, "_blank");
               }}
-              className=" text-sm flex mx-1 justify-center items-center font-light bg-v9-secondary-black px-3 py-1.5 flex-1 border-2 rounded-md border-opacity-5 hover:border-opacity-30 hover:border-v9-pink transition-colors mt-4"
+              className=" text-xs 2xl:text-sm flex mx-1 justify-center items-center font-light bg-v9-secondary-black px-3 py-1.5 flex-1 border-2 rounded-md border-opacity-5 hover:border-opacity-30 hover:border-v9-pink transition-colors mt-4"
             >
               <span className="mr-2">Demo</span>
               <svg
