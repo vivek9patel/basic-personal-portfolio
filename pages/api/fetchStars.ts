@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           Authorization: "token " + process.env.GITHUB_PERSONAL_ACCESS_TOKEN,
         },
       });
-
+      console.log(await starsRes.text())
     if (!starsRes.ok) {
         return res.status(200).json(0);
     }
