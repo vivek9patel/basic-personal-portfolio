@@ -75,7 +75,7 @@ const Header = ({ currentLink = "", loading = false }) => {
                 Resume
               </a>
             </Link>
-            <Link href="https://meet.vivek9patel.dev/schedule">
+            <Link href="https://meet.vivek9patel.com/schedule">
               <a
                 target={"_blank"}
                 className="mx-2 hover:underline hover:underline-offset-2"

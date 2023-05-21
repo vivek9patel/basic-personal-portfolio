@@ -37,7 +37,7 @@ export default function MetaTags() {
       />
 
       <meta property="og:type" content="website" />
-      <meta property="og:url" content="https://vivek9patel.dev/" />
+      <meta property="og:url" content="https://vivek9patel.com/" />
       <meta
         property="og:title"
         content="Vivek Patel's Personal Website | Blogs "
@@ -49,7 +49,7 @@ export default function MetaTags() {
       <meta property="og:image" content="/meta/meta-social-image.png" />
 
       <meta property="twitter:card" content="summary_large_image" />
-      <meta property="twitter:url" content="https://vivek9patel.dev/" />
+      <meta property="twitter:url" content="https://vivek9patel.com/" />
       <meta
         property="twitter:title"
         content="Vivek Patel's Personal Website | Blogs "
