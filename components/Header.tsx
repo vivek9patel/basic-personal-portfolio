@@ -35,54 +35,80 @@ const Header = ({ currentLink = "", loading = false }) => {
       }`}
     >
       <div className="margin-wrapper py-4 flex justify-between">
-        <Link href="/">
+        <div
+          onClick={() => {
+            window.open("https://www.linkedin.com/in/vivek9patel/");
+          }}
+          className={`font-semibold text-xl no-underline text-center w-32 transition ease-linear duration-1000 ${
+            false ? "animateFullWidth" : "animateNormalWidth"
+          }`}
+        >
+          <a className="cursor-pointer font-thin">@vivek9patel</a>
+        </div>
+        <div
+          className={`flex items-center transition-none ${
+            false ? "w-0 h-0 invisible" : ""
+          }`}
+        >
+          <Link href="/">
+            <a
+              className={`mx-2 ${
+                currentLink === "" ? "text-v9-yellow" : ""
+              } hover:underline underline-offset-2`}
+            >
+              Home
+            </a>
+          </Link>
+          <Link href="/projects">
+            <a
+              className={`mx-2 ${
+                currentLink === "projects" ? "text-v9-yellow" : ""
+              } hover:underline underline-offset-2`}
+            >
+              Projects
+            </a>
+          </Link>
+          <Link href="/resume">
+            <a
+              className={`mx-2 ${
+                currentLink === "resume" ? "text-v9-yellow" : ""
+              } hover:underline underline-offset-2`}
+            >
+              Resume
+            </a>
+          </Link>
           <div
-            className={`font-semibold text-xl no-underline text-center w-32 transition ease-linear duration-1000 ${
-              false ? "animateFullWidth" : "animateNormalWidth"
-            }`}
+            onClick={() => {
+              window.open("https://meet.vivek9patel.com/schedule");
+            }}
+            className={`mx-2 hover:underline hover:underline-offset-2`}
           >
-            <a className="cursor-pointer font-thin">@vivek9patel</a>
+            <a className="cursor-pointer">Let's chat</a>
           </div>
-        </Link>
-        <div className="flex items-center">
           <div
-            className={`transition-none ${false ? "w-0 h-0 invisible" : ""}`}
+            onClick={() => {
+              window.open("https://github.com/vivek9patel");
+            }}
+            className={`mx-2 hover:underline hover:underline-offset-2`}
           >
-            <Link href="/">
-              <a
-                className={`mx-2 ${
-                  currentLink === "" ? "text-v9-yellow" : ""
-                } hover:underline underline-offset-2`}
+            <a className="cursor-pointer flex items-center justify-center">
+              <span>Github</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width={"14px"}
+                height={"14px"}
+                fill={"currentcolor"}
               >
-                Home
-              </a>
-            </Link>
-            <Link href="/projects">
-              <a
-                className={`mx-2 ${
-                  currentLink === "projects" ? "text-v9-yellow" : ""
-                } hover:underline underline-offset-2`}
-              >
-                Projects
-              </a>
-            </Link>
-            <Link href="/resume">
-              <a
-                className={`mx-2 ${
-                  currentLink === "resume" ? "text-v9-yellow" : ""
-                } hover:underline underline-offset-2`}
-              >
-                Resume
-              </a>
-            </Link>
-            <Link href="https://meet.vivek9patel.com/schedule">
-              <a
-                target={"_blank"}
-                className="mx-2 hover:underline hover:underline-offset-2"
-              >
-                Let's chat
-              </a>
-            </Link>
+                <g data-name="Layer 2">
+                  <g data-name="external-link">
+                    <rect width="24" height="24" opacity="0"></rect>
+                    <path d="M20 11a1 1 0 0 0-1 1v6a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h6a1 1 0 0 0 0-2H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3v-6a1 1 0 0 0-1-1z"></path>
+                    <path d="M16 5h1.58l-6.29 6.28a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0L19 6.42V8a1 1 0 0 0 1 1 1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-4a1 1 0 0 0 0 2z"></path>
+                  </g>
+                </g>
+              </svg>
+            </a>
           </div>
           {/* <input
             onChange={toggleThemeMode}
