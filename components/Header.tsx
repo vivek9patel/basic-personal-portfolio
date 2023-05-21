@@ -66,6 +66,15 @@ const Header = ({ currentLink = "", loading = false }) => {
                 Projects
               </a>
             </Link>
+            <Link href="/resume">
+              <a
+                className={`mx-2 ${
+                  currentLink === "resume" ? "text-v9-yellow" : ""
+                } hover:underline underline-offset-2`}
+              >
+                Resume
+              </a>
+            </Link>
             <Link href="https://meet.vivek9patel.dev/schedule">
               <a
                 target={"_blank"}
@@ -75,12 +84,12 @@ const Header = ({ currentLink = "", loading = false }) => {
               </a>
             </Link>
           </div>
-          <input
+          {/* <input
             onChange={toggleThemeMode}
             checked={themeMode === "dark"}
             className="themeToggle mx-2"
             type="checkbox"
-          ></input>
+          ></input> */}
         </div>
       </div>
       <div className="w-full dark:bg-gray-200 bg-black h-1">

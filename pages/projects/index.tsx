@@ -68,15 +68,16 @@ const Projects: NextPage<Props> = () => {
           >
             <option value={"stars"}>stars</option>
             <option value={"year"}>year</option>
+            <option value={"priority"}>vivek's favorite</option>
           </select>
         </div>
         <div className="ml-4 flex-1 flex items-center">
           <span>Search by: </span>
           <input
-            className=" bg-white text-black py-1 px-2 mx-2 rounded flex-1 border-2 border-v9-light-grey focus:border-v9-pink active:border-v9-pink outline-none"
+            className=" border border-v9-light-grey border-opacity-10 bg-v9-primary-black py-1 px-2 mx-2 rounded flex-1 focus:border-v9-pink active:border-v9-pink outline-none"
             type="text"
             name="search-project"
-            placeholder="Javascript, Python, etc."
+            placeholder="React, Python, D3, etc."
             onChange={filterByBadge}
           />
         </div>

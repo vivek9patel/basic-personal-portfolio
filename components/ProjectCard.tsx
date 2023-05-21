@@ -45,6 +45,7 @@ export default function ProjectCard(props: ProjectCardProps) {
         <div className="flex custom-scroll-bar-y justify-start items-center mt-3">
           {props.badges.map((badge, i) => (
             <img
+              key={i}
               className="m-1 opacity-80"
               src={`${badgeImage[badge.toLowerCase()]}`}
               alt={`${badge} badge image`}

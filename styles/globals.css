@@ -1,9 +1,14 @@
 /* @import url('../fonts/Wotfard/wotfard.css'); */
+@import url('../fonts/Arialic/arialic.css');
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.Arialic_Hollow {
+  font-family: "Arialic Hollow";
+}
 
 .custom-scroll-bar-y {
   overflow-y: auto;
@@ -14,7 +19,7 @@
 /* Chrome, Edge, and Safari */
 .custom-scroll-bar-y::-webkit-scrollbar {
   width: 100%;
-  height: 6px;
+  height: 4px;
 }
 
 .custom-scroll-bar-y::-webkit-scrollbar-track {
@@ -23,6 +28,28 @@
 }
 
 .custom-scroll-bar-y::-webkit-scrollbar-thumb {
+  background-color: gray;
+  border-radius: 1px;
+}
+
+.custom-scroll-bar-x {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+/* Chrome, Edge, and Safari */
+.custom-scroll-bar-x::-webkit-scrollbar {
+  width: 6px;
+  height: 100%;
+}
+
+.custom-scroll-bar-x::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 8px;
+}
+
+.custom-scroll-bar-x::-webkit-scrollbar-thumb {
   background-color: gray;
   border-radius: 1px;
 }

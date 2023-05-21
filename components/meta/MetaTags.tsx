@@ -29,7 +29,7 @@ export default function MetaTags() {
       <meta name="msapplication-TileColor" content="#2b5797" />
       <meta name="theme-color" content="#162447" />
 
-      <title>About Vivek</title>
+      <title>Vivek Patel's Portfolio</title>
       <meta name="title" content="Vivek Patel's Personal Website | Blogs " />
       <meta
         name="description"

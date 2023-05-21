@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import Context from "../context";
 import { useEffect, useState } from "react";
 import Router, { useRouter } from "next/router";
+import Footer from "../components/Footer";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = useState(false);
@@ -35,6 +36,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <Context>
       <Header loading={loading} currentLink={currentLink} />
       <Component {...pageProps} />
+      <Footer />
     </Context>
   );
 }
