@@ -5,6 +5,7 @@ import Context from "../context";
 import { useEffect, useState } from "react";
 import Router, { useRouter } from "next/router";
 import Footer from "../components/Footer";
+import { Analytics } from "@vercel/analytics/react";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = useState(false);
@@ -33,11 +34,14 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [clientRouter.pathname]);
 
   return (
-    <Context>
-      <Header loading={loading} currentLink={currentLink} />
-      <Component {...pageProps} />
-      <Footer />
-    </Context>
+    <>
+      <Context>
+        <Header loading={loading} currentLink={currentLink} />
+        <Component {...pageProps} />
+        <Footer />
+      </Context>
+      <Analytics />
+    </>
   );
 }
 
