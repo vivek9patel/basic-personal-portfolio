@@ -11,6 +11,7 @@ import uopxLogo from "../images/uopx-phoenixbird-red.png";
 import hackerrankLogo from "../images/HackerRank_logo.png";
 import hmsLogo from "../images/100ms_logo.png";
 import webmateLogo from "../images/webmate_logo.png";
+import EmailBox from "../components/EmailBox";
 
 const Home: NextPage = () => {
   const { projectList, setProjectList } = useContext(ProjectListContext);
@@ -43,7 +44,7 @@ const Home: NextPage = () => {
           <div className="text-xl text-v9-light-grey font-light mt-4 ">
             Bringing your vision to life, one pixel at a time. 🎨
           </div>
-          <div className=" text-lg text-v9-light-grey space-y-1 mt-8">
+          <div className=" text-v9-light-grey font-light space-y-1 mt-8">
             <p className="">
               I'm a developer based in{" "}
               <Anchor
@@ -80,7 +81,7 @@ const Home: NextPage = () => {
             View Resume
           </Button>
         </div>
-        <div className="text-xl text-v9-light-grey font-light mt-2 mb-4 ">
+        <div className="text-v9-light-grey font-light mt-2 mb-4 ">
           For over 3 years, I have cultivated a deep understanding and expertise
           in <span className="">Front-end Engineering</span>, always
           prioritizing the user's needs. In every project I undertake, my aim is
@@ -230,6 +231,20 @@ const Home: NextPage = () => {
             <ProjectCard key={i} {...project} />
           ))}
         </div>
+      </div>
+
+      {/* Contact email section */}
+      <div className="mt-32">
+        <div className="text-5xl font-medium">Contact Me</div>
+        <div className="font-light text-v9-light-grey mt-4 mb-10">
+          I'm always open to new opportunities and connections. Feel free to
+          reach out to me at{" "}
+          <Anchor href="mailto:vivek.p9737@gmail.com">
+            vivek.p9737@gmail.com
+          </Anchor>
+          !
+        </div>
+        <EmailBox />
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import linkedinLogo from "../images/linkedin-logo.svg";
 
 function Footer(): JSX.Element {
   return (
-    <footer className="flex flex-col items-center justify-center w-full h-24 border-t">
+    <footer className="flex flex-col items-center justify-center w-full py-6 border-t">
       <div className="flex items-center justify-center my-4">
         <Anchor href="https://github.com/vivek9patel">
           <img

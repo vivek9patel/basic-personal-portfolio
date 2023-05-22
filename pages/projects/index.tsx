@@ -58,7 +58,7 @@ const Projects: NextPage<Props> = () => {
         <div>
           <span>Filter by: </span>
           <select
-            className=" bg-v9-secondary-black py-1 px-2 ml-2 rounded border-2 border-opacity-5 outline-none text-v9-light-grey focus:border-v9-pink"
+            className=" bg-v9-secondary-black py-1 px-2 ml-2 rounded border-2 border-opacity-5 outline-none text-v9-light-grey focus:border-v9-yellow"
             value={filterBy}
             onChange={(e) => {
               console.log(e.target.value);
@@ -73,7 +73,7 @@ const Projects: NextPage<Props> = () => {
         <div className="ml-4 flex-1 flex items-center">
           <span>Search by: </span>
           <input
-            className=" border border-v9-light-grey border-opacity-10 bg-v9-primary-black py-1 px-2 mx-2 rounded flex-1 focus:border-v9-pink active:border-v9-pink outline-none"
+            className=" border border-v9-light-grey border-opacity-10 bg-v9-primary-black py-1 px-2 mx-2 rounded flex-1 focus:border-v9-yellow active:border-v9-yellow outline-none"
             type="text"
             name="search-project"
             placeholder="React, Python, D3, etc."

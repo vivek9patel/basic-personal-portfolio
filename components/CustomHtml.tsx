@@ -27,7 +27,11 @@ const Button = (props: ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       {...props}
-      className="font-light flex justify-center items-center bg-v9-secondary-black hover:border-v9-pink px-3 py-1 border-2 rounded-md border-opacity-5 hover:border-opacity-30 transition-colors"
+      className={`font-light flex justify-center items-center bg-v9-secondary-black px-3 py-1 border-2 rounded-md border-opacity-5 transition-colors ${
+        props.disabled
+          ? "opacity-50"
+          : "hover:border-v9-pink hover:border-opacity-30 "
+      } `}
     />
   );
 };

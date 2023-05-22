@@ -17,10 +17,10 @@ export default function ProjectCard(props: ProjectCardProps) {
     <div className=" flex flex-col justify-between py-6 px-6 border border-opacity-10 rounded-md bg-v9-secondary-black transition-colors">
       <div>
         <div className="flex items-center justify-between">
-          <div className="text-v9-pink 2xl:text-xl">{props.year}</div>
+          <div className="text-v9-pink">{props.year}</div>
           {props.stars ? (
             <div className=" text-v9-yellow flex items-center">
-              <span className="mr-2 2xl:text-lg">{props.stars}</span>
+              <span className="mr-2">{props.stars}</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"
@@ -36,8 +36,10 @@ export default function ProjectCard(props: ProjectCardProps) {
             </div>
           ) : null}
         </div>
-        <div className=" text-lg 2xl:text-2xl mt-2">{props.title}</div>
-        <div className=" text-v9-light-grey mt-2">{props.tagline}</div>
+        <div className=" text-lg 2xl:text-xl mt-2">{props.title}</div>
+        <div className=" text-v9-light-grey font-light mt-2">
+          {props.tagline}
+        </div>
       </div>
       <div>
         <div className="flex custom-scroll-bar-y justify-start items-center mt-3">
