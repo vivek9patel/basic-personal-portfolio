@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchLikes, incrementLikesTo, formatNumber } from "../helpers/helpers";
 import heartImage from "../images/heart.svg";
-import { useSession, signIn } from "next-auth/react";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function LikeCounter() {
   const { status } = useSession();
@@ -17,6 +17,9 @@ export default function LikeCounter() {
   useEffect(() => {
     startAuthInterval();
     getLikes();
+    window.addEventListener("beforeunload", () => {
+      signOut();
+    });
   }, []);
 
   useEffect(() => {
