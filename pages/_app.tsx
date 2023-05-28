@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Router, { useRouter } from "next/router";
 import Footer from "../components/Footer";
 import { Analytics } from "@vercel/analytics/react";
+import { SessionProvider } from "next-auth/react";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = useState(false);
@@ -35,11 +36,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <Context>
-        <Header loading={loading} currentLink={currentLink} />
-        <Component {...pageProps} />
-        <Footer />
-      </Context>
+      <SessionProvider session={pageProps.session}>
+        <Context>
+          <Header loading={loading} currentLink={currentLink} />
+          <Component {...pageProps} />
+          <Footer />
+        </Context>
+      </SessionProvider>
       <Analytics />
     </>
   );

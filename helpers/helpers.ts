@@ -78,3 +78,28 @@ export const badgeImage:
 
 }
 
+export const fetchLikes = async () => {
+  const res = await fetch("/api/fetchLikes");
+  const data = await res.json();
+  return data;
+};
+
+export const incrementLikesTo = async (increment: number) => {
+  const res = await fetch(`/api/incrementLikes?increment=${increment}`);
+  const data = await res.json();
+  return data;
+}
+
+export const formatNumber = (number: number) => {
+  // return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+    const suffixes = ['', 'K', 'M', 'B', 'T'];
+    let suffixIndex = 0;
+  
+    while (number >= 10000 && suffixIndex < suffixes.length - 1) {
+      number /= 10000;
+      suffixIndex++;
+    }
+  
+    return number + suffixes[suffixIndex];
+  
+}

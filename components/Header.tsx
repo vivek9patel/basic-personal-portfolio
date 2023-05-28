@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import LikeCounter from "./LikeCounter";
 
 const Header = ({ currentLink = "", loading = false }) => {
   const [themeMode, setThemeMode] = useState<"light" | "dark">("light");
@@ -34,6 +35,7 @@ const Header = ({ currentLink = "", loading = false }) => {
         themeMode === "dark" ? " bg-v9-primary-black" : "bg-white"
       }`}
     >
+      <LikeCounter />
       <div className="margin-wrapper py-4 flex justify-between">
         <div
           onClick={() => {

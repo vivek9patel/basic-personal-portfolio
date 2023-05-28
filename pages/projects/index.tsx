@@ -26,7 +26,6 @@ const Projects: NextPage<Props> = () => {
   }, []);
 
   useEffect(() => {
-    console.log(extractBadgesSet());
     const descendingSortFunction = (a: ProjectCardProps, b: ProjectCardProps) =>
       b[filterBy] - a[filterBy];
     setCustomOrderedProjectList([...projectList.sort(descendingSortFunction)]);

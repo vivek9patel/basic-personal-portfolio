@@ -32,7 +32,7 @@ const Home: NextPage = () => {
   }, []);
 
   return (
-    <div className="margin-wrapper my-20">
+    <div className="margin-wrapper relative my-20">
       <div className="mt-20 flex">
         <div className="">
           <div className="text-5xl font-medium">
