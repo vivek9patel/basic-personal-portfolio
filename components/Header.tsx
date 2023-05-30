@@ -45,7 +45,7 @@ const Header = ({ currentLink = "", loading = false }) => {
             false ? "animateFullWidth" : "animateNormalWidth"
           }`}
         >
-          <a className="cursor-pointer font-thin">@vivek9patel</a>
+          <a className=" font-thin">@vivek9patel</a>
         </div>
         <div
           className={`flex items-center transition-none ${
@@ -85,7 +85,7 @@ const Header = ({ currentLink = "", loading = false }) => {
             }}
             className={`mx-2 hover:underline hover:underline-offset-2`}
           >
-            <a className="cursor-pointer">Let's chat</a>
+            <a className="">Let's chat</a>
           </div>
           <div
             onClick={() => {
@@ -93,7 +93,7 @@ const Header = ({ currentLink = "", loading = false }) => {
             }}
             className={`mx-2 hover:underline hover:underline-offset-2`}
           >
-            <a className="cursor-pointer flex items-center justify-center">
+            <a className=" flex items-center justify-center">
               <span>Github</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

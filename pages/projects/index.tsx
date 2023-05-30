@@ -74,6 +74,7 @@ const Projects: NextPage<Props> = () => {
           <input
             className=" border border-v9-light-grey border-opacity-10 bg-v9-primary-black py-1 px-2 mx-2 rounded flex-1 focus:border-v9-yellow active:border-v9-yellow outline-none"
             type="text"
+            data-cursor-focusable="true"
             name="search-project"
             placeholder="React, Python, D3, etc."
             onChange={filterByBadge}

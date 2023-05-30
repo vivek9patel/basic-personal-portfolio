@@ -11,7 +11,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
     const currentLikes = await get('portfolio-likes') as number ;
     const likeIncrements = parseInt(req.query.increment as string);
-    if(!currentLikes || !likeIncrements || likeIncrements < 0 || likeIncrements > 9) {
+
+    if(likeIncrements < 0 || likeIncrements > 9){
+        return res.status(200);
+    }
+
+    if(!currentLikes || !likeIncrements) {
         return res.status(400).json({
             message: 'Error fetching or updating likes'
         });

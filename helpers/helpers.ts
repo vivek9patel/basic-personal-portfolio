@@ -87,7 +87,7 @@ export const fetchLikes = async () => {
 export const incrementLikesTo = async (increment: number) => {
   const res = await fetch(`/api/incrementLikes?increment=${increment}`);
   const data = await res.json();
-  return data;
+  return {data, status: res.status};
 }
 
 export const formatNumber = (number: number) => {
@@ -102,4 +102,8 @@ export const formatNumber = (number: number) => {
   
     return number + suffixes[suffixIndex];
   
+}
+
+export const generateRandomId = () => {
+  return (Math.random()*1000).toString(16).slice(0, 4);
 }

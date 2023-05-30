@@ -207,7 +207,7 @@ const Home: NextPage = () => {
           onClick={() => {
             window.open("https://www.linkedin.com/in/vivek9patel/", "_blank");
           }}
-          className=" text-v9-light-grey underline cursor-pointer hover:text-white"
+          className=" text-v9-light-grey underline hover:text-white"
         >
           See my recommendations on LinkedIn
           {" ->"}

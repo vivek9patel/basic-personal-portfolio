@@ -41,6 +41,7 @@ export default function EmailBox() {
     <div className="grid grid-cols-1 gap-y-2">
       <textarea
         id="contact-form"
+        data-cursor-focusable="true"
         ref={subjectRef}
         className="border border-v9-light-grey custom-scroll-bar-x border-opacity-50 bg-v9-primary-black p-4 rounded flex-1 focus:border-v9-yellow active:border-v9-yellow outline-none"
         rows={5}

@@ -27,12 +27,20 @@ export default function LikeCounter() {
     if (likeIncrements - oldLikeIncrements === 0) {
       return;
     }
+    updateLikesInDB();
+  }, [likeIncrements]);
+
+  const updateLikesInDB = () => {
     setUpdateIncrementTimeout(
       setTimeout(() => {
-        incrementLikesTo(likeIncrements - oldLikeIncrements);
+        incrementLikesTo(likeIncrements - oldLikeIncrements).then((res) => {
+          if (res.status === 401) {
+            startAuthInterval();
+          }
+        });
       }, 3000)
     );
-  }, [likeIncrements]);
+  };
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -127,10 +135,7 @@ export default function LikeCounter() {
 
   if (likeCount && status === "authenticated") {
     return (
-      <div
-        className=" cursor-pointer select-none z-30 absolute flex flex-col group transition-all ease-linear duration-75 items-center -bottom-32 -right-12 mw-like-counter "
-        onClick={updateLikes}
-      >
+      <div className=" select-none z-30 absolute flex flex-col transition-all ease-linear duration-75 items-center -bottom-32 -right-12 mw-like-counter ">
         <div
           className={`absolute top-5 -right-8 -translate-y-1/2 transition-transform duration-300 text-white ${
             emojiVisible ? "translate-x-[0px]" : "-translate-x-[50px]"
@@ -139,12 +144,19 @@ export default function LikeCounter() {
           {getEmojiBasedOnIncrements()}
         </div>
         <div
-          className={` bg-white relative rounded-full shadow-md shadow-gray-700 h-10 w-10 flex justify-center items-center overflow-hidden group-hover:shadow `}
+          className={` bg-white group relative rounded-full shadow-md shadow-gray-700 h-10 w-10 flex justify-center items-center overflow-hidden group-hover:shadow `}
+          onClick={updateLikes}
+          id="like-counter-button"
+          data-cursor={true}
         >
           <div
             className={` bg-slate-300 rounded-full flex justify-center items-center h-9 w-9`}
           >
-            <img src={heartImage.src} className="w-full h-full z-50" />
+            <img
+              data-cursor="like-counter-button"
+              src={heartImage.src}
+              className="w-full h-full z-50 rounded-full"
+            />
           </div>
           <div
             className={`absolute w-10 bottom-0 z-40  border-2 rounded-full ${

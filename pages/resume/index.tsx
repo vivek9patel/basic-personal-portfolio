@@ -9,11 +9,14 @@ const Resume: NextPage = () => {
       {/* download resume button */}
       <div className="flex justify-evenly items-center">
         <Button
+          id="full-page-resume-button"
           onClick={() => {
             window.open("/vivek_patel_resume.pdf", "_blank");
           }}
         >
-          <span className="mr-2">View Full Page</span>
+          <span data-cursor="full-page-resume-button" className="mr-2">
+            View Full Page
+          </span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -31,17 +34,13 @@ const Resume: NextPage = () => {
           </svg>
         </Button>
         <a href="/vivek_patel_resume.pdf" download>
-          <button className="bg-v9-yellow text-black font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition ease-linear duration-1000">
+          <button
+            data-cursor={true}
+            className="bg-v9-yellow text-black font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition ease-linear duration-1000"
+          >
             Download
           </button>
         </a>
-        <Button
-          onClick={() => {
-            if (typeof window !== "undefined") window.print();
-          }}
-        >
-          Print Resume
-        </Button>
       </div>
 
       <div className="flex justify-center mt-10">

@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import { badgeImage } from "../helpers/helpers";
+import { Button } from "./CustomHtml";
 
 export type ProjectCardProps = {
   title: string;
@@ -13,6 +15,10 @@ export type ProjectCardProps = {
 };
 
 export default function ProjectCard(props: ProjectCardProps) {
+  const [cardId, setCardId] = useState<string>("");
+  useEffect(() => {
+    setCardId(props.title.replace(/\s/g, "-").toLowerCase());
+  }, [props.title]);
   return (
     <div className=" flex flex-col justify-between py-6 px-6 border border-opacity-10 rounded-md bg-v9-secondary-black transition-colors">
       <div>
@@ -52,16 +58,23 @@ export default function ProjectCard(props: ProjectCardProps) {
             />
           ))}
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center mt-4">
           {props.github_url && (
-            <button
+            <Button
               onClick={() => {
                 window.open(props.github_url, "_blank");
               }}
-              className="text-xs 2xl:text-sm flex mx-1 justify-center items-center font-light bg-v9-secondary-black hover:border-v9-pink px-3 py-1.5 flex-1 border-2 rounded-md border-opacity-5 hover:border-opacity-30 transition-colors mt-4"
+              className="mx-1 flex-1"
+              id={`view-project-button-${cardId}`}
             >
-              <span className="mr-2">View Project</span>
+              <span
+                data-cursor={`view-project-button-${cardId}`}
+                className="mr-2"
+              >
+                View Project
+              </span>
               <svg
+                data-cursor={`view-project-button-${cardId}`}
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 width={"14px"}
@@ -76,17 +89,24 @@ export default function ProjectCard(props: ProjectCardProps) {
                   </g>
                 </g>
               </svg>
-            </button>
+            </Button>
           )}
           {props.demo_url && (
-            <button
+            <Button
               onClick={() => {
                 window.open(props.demo_url, "_blank");
               }}
-              className=" text-xs 2xl:text-sm flex mx-1 justify-center items-center font-light bg-v9-secondary-black px-3 py-1.5 flex-1 border-2 rounded-md border-opacity-5 hover:border-opacity-30 hover:border-v9-pink transition-colors mt-4"
+              className="mx-1 flex-1"
+              id={`demo-project-button-${cardId}`}
             >
-              <span className="mr-2">Demo</span>
+              <span
+                data-cursor={`demo-project-button-${cardId}`}
+                className="mr-2"
+              >
+                Demo
+              </span>
               <svg
+                data-cursor={`demo-project-button-${cardId}`}
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 width={"14px"}
@@ -101,7 +121,7 @@ export default function ProjectCard(props: ProjectCardProps) {
                   </g>
                 </g>
               </svg>
-            </button>
+            </Button>
           )}
         </div>
       </div>

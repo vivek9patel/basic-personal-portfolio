@@ -1,6 +1,6 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
 import MetaTags from "../components/meta/MetaTags";
-
+import { Analytics } from "@vercel/analytics/react";
 class MyDocument extends Document {
   render() {
     return (
@@ -16,6 +16,7 @@ class MyDocument extends Document {
           <Main />
           <NextScript />
         </body>
+        <Analytics />
       </Html>
     );
   }
