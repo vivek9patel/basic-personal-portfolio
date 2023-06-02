@@ -74,7 +74,8 @@ export const badgeImage:
   "codeforces api": "https://img.shields.io/badge/Codeforces-%23F34428.svg?style=flat-square&logo=Codeforces&logoColor=white",
   java: "https://img.shields.io/badge/Java-%23ED8B00.svg?style=flat-square&logo=java&logoColor=white",
   opencv: "https://img.shields.io/badge/OpenCV-%23white.svg?style=flat-square&logo=OpenCV&logoColor=white",
-  tkinter: "https://img.shields.io/badge/tkinter-%23white.svg?style=flat-square&logo=python&logoColor=white"
+  tkinter: "https://img.shields.io/badge/tkinter-%23white.svg?style=flat-square&logo=python&logoColor=white",
+  "material ui": "https://img.shields.io/badge/Material--UI-0081CB?style=flat-square&material-ui&logoColor=white"
 
 }
 

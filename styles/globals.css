@@ -14,8 +14,6 @@
   position: fixed;
   top: 0;
   left: 0;
-  /* -webkit-transition-duration: 300ms;
-  transition-duration: 300ms; */
   -webkit-transition-timing-function: ease-out;
   transition-timing-function: ease-out;
   will-change: width, height, transform, border;

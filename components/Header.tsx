@@ -31,7 +31,7 @@ const Header = ({ currentLink = "", loading = false }) => {
 
   return (
     <div
-      className={`sticky z-50 top-0 left-0 transition-none transform dark:text-white ${
+      className={`sticky z-50 top-0 left-0 transition-none transform dark:text-slate-300  ${
         themeMode === "dark" ? " bg-v9-primary-black" : "bg-white"
       }`}
     >
@@ -45,7 +45,9 @@ const Header = ({ currentLink = "", loading = false }) => {
             false ? "animateFullWidth" : "animateNormalWidth"
           }`}
         >
-          <a className=" font-thin">@vivek9patel</a>
+          <a className=" hover:underline underline-offset-2 hover:text-white font-thin">
+            @vivek9patel
+          </a>
         </div>
         <div
           className={`flex items-center transition-none ${
@@ -55,8 +57,8 @@ const Header = ({ currentLink = "", loading = false }) => {
           <Link href="/">
             <a
               className={`mx-2 ${
-                currentLink === "" ? "text-v9-yellow" : ""
-              } hover:underline underline-offset-2`}
+                currentLink === "" ? "text-v9-yellow" : "hover:text-white"
+              }  underline-offset-2`}
             >
               Home
             </a>
@@ -64,8 +66,10 @@ const Header = ({ currentLink = "", loading = false }) => {
           <Link href="/projects">
             <a
               className={`mx-2 ${
-                currentLink === "projects" ? "text-v9-yellow" : ""
-              } hover:underline underline-offset-2`}
+                currentLink === "projects"
+                  ? "text-v9-yellow"
+                  : "hover:text-white"
+              }  underline-offset-2`}
             >
               Projects
             </a>
@@ -73,8 +77,8 @@ const Header = ({ currentLink = "", loading = false }) => {
           <Link href="/resume">
             <a
               className={`mx-2 ${
-                currentLink === "resume" ? "text-v9-yellow" : ""
-              } hover:underline underline-offset-2`}
+                currentLink === "resume" ? "text-v9-yellow" : "hover:text-white"
+              }  underline-offset-2`}
             >
               Resume
             </a>
@@ -83,7 +87,7 @@ const Header = ({ currentLink = "", loading = false }) => {
             onClick={() => {
               window.open("https://meet.vivek9patel.com/schedule");
             }}
-            className={`mx-2 hover:underline hover:underline-offset-2`}
+            className={`mx-2 hover:underline-offset-2 hover:text-white`}
           >
             <a className="">Let's chat</a>
           </div>
@@ -91,9 +95,9 @@ const Header = ({ currentLink = "", loading = false }) => {
             onClick={() => {
               window.open("https://github.com/vivek9patel");
             }}
-            className={`mx-2 hover:underline hover:underline-offset-2`}
+            className={`mx-2  hover:underline-offset-2`}
           >
-            <a className=" flex items-center justify-center">
+            <a className=" flex items-center justify-center hover:text-white">
               <span>Github</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

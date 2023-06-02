@@ -9,6 +9,7 @@ export default function Cursor() {
     borderRadius: "100%",
     hoveredOver: false,
     hideDot: false,
+    scrolling: false,
   });
 
   useEffect(() => {
@@ -60,17 +61,20 @@ export default function Cursor() {
       borderRadius,
       hoveredOver,
       hideDot: false,
+      scrolling: false,
     });
   };
 
   const cursorScroll = () => {
+    if (cursor.hoveredOver) return;
     setCursor({
       x: 0,
       y: 60,
       width: window.innerWidth + "px",
       height: 4 + "px",
       borderRadius: "0",
-      hoveredOver: true,
+      hoveredOver: false,
+      scrolling: true,
       hideDot: false,
     });
   };
@@ -98,6 +102,7 @@ export default function Cursor() {
         borderRadius,
         hoveredOver: false,
         hideDot: true,
+        scrolling: false,
       });
     } else resetCursor();
   };
@@ -119,7 +124,7 @@ export default function Cursor() {
       <div
         className={`custom-cursor border-2 border-v9-yellow 
         ${
-          cursor.hoveredOver
+          cursor.hoveredOver || cursor.scrolling
             ? "border-opacity-100 cursor-hover-animation duration-300"
             : "border-opacity-40 duration-150"
         }
@@ -131,7 +136,7 @@ export default function Cursor() {
           borderRadius: cursor.borderRadius,
         }}
       />
-      {!(cursor.hoveredOver || cursor.hideDot) && (
+      {!(cursor.hoveredOver || cursor.hideDot || cursor.scrolling) && (
         <div
           className="fixed w-1 h-1 rounded-full bg-v9-yellow z-[999] pointer-events-none"
           style={{
