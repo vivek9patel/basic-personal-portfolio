@@ -32,16 +32,16 @@ const Home: NextPage = () => {
   }, []);
 
   return (
-    <div className="margin-wrapper relative my-20">
+    <div className="relative my-20">
       <div className="mt-20 flex">
         <div className="">
-          <div className="text-5xl font-medium">
+          <div className="text-4xl md:text-5xl font-medium">
             <div className="">Hey, I'm Vivek Patel</div>
             <div className=" mt-4">
               I'm a <span className=" text-v9-yellow">Frontend Developer</span>.
             </div>
           </div>
-          <div className="text-xl text-v9-light-grey font-light mt-4 ">
+          <div className="text-lg md:text-xl text-v9-light-grey font-light mt-4 ">
             Bringing your vision to life, one pixel at a time. 🎨
           </div>
           <div className=" text-v9-light-grey font-light space-y-1 mt-8">
@@ -89,11 +89,11 @@ const Home: NextPage = () => {
           align the goals of companies with the expectations of users.
         </div>
         <Hr width="100%" />
-        <div className="flex justify-between">
-          <div className=" text-5xl flex items-center justify-center Arialic_Hollow text-v9-light-grey font-light">
+        <div className="flex justify-between flex-col lg:flex-row">
+          <div className=" text-4xl xl:text-5xl mb-6 lg:mb-0 flex items-center justify-center Arialic_Hollow text-v9-light-grey font-light">
             May '23 - Present
           </div>
-          <div className="flex">
+          <div className="flex justify-center">
             <img
               src={uopxLogo.src}
               alt="University of Phoenix Logo"
@@ -116,11 +116,11 @@ const Home: NextPage = () => {
           </div>
         </div>
         <Hr width="100%" />
-        <div className="flex justify-between">
-          <div className=" text-5xl flex items-center justify-center Arialic_Hollow text-v9-light-grey font-light">
+        <div className="flex justify-between  flex-col lg:flex-row">
+          <div className="text-4xl xl:text-5xl  mb-6 lg:mb-0  flex items-center justify-center Arialic_Hollow text-v9-light-grey font-light">
             Jan '22 - Jun '22
           </div>
-          <div className="flex">
+          <div className="flex justify-center">
             <img
               src={hackerrankLogo.src}
               alt="Hackerrank Logo"
@@ -145,11 +145,11 @@ const Home: NextPage = () => {
           </div>
         </div>
         <Hr width="100%" />
-        <div className="flex justify-between">
-          <div className=" text-5xl flex items-center justify-center Arialic_Hollow text-v9-light-grey font-light">
+        <div className="flex justify-between  flex-col lg:flex-row">
+          <div className="text-4xl xl:text-5xl  mb-6 lg:mb-0   flex items-center justify-center Arialic_Hollow text-v9-light-grey font-light">
             Apr '21 - Jun '21
           </div>
-          <div className="flex">
+          <div className="flex justify-center">
             <img
               src={hmsLogo.src}
               alt="100ms Logo"
@@ -174,11 +174,11 @@ const Home: NextPage = () => {
           </div>
         </div>
         <Hr width="100%" />
-        <div className="flex justify-between">
-          <div className=" text-5xl flex items-center justify-center Arialic_Hollow text-v9-light-grey font-light">
+        <div className="flex justify-between  flex-col lg:flex-row">
+          <div className="text-4xl xl:text-5xl  mb-6 lg:mb-0   flex items-center justify-center Arialic_Hollow text-v9-light-grey font-light">
             Jun '20 - Mar '21
           </div>
-          <div className="flex">
+          <div className="flex justify-center">
             <img
               src={webmateLogo.src}
               alt="Webmate's Logo"

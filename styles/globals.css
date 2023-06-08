@@ -106,84 +106,12 @@ button {
 }
 
 /* Margin Wrapper for Page Content */
-.margin-wrapper {
-  margin-left: 20px;
-  margin-right: 20px;
-}
 
-@media screen and (min-width: 400px) {
-  .margin-wrapper {
-    margin-left: 50px;
-    margin-right: 50px;
-  }
-}
-
-@media screen and (min-width: 768px) {
-  .margin-wrapper {
-    margin-left: 100px;
-    margin-right: 100px;
-  }
-}
-
-@media screen and (min-width: 1000px) {
-  .margin-wrapper {
-    margin-left: 200px;
-    margin-right: 200px;
-  }
-}
-
-@media screen and (min-width: 1500px) {
-  .margin-wrapper {
-    margin-left: 300px;
-    margin-right: 300px;
-  }
-}
-
-@media screen and (min-width: 2000px) {
-  .margin-wrapper {
-    margin-left: 500px;
-    margin-right: 500px;
-  }
-}
 
 /* Margin Wrapper for Like Counter Button */
 .mw-like-counter {
-  display: none;
-}
-
-@media screen and (min-width: 400px) {
-  .mw-like-counter {
-    display: flex;
-    margin-right: 50px;
-  }
-}
-
-@media screen and (min-width: 768px) {
-  .mw-like-counter {
-    display: flex;
-    margin-right: 100px;
-  }
-}
-
-@media screen and (min-width: 1000px) {
-  .mw-like-counter {
-    display: flex;
-    margin-right: 200px;
-  }
-}
-
-@media screen and (min-width: 1500px) {
-  .mw-like-counter {
-    display: flex;
-    margin-right: 260px;
-  }
-}
-
-@media screen and (min-width: 2000px) {
-  .mw-like-counter {
-    display: flex;
-    margin-right: 460px;
-  }
+  display: flex;
+  margin-right: 10px;
 }
 
 /* Theme toggle button style */

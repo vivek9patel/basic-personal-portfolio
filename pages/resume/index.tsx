@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 const Resume: NextPage = () => {
   const clientRouter = useRouter();
   return (
-    <div className="margin-wrapper my-10">
+    <div className="my-10">
       {/* download resume button */}
       <div className="flex justify-evenly items-center">
         <Button

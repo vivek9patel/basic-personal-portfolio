@@ -52,7 +52,7 @@ const Projects: NextPage<Props> = () => {
   };
 
   return (
-    <div className="margin-wrapper my-10">
+    <div className="my-10">
       <div className="flex items-center text-sm 2xl:text-base">
         <div>
           <span>Filter by: </span>

@@ -122,7 +122,7 @@ export default function Cursor() {
   return (
     <>
       <div
-        className={`custom-cursor border-2 border-v9-yellow 
+        className={`custom-cursor border-2 border-v9-yellow hidden md:flex 
         ${
           cursor.hoveredOver || cursor.scrolling
             ? "border-opacity-100 cursor-hover-animation duration-300"
@@ -138,7 +138,7 @@ export default function Cursor() {
       />
       {!(cursor.hoveredOver || cursor.hideDot || cursor.scrolling) && (
         <div
-          className="fixed w-1 h-1 rounded-full bg-v9-yellow z-[999] pointer-events-none"
+          className="fixed w-1 h-1 rounded-full bg-v9-yellow z-[999] pointer-events-none  hidden md:flex "
           style={{
             transform: `translate3d(${cursor.x + 14}px, ${cursor.y + 14}px, 0)`,
           }}
