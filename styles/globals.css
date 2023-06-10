@@ -57,6 +57,91 @@ button {
   cursor: none;
 }
 
+.btnWithSlider {
+  --button-text-color: white;
+  --button-text-color-hover: white;
+  --border-color: #7D8082;
+  --button-background-color: #ece8e1;
+  --highlight-color: #E95420;
+  
+  position: relative;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 14px;
+  transition: all .15s ease;
+}
+
+.btnWithSlider::before,
+.btnWithSlider::after {
+  content: '';
+  display: block;
+  position: absolute;
+  right: 0; left: 0;
+  height: calc(50% - 5px);
+  border: 1px solid var(--border-color);
+  transition: all .15s ease;
+}
+
+.btnWithSlider::before {
+  top: 0;
+  border-bottom-width: 0;
+}
+
+.btnWithSlider::after {
+  bottom: 0;
+  border-top-width: 0;
+}
+
+.btnWithSlider:active,
+.btnWithSlider:focus {
+  outline: none;
+}
+
+.btnWithSlider:active::before,
+.btnWithSlider:active::after {
+  right: 3px;
+  left: 3px;
+}
+
+.btnWithSlider:active::before {
+  top: 3px;
+}
+
+.btnWithSlider:active::after {
+  bottom: 3px;
+}
+
+.sliderWrapper {
+  position: relative;
+  display: block;
+  padding: 10px 30px;
+  overflow: hidden;
+  box-shadow: inset 0px 0px 0px 1px transparent;
+}
+
+.btnSlider {
+  display: block;
+  position: absolute;
+  top: 0; bottom: -1px; left: -8px;
+  width: 0;
+  background-color: var(--highlight-color);
+  transform: skew(-15deg);
+  transition: all 1s ease;
+}
+
+.sliderContent {
+  position: relative;
+}
+
+.btnWithSlider:hover {
+  color: white;
+}
+
+.btnWithSlider:hover .btnSlider {
+  width: calc(100% + 15px);
+}
+
 .Arialic_Hollow {
   font-family: "Arialic Hollow";
 }
@@ -103,15 +188,6 @@ button {
 .custom-scroll-bar-x::-webkit-scrollbar-thumb {
   background-color: gray;
   border-radius: 1px;
-}
-
-/* Margin Wrapper for Page Content */
-
-
-/* Margin Wrapper for Like Counter Button */
-.mw-like-counter {
-  display: flex;
-  margin-right: 10px;
 }
 
 /* Theme toggle button style */

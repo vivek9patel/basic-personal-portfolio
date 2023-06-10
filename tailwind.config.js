@@ -22,6 +22,7 @@ module.exports = {
         "v9-blue": "#4A97FE",
         "v9-primary-black": "#181818",
         "v9-secondary-black": "#1E1E1F",
+        "ubuntu-orange": "#E95420",
       },
       typography: ({ theme }) => ({
         dark: {

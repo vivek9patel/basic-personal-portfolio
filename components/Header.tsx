@@ -36,6 +36,7 @@ const Header = ({ currentLink = "", loading = false }) => {
         themeMode === "dark" ? " bg-v9-primary-black" : "bg-white"
       }`}
     >
+      <LikeCounter />
       <div className="flex justify-center">
         <div className=" w-full px-10 sm:w-[600px] md:w-[700px] lg:w-[800px] xl:w-[1000px] 2xl:w-[1200px] py-4 flex justify-between relative">
           <div
