@@ -37,11 +37,11 @@ const Header = () => {
       <div className="mx-20 px-6 py-4 flex justify-between">
         <Link href="/">
           <div
-            className={`font-semibold text-xl no-underline text-center w-20 transition ease-linear duration-1000 ${
+            className={`font-semibold text-xl no-underline text-center w-24 transition ease-linear duration-1000 ${
               meetActivate ? "animateFullWidth" : "animateNormalWidth"
             }`}
           >
-            <a className="cursor-pointer">V9 meet</a>
+            <a className="cursor-pointer whitespace-nowrap">V9 meet</a>
           </div>
         </Link>
         <div className="flex items-center">
