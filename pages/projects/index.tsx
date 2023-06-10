@@ -52,9 +52,9 @@ const Projects: NextPage<Props> = () => {
   };
 
   return (
-    <div className="my-10">
-      <div className="flex items-center text-sm 2xl:text-base">
-        <div>
+    <div className="my-4 sm:my-10">
+      <div className="flex sm:flex-row w-full sm:w-auto flex-col items-center text-sm 2xl:text-base">
+        <div className="flex-1">
           <span>Filter by: </span>
           <select
             className=" bg-v9-secondary-black py-1 px-2 ml-2 rounded border-2 border-opacity-5 outline-none text-v9-light-grey focus:border-v9-yellow"
@@ -69,7 +69,7 @@ const Projects: NextPage<Props> = () => {
             <option value={"priority"}>vivek's favorite</option>
           </select>
         </div>
-        <div className="ml-4 flex-1 flex items-center">
+        <div className="sm:ml-4 ml-0 mt-4 sm:mt-0 w-full sm:w-auto sm:flex-1 flex items-center">
           <span>Search by: </span>
           <input
             className=" border border-v9-light-grey border-opacity-10 bg-v9-primary-black py-1 px-2 mx-2 rounded flex-1 focus:border-v9-yellow active:border-v9-yellow outline-none"

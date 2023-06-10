@@ -122,7 +122,7 @@ export default function Cursor() {
   return (
     <>
       <div
-        className={`custom-cursor border-2 border-v9-yellow hidden md:flex 
+        className={`custom-cursor border-2 border-v9-yellow hidden lg:flex 
         ${
           cursor.hoveredOver || cursor.scrolling
             ? "border-opacity-100 cursor-hover-animation duration-300"

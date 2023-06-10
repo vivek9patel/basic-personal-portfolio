@@ -41,7 +41,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Cursor />
           <Header loading={loading} currentLink={currentLink} />
           <div className="w-full flex justify-center">
-            <div className=" mx-4 sm:w-[600px] md:w-[700px] lg:w-[800px] xl:w-[1000px] 2xl:w-[1200px]">
+            <div className=" px-4 w-full sm:w-[600px] md:w-[700px] lg:w-[800px] xl:w-[1000px] 2xl:w-[1200px]">
               <Component {...pageProps} />
             </div>
           </div>

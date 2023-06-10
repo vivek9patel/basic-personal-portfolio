@@ -32,13 +32,14 @@ const Home: NextPage = () => {
   }, []);
 
   return (
-    <div className="relative my-20">
-      <div className="mt-20 flex">
+    <div className="relative my-10 sm:my-20">
+      <div className="mt-10 sm:mt-20 flex">
         <div className="">
           <div className="text-4xl md:text-5xl font-medium">
             <div className="">Hey, I'm Vivek Patel</div>
             <div className=" mt-4">
-              I'm a <span className=" text-v9-yellow">Frontend Developer</span>.
+              <span className="hidden sm:inline-block mr-4">I'm a </span>
+              <span className=" text-v9-yellow">Frontend Developer</span>.
             </div>
           </div>
           <div className="text-lg md:text-xl text-v9-light-grey font-light mt-4 ">
@@ -70,9 +71,9 @@ const Home: NextPage = () => {
       </div>
 
       {/* Experience Section */}
-      <div className="mt-32">
+      <div className=" mt-20 sm:mt-32">
         <div className="flex justify-between mb-6 items-center">
-          <div className="text-5xl font-medium">Experience</div>
+          <div className="text-4xl sm:text-5xl font-medium">Experience</div>
           <Button
             onClick={() => {
               clientRouter.push("/resume");
@@ -97,11 +98,11 @@ const Home: NextPage = () => {
             <img
               src={uopxLogo.src}
               alt="University of Phoenix Logo"
-              className="h-12 mr-4 mt-1"
+              className="h-12 mr-4 mt-1 hidden sm:block"
             ></img>
-            <div className="flex flex-col justify-between w-[500px]">
+            <div className="flex flex-col justify-between sm:w-[500px]">
               <div className=" text-v9-light-grey font-light">Internship</div>
-              <div className="text-xl">
+              <div className="text-lg sm:text-xl">
                 Software Engineer at{" "}
                 <Anchor href="https://www.google.com/search?q=university+of+phoenix">
                   University of Phoenix
@@ -124,13 +125,13 @@ const Home: NextPage = () => {
             <img
               src={hackerrankLogo.src}
               alt="Hackerrank Logo"
-              className="h-14 mr-2 mt-1"
+              className="h-14 mr-2 mt-1 hidden sm:block"
             ></img>
-            <div className="flex flex-col justify-between w-[500px]">
+            <div className="flex flex-col justify-between sm:w-[500px]">
               <div className=" text-v9-light-grey font-light">
                 Internship - 6 months
               </div>
-              <div className="text-xl">
+              <div className="text-lg sm:text-xl">
                 Software Engineer at{" "}
                 <Anchor href="https://www.google.com/search?q=hackerrank">
                   HackerRank
@@ -153,13 +154,13 @@ const Home: NextPage = () => {
             <img
               src={hmsLogo.src}
               alt="100ms Logo"
-              className="h-10 mr-4 mt-1"
+              className="h-10 mr-4 mt-1 hidden sm:block"
             ></img>
-            <div className="flex flex-col justify-between w-[500px]">
+            <div className="flex flex-col justify-between sm:w-[500px]">
               <div className=" text-v9-light-grey font-light">
                 Internship - 3 months
               </div>
-              <div className="text-xl">
+              <div className="text-lg sm:text-xl">
                 Software Engineer at{" "}
                 <Anchor href="https://www.google.com/search?q=100ms">
                   100ms
@@ -182,13 +183,13 @@ const Home: NextPage = () => {
             <img
               src={webmateLogo.src}
               alt="Webmate's Logo"
-              className="h-10 mr-4 mt-1"
+              className="h-10 mr-4 mt-1 hidden sm:block"
             ></img>
-            <div className="flex flex-col justify-between w-[500px]">
+            <div className="flex flex-col justify-between sm:w-[500px]">
               <div className=" text-v9-light-grey font-light">
                 Part-time - 9 months
               </div>
-              <div className="text-xl">
+              <div className="text-lg sm:text-xl">
                 Co-founder at{" "}
                 <Anchor href="https://thewebmate.in/">
                   Webmate Web Services
@@ -215,9 +216,9 @@ const Home: NextPage = () => {
       </div>
 
       {/* Projects Section */}
-      <div className="mt-32">
+      <div className="mt-20 sm:mt-32">
         <div className="flex justify-between mb-10 items-center">
-          <div className="text-5xl font-medium">Projects</div>
+          <div className="text-4xl sm:text-5xl font-medium">Projects</div>
           <Button
             onClick={() => {
               clientRouter.push("/projects");
@@ -234,8 +235,8 @@ const Home: NextPage = () => {
       </div>
 
       {/* Contact email section */}
-      <div className="mt-32">
-        <div className="text-5xl font-medium">Contact Me</div>
+      <div className="mt-20 sm:mt-32">
+        <div className="text-4xl sm:text-5xl font-medium">Contact Me</div>
         <div className="font-light text-v9-light-grey mt-4 mb-10">
           I'm always open to new opportunities and connections. Feel free to
           reach out to me at{" "}

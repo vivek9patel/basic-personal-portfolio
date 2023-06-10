@@ -115,7 +115,7 @@ const Header = ({ currentLink = "", loading = false }) => {
           >
             <Link href="/">
               <a
-                className={`mx-2 w-full sm:w-auto ${
+                className={`mx-2 w-full mb-2 sm:mb-0 sm:w-auto ${
                   currentLink === "" ? "text-v9-yellow" : "hover:text-white"
                 }  underline-offset-2`}
               >
@@ -124,7 +124,7 @@ const Header = ({ currentLink = "", loading = false }) => {
             </Link>
             <Link href="/projects">
               <a
-                className={`mx-2 w-full sm:w-auto ${
+                className={`mx-2 w-full sm:w-auto  mb-2 sm:mb-0 ${
                   currentLink === "projects"
                     ? "text-v9-yellow"
                     : "hover:text-white"
@@ -135,7 +135,7 @@ const Header = ({ currentLink = "", loading = false }) => {
             </Link>
             <Link href="/resume">
               <a
-                className={`mx-2 w-full sm:w-auto ${
+                className={`mx-2 w-full sm:w-auto  mb-2 sm:mb-0 ${
                   currentLink === "resume"
                     ? "text-v9-yellow"
                     : "hover:text-white"
@@ -148,7 +148,7 @@ const Header = ({ currentLink = "", loading = false }) => {
               onClick={() => {
                 window.open("https://meet.vivek9patel.com/schedule");
               }}
-              className={`mx-2 w-full sm:w-auto hover:underline-offset-2 hover:text-white`}
+              className={`mx-2 w-full sm:w-auto  mb-2 sm:m-0 hover:underline-offset-2 hover:text-white`}
             >
               <a className="">Let's chat</a>
             </div>
@@ -156,7 +156,7 @@ const Header = ({ currentLink = "", loading = false }) => {
               onClick={() => {
                 window.open("https://github.com/vivek9patel");
               }}
-              className={`mx-2 w-full sm:w-auto hover:underline-offset-2`}
+              className={`mx-2 w-full sm:w-auto  mb-2 sm:mb-0 hover:underline-offset-2`}
             >
               <a className=" flex  w-full sm:w-auto items-center justify-center hover:text-white">
                 <span className="flex-1">Github</span>
