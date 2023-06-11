@@ -125,7 +125,7 @@ const Header = ({ currentLink = "", loading = false }) => {
             </Link>
             <Link href="/projects">
               <a
-                className={`mx-2 w-full sm:w-auto  mb-2 sm:mb-0 ${
+                className={`mx-2 w-full sm:w-auto mb-2 sm:mb-0 ${
                   currentLink === "projects"
                     ? "text-v9-yellow"
                     : "hover:text-white"
@@ -147,9 +147,9 @@ const Header = ({ currentLink = "", loading = false }) => {
             </Link>
             <div
               onClick={() => {
-                window.open("https://meet.vivek9patel.com/schedule");
+                window.open("https://meet.vivek9patel.com/");
               }}
-              className={`mx-2 w-full sm:w-auto  mb-2 sm:m-0 hover:underline-offset-2 hover:text-white`}
+              className={`mx-4 w-full sm:w-auto  mb-2 sm:m-0 hover:underline-offset-2 hover:text-white`}
             >
               <a className="">Let's chat</a>
             </div>
