@@ -1,9 +1,16 @@
 import type { NextPage } from "next";
 import { Button } from "../../components/CustomHtml";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
+import ReactGA from "react-ga";
 
 const Resume: NextPage = () => {
   const clientRouter = useRouter();
+  useEffect(() => {
+    // google analytics
+    ReactGA.pageview("/resume");
+  }, []);
+
   return (
     <div className="my-10">
       {/* download resume button */}

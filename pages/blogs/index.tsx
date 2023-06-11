@@ -5,6 +5,8 @@ import matter from "gray-matter";
 import BlogPost from "../../components/BlogPost";
 import type FrontMatter from "../../interfaces/FrontMatter";
 import Image from "next/image";
+import ReactGA from "react-ga";
+import { useEffect } from "react";
 
 type Props = {
   blogList: Array<{
@@ -14,6 +16,10 @@ type Props = {
 };
 
 const Blogs: NextPage<Props> = ({ blogList }) => {
+  useEffect(() => {
+    // google analytics
+    ReactGA.pageview("/blogs");
+  }, []);
   return (
     <>
       <div className="mx-20 px-6 py-6">

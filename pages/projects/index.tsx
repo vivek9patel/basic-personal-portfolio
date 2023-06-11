@@ -4,7 +4,8 @@ import { ProjectCardProps } from "../../components/ProjectCard";
 import { useContext, useEffect, useState } from "react";
 import { ProjectListContext } from "../../context";
 import { fetchProjectsStar } from "../../helpers/helpers";
-import { Button, Hr } from "../../components/CustomHtml";
+import { Hr } from "../../components/CustomHtml";
+import ReactGA from "react-ga";
 
 type Props = {
   projectsList: Array<ProjectCardProps>;
@@ -19,6 +20,8 @@ const Projects: NextPage<Props> = () => {
   >([]);
   const [filterBy, setFilterBy] = useState<TypeFilterBy>("stars");
   useEffect(() => {
+    // google analytics
+    ReactGA.pageview("/projects");
     (async () => {
       const updatedProjectsListWithStars = await fetchProjectsStar();
       setProjectList([...updatedProjectsListWithStars]);
