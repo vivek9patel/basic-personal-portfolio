@@ -14,6 +14,9 @@ const VideoCall = () => {
             select any time and date as per your availibility and we will meet
             at this website for a fun conversation!
           </div>
+          <div className=" dark:text-v9-light-grey font-thin mt-8 text-v9-dark-grey">
+            Sorry about the Lazy design : )
+          </div>
         </div>
       </div>
       <div className="p-6 flex flex-col justify-center mx-2">
