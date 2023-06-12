@@ -12,7 +12,7 @@ import hackerrankLogo from "../images/HackerRank_logo.png";
 import hmsLogo from "../images/100ms_logo.png";
 import webmateLogo from "../images/webmate_logo.png";
 import EmailBox from "../components/EmailBox";
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
 
 const TRACKING_ID = process.env.NEXT_PUBLIC_TRACKING_ID;
 if (TRACKING_ID) ReactGA.initialize(TRACKING_ID);
@@ -30,7 +30,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     // google analytics
-    ReactGA.pageview("/");
+    ReactGA.send({ hitType: "pageview", page: "/", title: "Home" });
     (async () => {
       const updatedProjectsListWithStars = await fetchProjectsStar();
       setProjectList([...updatedProjectsListWithStars]);

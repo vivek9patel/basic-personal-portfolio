@@ -1,14 +1,12 @@
 import type { NextPage } from "next";
 import { Button } from "../../components/CustomHtml";
-import { useRouter } from "next/router";
 import { useEffect } from "react";
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
 
 const Resume: NextPage = () => {
-  const clientRouter = useRouter();
   useEffect(() => {
     // google analytics
-    ReactGA.pageview("/resume");
+    ReactGA.send({ hitType: "pageview", page: "/resume", title: "Resume" });
   }, []);
 
   return (
@@ -18,6 +16,10 @@ const Resume: NextPage = () => {
         <Button
           id="full-page-resume-button"
           onClick={() => {
+            ReactGA.event({
+              category: "Button.Click",
+              action: "Full Screen Resume",
+            });
             window.open("/vivek_patel_resume.pdf", "_blank");
           }}
         >
@@ -40,7 +42,16 @@ const Resume: NextPage = () => {
             </g>
           </svg>
         </Button>
-        <a href="/vivek_patel_resume.pdf" download>
+        <a
+          href="/vivek_patel_resume.pdf"
+          onClick={() => {
+            ReactGA.event({
+              category: "Button.Click",
+              action: "Download Resume",
+            });
+          }}
+          download
+        >
           <button
             data-cursor={true}
             className="bg-v9-yellow text-black font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition ease-linear duration-1000"

@@ -5,7 +5,7 @@ import matter from "gray-matter";
 import BlogPost from "../../components/BlogPost";
 import type FrontMatter from "../../interfaces/FrontMatter";
 import Image from "next/image";
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
 import { useEffect } from "react";
 
 type Props = {
@@ -18,7 +18,7 @@ type Props = {
 const Blogs: NextPage<Props> = ({ blogList }) => {
   useEffect(() => {
     // google analytics
-    ReactGA.pageview("/blogs");
+    ReactGA.send({ hitType: "pageview", page: "/blogs", title: "Blogs page" });
   }, []);
   return (
     <>

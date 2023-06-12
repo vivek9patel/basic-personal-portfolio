@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { ProjectListContext } from "../../context";
 import { fetchProjectsStar } from "../../helpers/helpers";
 import { Hr } from "../../components/CustomHtml";
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
 
 type Props = {
   projectsList: Array<ProjectCardProps>;
@@ -21,7 +21,8 @@ const Projects: NextPage<Props> = () => {
   const [filterBy, setFilterBy] = useState<TypeFilterBy>("stars");
   useEffect(() => {
     // google analytics
-    ReactGA.pageview("/projects");
+    ReactGA.send({ hitType: "pageview", page: "/projects", title: "Projects" });
+
     (async () => {
       const updatedProjectsListWithStars = await fetchProjectsStar();
       setProjectList([...updatedProjectsListWithStars]);
