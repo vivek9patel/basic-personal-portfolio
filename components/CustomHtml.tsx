@@ -6,7 +6,7 @@ const Anchor = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => {
       {...props}
       data-cursor={true} // This is for custom cursor
       target="_blank"
-      className={`text-v9-pink whitespace-nowrap underline hover:text-v9-yellow p-1 hover:no-underline ${
+      className={`text-v9-pink whitespace-nowrap underline underline-offset-2 hover:text-v9-yellow p-1 hover:no-underline ${
         props.className ? props.className : ""
       }`}
     ></a>

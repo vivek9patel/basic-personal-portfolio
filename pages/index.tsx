@@ -69,7 +69,8 @@ const Home: NextPage = () => {
               >
                 Tempe, AZ
               </Anchor>
-              , with 2 years of experience working in various technologies. I
+              , with 2 years of experience working with{" "}
+              <span className=" font-bold">Javascript, React, CSS</span>. I
               specialize in building{" "}
               <Anchor
                 href="https://vivek9patel.github.io/"
@@ -85,7 +86,7 @@ const Home: NextPage = () => {
               </Anchor>
               , applications, and everything in between. Currently I am in my
               final year of completing Master's degree in Computer Science from
-              ASU.
+              ASU, So I'm looking for Software Engineering/ New Grad jobs!
             </p>
           </div>
         </div>

@@ -161,7 +161,7 @@ const Header = ({ currentLink = "", loading = false }) => {
               }}
               className={`mx-4 w-full sm:w-auto  mb-2 sm:m-0 hover:underline-offset-2 hover:text-white`}
             >
-              <a className="">Let's chat</a>
+              <a className=" whitespace-nowrap">Let's chat</a>
             </div>
             <div
               onClick={() => {
@@ -191,6 +191,19 @@ const Header = ({ currentLink = "", loading = false }) => {
                   </g>
                 </svg>
               </a>
+            </div>
+            <div
+              onClick={() => {
+                ReactGA.event({
+                  category: "Button.Click",
+                  action: "Hire Me",
+                });
+                window.open("mailto:vivek.p9737@gmail.com");
+              }}
+              data-cursor={true}
+              className="mb-2 sm:mb-0 whitespace-nowrap text-center text-v9-green border border-v9-green rounded  w-full sm:w-auto px-1 text-sm hover:text-v9-yellow"
+            >
+              Hire me!
             </div>
             {/* <input
             onChange={toggleThemeMode}
