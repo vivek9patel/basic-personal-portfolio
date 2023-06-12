@@ -7,7 +7,7 @@ const VideoCall = () => {
       <div className="flex-1 flex justify-center text-center items-center">
         <div>
           <div className="text-2xl font-bold">
-            Discover New Connection by Scheduling Fun Meet!
+            Discover New Connection by Scheduling a Meet!
           </div>
           <div className=" dark:text-v9-light-grey mt-4 text-v9-dark-grey">
             Schedule a virtual metting by clicking the button below. You can
@@ -25,7 +25,7 @@ const VideoCall = () => {
             className={` font-light whitespace-nowrap flex justify-center items-center dark:bg-v9-secondary-black px-3 py-1 border-2 rounded-md dark:border-opacity-5 border-opacity-0 bg-blue-600 text-white transition-colors hover:border-v9-pink hover:border-opacity-30`}
             type="button"
           >
-            Schedule a fun chat with Vivek
+            Schedule 30 mins with Vivek
           </button>
         </Link>
         <Link href={"/join"}>
