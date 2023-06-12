@@ -60,12 +60,27 @@ const Home: NextPage = () => {
               <Anchor
                 href="https://www.google.com/maps/place/Tempe,+AZ/@33.3919224,-111.9281011,12z/"
                 target={"_blank"}
+                onClick={() => {
+                  ReactGA.event({
+                    category: "Link.Click",
+                    action: "Tempe Location",
+                  });
+                }}
               >
                 Tempe, AZ
               </Anchor>
               , with 2 years of experience working in various technologies. I
               specialize in building{" "}
-              <Anchor href="https://vivek9patel.github.io/" target={"_blank"}>
+              <Anchor
+                href="https://vivek9patel.github.io/"
+                onClick={() => {
+                  ReactGA.event({
+                    category: "Link.Click",
+                    action: "Exceptional Link",
+                  });
+                }}
+                target={"_blank"}
+              >
                 exceptional websites
               </Anchor>
               , applications, and everything in between. Currently I am in my
@@ -113,7 +128,15 @@ const Home: NextPage = () => {
               <div className=" text-v9-light-grey font-light">Internship</div>
               <div className="text-lg sm:text-xl">
                 Software Engineer at{" "}
-                <Anchor href="https://www.google.com/search?q=university+of+phoenix">
+                <Anchor
+                  onClick={() => {
+                    ReactGA.event({
+                      category: "Link.Click",
+                      action: "UOPX Link",
+                    });
+                  }}
+                  href="https://www.google.com/search?q=university+of+phoenix"
+                >
                   University of Phoenix
                 </Anchor>
               </div>
@@ -142,7 +165,15 @@ const Home: NextPage = () => {
               </div>
               <div className="text-lg sm:text-xl">
                 Software Engineer at{" "}
-                <Anchor href="https://www.google.com/search?q=hackerrank">
+                <Anchor
+                  onClick={() => {
+                    ReactGA.event({
+                      category: "Link.Click",
+                      action: "Hackerrank Link",
+                    });
+                  }}
+                  href="https://www.google.com/search?q=hackerrank"
+                >
                   HackerRank
                 </Anchor>
               </div>
@@ -171,7 +202,15 @@ const Home: NextPage = () => {
               </div>
               <div className="text-lg sm:text-xl">
                 Software Engineer at{" "}
-                <Anchor href="https://www.google.com/search?q=100ms">
+                <Anchor
+                  onClick={() => {
+                    ReactGA.event({
+                      category: "Link.Click",
+                      action: "100ms Link",
+                    });
+                  }}
+                  href="https://www.google.com/search?q=100ms"
+                >
                   100ms
                 </Anchor>
               </div>
@@ -200,7 +239,15 @@ const Home: NextPage = () => {
               </div>
               <div className="text-lg sm:text-xl">
                 Co-founder at{" "}
-                <Anchor href="https://thewebmate.in/">
+                <Anchor
+                  onClick={() => {
+                    ReactGA.event({
+                      category: "Link.Click",
+                      action: "Webmate Link",
+                    });
+                  }}
+                  href="https://thewebmate.in/"
+                >
                   Webmate Web Services
                 </Anchor>
               </div>
@@ -215,6 +262,10 @@ const Home: NextPage = () => {
         <Hr width="100%" />
         <div
           onClick={() => {
+            ReactGA.event({
+              category: "Link.Click",
+              action: "Recommendations Link",
+            });
             window.open("https://www.linkedin.com/in/vivek9patel/", "_blank");
           }}
           className=" text-v9-light-grey underline hover:text-white"
@@ -249,7 +300,15 @@ const Home: NextPage = () => {
         <div className="font-light text-v9-light-grey mt-4 mb-10">
           I'm always open to new opportunities and connections. Feel free to
           reach out to me at{" "}
-          <Anchor href="mailto:vivek.p9737@gmail.com">
+          <Anchor
+            onClick={() => {
+              ReactGA.event({
+                category: "Link.Click",
+                action: "MailTo Link",
+              });
+            }}
+            href="mailto:vivek.p9737@gmail.com"
+          >
             vivek.p9737@gmail.com
           </Anchor>
           !

@@ -64,7 +64,11 @@ const Projects: NextPage<Props> = () => {
             className=" bg-v9-secondary-black py-1 px-2 ml-2 rounded border-2 border-opacity-5 outline-none text-v9-light-grey focus:border-v9-yellow"
             value={filterBy}
             onChange={(e) => {
-              console.log(e.target.value);
+              ReactGA.event({
+                category: "Button.Click",
+                action: "Filter Projects",
+                label: e.target.value,
+              });
               setFilterBy(e.target.value as TypeFilterBy);
             }}
           >

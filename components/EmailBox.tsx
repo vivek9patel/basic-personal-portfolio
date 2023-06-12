@@ -1,6 +1,7 @@
 import { createRef, useEffect, useState } from "react";
 import { Button } from "./CustomHtml";
 import emailjs from "@emailjs/browser";
+import ReactGA from "react-ga4";
 
 export default function EmailBox() {
   const [loading, setLoading] = useState(false);
@@ -28,6 +29,10 @@ export default function EmailBox() {
       // @ts-ignore
       .send(serviceID, templateID, templateParams)
       .then(() => {
+        ReactGA.event({
+          category: "Button.Click",
+          action: "Emailjs Trigger",
+        });
         if (subjectRef.current) subjectRef.current.value = "";
         setLoading(false);
       })

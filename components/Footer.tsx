@@ -2,6 +2,7 @@ import { Anchor } from "./CustomHtml";
 import twitterLogo from "../images/twitter-logo.svg";
 import githubLogo from "../images/github-logo.svg";
 import linkedinLogo from "../images/linkedin-logo.svg";
+import ReactGA from "react-ga4";
 
 function Footer(): JSX.Element {
   return (
@@ -10,6 +11,10 @@ function Footer(): JSX.Element {
         <button
           onClick={() => {
             window.open("https://ubuntu.vivek9patel.com");
+            ReactGA.event({
+              category: "Button.Click",
+              action: "Boot Ubuntu",
+            });
           }}
           className="btnWithSlider mx-2 sm:mx-10 flex-1 text-center btn--light"
         >

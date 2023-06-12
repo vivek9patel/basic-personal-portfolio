@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { badgeImage } from "../helpers/helpers";
 import { Button } from "./CustomHtml";
+import ReactGA from "react-ga4";
 
 export type ProjectCardProps = {
   title: string;
@@ -62,6 +63,11 @@ export default function ProjectCard(props: ProjectCardProps) {
           {props.github_url && (
             <Button
               onClick={() => {
+                ReactGA.event({
+                  category: "Button.Click",
+                  action: "Project Github URL",
+                  label: props.github_url,
+                });
                 window.open(props.github_url, "_blank");
               }}
               className="mx-1 flex-1"
@@ -94,6 +100,11 @@ export default function ProjectCard(props: ProjectCardProps) {
           {props.demo_url && (
             <Button
               onClick={() => {
+                ReactGA.event({
+                  category: "Button.Click",
+                  action: "Project Demo URL",
+                  label: props.demo_url,
+                });
                 window.open(props.demo_url, "_blank");
               }}
               className="mx-1 flex-1"

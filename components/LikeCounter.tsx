@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchLikes, incrementLikesTo, formatNumber } from "../helpers/helpers";
 import heartImage from "../images/heart.svg";
 import { useSession, signIn, signOut } from "next-auth/react";
+import ReactGA from "react-ga4";
 
 export default function LikeCounter() {
   const { status } = useSession();
@@ -96,6 +97,10 @@ export default function LikeCounter() {
     }
     changeLikeIncrements(likeIncrements + 1);
     setLikeCount(likeCount + 1);
+    ReactGA.event({
+      category: "Button.Click",
+      action: "Like Counter",
+    });
   };
 
   const toggleEmoji = () => {

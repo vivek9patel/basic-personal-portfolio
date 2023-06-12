@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import LikeCounter from "./LikeCounter";
+import ReactGA from "react-ga4";
 
 const Header = ({ currentLink = "", loading = false }) => {
   const [themeMode, setThemeMode] = useState<"light" | "dark">("light");
@@ -42,6 +43,10 @@ const Header = ({ currentLink = "", loading = false }) => {
           <div
             onClick={() => {
               window.open("https://www.linkedin.com/in/vivek9patel/");
+              ReactGA.event({
+                category: "Button.Click",
+                action: "@vivek9patel linkedin",
+              });
             }}
             className={`font-semibold text-xl no-underline text-center w-32 transition ease-linear duration-1000 ${
               false ? "animateFullWidth" : "animateNormalWidth"
@@ -147,6 +152,11 @@ const Header = ({ currentLink = "", loading = false }) => {
             </Link>
             <div
               onClick={() => {
+                ReactGA.send({
+                  hitType: "pageview",
+                  page: "meet.vivek9patel.com",
+                  title: "V9 Meet",
+                });
                 window.open("https://meet.vivek9patel.com/");
               }}
               className={`mx-4 w-full sm:w-auto  mb-2 sm:m-0 hover:underline-offset-2 hover:text-white`}
@@ -155,6 +165,10 @@ const Header = ({ currentLink = "", loading = false }) => {
             </div>
             <div
               onClick={() => {
+                ReactGA.event({
+                  category: "Button.Click",
+                  action: "Github Link",
+                });
                 window.open("https://github.com/vivek9patel");
               }}
               className={`mx-2 w-full sm:w-auto  mb-2 sm:mb-0 hover:underline-offset-2`}
