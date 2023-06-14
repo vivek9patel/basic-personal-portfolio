@@ -9,6 +9,7 @@ export default function EmailBox() {
   const serviceID = process.env.NEXT_PUBLIC_SERVICE_ID;
   const templateID = process.env.NEXT_PUBLIC_TEMPLATE_ID;
   const subjectRef = createRef<HTMLTextAreaElement>();
+  const senderNameRef = createRef<HTMLInputElement>();
 
   useEffect(() => {
     // @ts-ignore
@@ -18,12 +19,13 @@ export default function EmailBox() {
   function sendEmail() {
     const message = subjectRef.current?.value;
     if (message === undefined || message === "") return;
+    const senderName = senderNameRef.current?.value;
     setLoading(true);
     const templateParams = {
       from_name: "vivek9patel.com",
       to_name: "Vivek Patel",
-      subject: "Message from personal-site",
-      message: message,
+      subject: `${senderName ? senderName : "personal-site"}`,
+      message,
     };
     emailjs
       // @ts-ignore
@@ -44,6 +46,14 @@ export default function EmailBox() {
 
   return (
     <div className="grid grid-cols-1 gap-y-2">
+      <input
+        id="contact-form-sender-name"
+        type="text"
+        ref={senderNameRef}
+        data-cursor-focusable="true"
+        className="border border-v9-light-grey custom-scroll-bar-x border-opacity-50 bg-v9-primary-black p-4 rounded flex-1 focus:border-v9-yellow active:border-v9-yellow outline-none"
+        placeholder="xyz@v9.com"
+      ></input>
       <textarea
         id="contact-form"
         data-cursor-focusable="true"
