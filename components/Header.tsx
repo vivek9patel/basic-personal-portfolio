@@ -44,9 +44,9 @@ const Header = () => {
             <a className="cursor-pointer whitespace-nowrap">V9 meet</a>
           </div>
         </Link>
-        <div className="flex items-center">
+        <div className="items-center flex">
           <div
-            className={`transition-none ${
+            className={`transition-none  hidden sm:block ${
               meetActivate ? "w-0 h-0 invisible" : ""
             }`}
           >

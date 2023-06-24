@@ -109,11 +109,20 @@
 }
 
 .video-gallery{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  align-items: center;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  align-content: center;
+  grid-auto-rows: 50%;
   max-height: calc(100vh - 130px);
+}
+
+@media screen and (max-width: 768px){
+  .video-gallery{
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    align-content: stretch;
+    grid-auto-rows: 40%;
+  }
 }
 
 .chat-message a{
