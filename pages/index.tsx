@@ -31,10 +31,9 @@ const Home: NextPage = () => {
   useEffect(() => {
     // google analytics
     ReactGA.send({ hitType: "pageview", page: "/", title: "Home" });
-    (async () => {
-      const updatedProjectsListWithStars = await fetchProjectsStar();
+    fetchProjectsStar().then((updatedProjectsListWithStars) => {
       setProjectList([...updatedProjectsListWithStars]);
-    })();
+    });
   }, []);
 
   return (
@@ -126,7 +125,9 @@ const Home: NextPage = () => {
               className="h-12 mr-4 mt-1 hidden sm:block"
             ></img>
             <div className="flex flex-col justify-between sm:w-[500px]">
-              <div className=" text-v9-light-grey font-light">Internship</div>
+              <div className=" text-v9-light-grey font-light">
+                Internship - Present
+              </div>
               <div className="text-lg sm:text-xl">
                 Software Engineer at{" "}
                 <Anchor

@@ -1,5 +1,23 @@
 [
   {
+    "title": "Personal Portfolio",
+    "tagline": "A personal portfolio site to showcase my projects, skills, and experience.",
+    "year": 2023,
+    "badges": [
+      "Next.js",
+      "Typescript",
+      "Javascript",
+      "Tailwind CSS",
+      "React",
+      "Vercel"
+    ],
+    "github_url": "https://github.com/vivek9patel/basic-personal-portfolio",
+    "demo_url": "",
+    "stars": 0,
+    "priority": 2,
+    "category": "Web Project"
+  },
+  {
     "title": "Visualizing Fabric of Ohio City",
     "tagline": "A Data-visulization project to highlight volunteers’ characteristics, social activities, and predominant business base.",
     "year": 2023,

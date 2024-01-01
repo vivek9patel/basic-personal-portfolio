@@ -23,10 +23,9 @@ const Projects: NextPage<Props> = () => {
     // google analytics
     ReactGA.send({ hitType: "pageview", page: "/projects", title: "Projects" });
 
-    (async () => {
-      const updatedProjectsListWithStars = await fetchProjectsStar();
+    fetchProjectsStar().then((updatedProjectsListWithStars) => {
       setProjectList([...updatedProjectsListWithStars]);
-    })();
+    });
   }, []);
 
   useEffect(() => {
