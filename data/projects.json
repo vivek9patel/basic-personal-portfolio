@@ -37,6 +37,23 @@
     "category": "Web Project"
   },
   {
+    "title": "VScode CSS Compatibility",
+    "tagline": "A VS Code extension to check which CSS sytaxes are compatible or supported with all browsers and their versions.",
+    "year": 2023,
+    "badges": [
+      "Vscode Extension",
+      "Typescript",
+      "Javascript",
+      "CSS",
+      "Markdown"
+    ],
+    "github_url": "https://github.com/vivek9patel/vscode-css-compatibility",
+    "demo_url": "https://marketplace.visualstudio.com/items?itemName=vivek9patel.vscode-css-compatibility",
+    "stars": 0,
+    "priority": 3,
+    "category": "VS Code Extension"
+  },
+  {
     "title": "Code-Connect: Interview Tool",
     "tagline": "A platform for interviews with features of video meetings, an online language compiler, and a whiteboard.",
     "year": 2022,
@@ -51,7 +68,7 @@
     "title": "Web Simulation of UbuntuOS",
     "tagline": "A virtual simulation of Ubuntu 20.04 operating system on web.",
     "year": 2021,
-    "badges": ["Next.js", "Tailwind CSS", "Vercel"],
+    "badges": ["Next.js", "Javascript", "Tailwind CSS", "Vercel"],
     "github_url": "https://github.com/vivek9patel/vivek9patel.github.io",
     "demo_url": "https://vivek9patel.github.io",
     "stars": 0,

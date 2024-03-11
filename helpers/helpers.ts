@@ -75,8 +75,12 @@ export const badgeImage:
   java: "https://img.shields.io/badge/Java-%23ED8B00.svg?style=flat-square&logo=java&logoColor=white",
   opencv: "https://img.shields.io/badge/OpenCV-%23white.svg?style=flat-square&logo=OpenCV&logoColor=white",
   tkinter: "https://img.shields.io/badge/tkinter-%23white.svg?style=flat-square&logo=python&logoColor=white",
-  "material ui": "https://img.shields.io/badge/Material--UI-0081CB?style=flat-square&material-ui&logoColor=white"
-
+  "material ui": "https://img.shields.io/badge/Material--UI-0081CB?style=flat-square&material-ui&logoColor=white",
+  "typescript": "https://img.shields.io/badge/TypeScript-%23007ACC.svg?style=flat-square&logo=typescript&logoColor=white",
+  "vscode": "https://img.shields.io/badge/Visual_Studio_Code-007ACC?style=flat-square&logo=visual-studio-code&logoColor=white",
+  "markdown": "https://img.shields.io/badge/markdown-%23000000.svg?style=flat-square&logo=markdown&logoColor=white",
+  "css": "https://img.shields.io/badge/CSS-239120?style=flat-square&logo=css3&logoColor=white",
+  "vscode extension": "https://img.shields.io/badge/VS_Code_Extension-007ACC?style=flat-square&logo=visual-studio-code&logoColor=white",
 }
 
 export const fetchLikes = async () => {
