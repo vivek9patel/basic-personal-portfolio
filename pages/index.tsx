@@ -45,19 +45,27 @@ const Home: NextPage = () => {
             <div className=" mt-4">
               <span className="hidden sm:inline-block mr-4">I'm a </span>
               <span className=" text-v9-yellow whitespace-nowrap">
-                Frontend Developer
+                Frontend Engineer
               </span>
               .
             </div>
           </div>
-          <div className="text-lg md:text-xl text-v9-light-grey font-light mt-4 ">
-            Bringing your vision to life, one pixel at a time. 🎨
+          <div className="mt-4 flex items-center">
+            <a className="no-underline" href="https://github.com/vivek9patel" target="_blank">
+              <img alt="GitHub followers" src="https://img.shields.io/github/followers/vivek9patel" />
+            </a>
+            <a className="no-underline ml-4" href="https://github.com/vivek9patel?tab=repositories&q=&type=&language=&sort=stargazers" target="_blank">
+              <img alt="GitHub User's stars" src="https://img.shields.io/github/stars/vivek9patel" />
+            </a>
           </div>
+          {/* <div className="text-lg md:text-xl text-v9-light-grey font-light mt-4 ">
+            Bringing your vision to life, one pixel at a time. 🎨
+          </div> */}
           <div className=" text-v9-light-grey font-light space-y-1 mt-8">
             <p className="">
               I'm a developer based in{" "}
               <Anchor
-                href="https://www.google.com/maps/place/Tempe,+AZ/@33.3919224,-111.9281011,12z/"
+                href="https://www.google.com/maps/place/Phoenix,+AZ,+USA/@33.6055497,-112.4547016,10z"
                 target={"_blank"}
                 onClick={() => {
                   ReactGA.event({
@@ -66,10 +74,9 @@ const Home: NextPage = () => {
                   });
                 }}
               >
-                Tempe, AZ
+                Phoenix, AZ
               </Anchor>
-              , with 2 years of experience working with{" "}
-              <span className=" font-bold">Javascript, React, CSS</span>. I
+              , with 2 years of experience working with various software applications, and teams from US and India. I
               specialize in building{" "}
               <Anchor
                 href="https://vivek9patel.github.io/"
@@ -81,11 +88,9 @@ const Home: NextPage = () => {
                 }}
                 target={"_blank"}
               >
-                exceptional websites
+                exceptional softwares
               </Anchor>
-              , applications, and everything in between. Currently I am in my
-              final year of completing Master's degree in Computer Science from
-              ASU, So I'm looking for Software Engineering/ New Grad jobs!
+              , applications, backend services and everything in between.
             </p>
           </div>
         </div>
@@ -116,7 +121,7 @@ const Home: NextPage = () => {
         <Hr width="100%" />
         <div className="flex justify-between flex-col lg:flex-row">
           <div className=" text-4xl xl:text-5xl mb-6 lg:mb-0 flex items-center justify-center Arialic_Hollow text-v9-light-grey font-light">
-            May '23 - Present
+            Jun '24 - Present
           </div>
           <div className="flex justify-center">
             <img
@@ -126,7 +131,45 @@ const Home: NextPage = () => {
             ></img>
             <div className="flex flex-col justify-between sm:w-[500px]">
               <div className=" text-v9-light-grey font-light">
-                Internship - Present
+                Full Time - Present
+              </div>
+              <div className="text-lg sm:text-xl">
+                Engineer II at{" "}
+                <Anchor
+                  onClick={() => {
+                    ReactGA.event({
+                      category: "Link.Click",
+                      action: "UOPX Link",
+                    });
+                  }}
+                  href="https://www.google.com/search?q=university+of+phoenix"
+                >
+                  University of Phoenix
+                </Anchor>
+              </div>
+              <div className="text-light text-v9-light-grey mt-2">
+                {/* I develop robust, responsive components with a focus on
+                accessibility, enhancing user experiences alongside Adobe AEM,
+                Adobe ADA, and Adobe Target. <br></br>
+                Worked on building new microservice with Spring Boot, Java, Elasticsearch, Docker, Terraform and AWS. */}
+              </div>
+            </div>
+          </div>
+        </div>
+        <Hr width="100%" />
+        <div className="flex justify-between flex-col lg:flex-row">
+          <div className=" text-4xl xl:text-5xl mb-6 lg:mb-0 flex items-center justify-center Arialic_Hollow text-v9-light-grey font-light">
+            May '23 - Apr '24
+          </div>
+          <div className="flex justify-center">
+            <img
+              src={uopxLogo.src}
+              alt="University of Phoenix Logo"
+              className="h-12 mr-4 mt-1 hidden sm:block"
+            ></img>
+            <div className="flex flex-col justify-between sm:w-[500px]">
+              <div className=" text-v9-light-grey font-light">
+                Internship - 1 year
               </div>
               <div className="text-lg sm:text-xl">
                 Software Engineer at{" "}
@@ -145,7 +188,8 @@ const Home: NextPage = () => {
               <div className="text-light text-v9-light-grey mt-2">
                 I develop robust, responsive components with a focus on
                 accessibility, enhancing user experiences alongside Adobe AEM,
-                Adobe ADA, and Adobe Target.
+                Adobe ADA, and Adobe Target. <br></br>
+                Worked on building new microservice with Spring Boot, Java, Elasticsearch, Docker, Terraform and AWS.
               </div>
             </div>
           </div>

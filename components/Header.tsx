@@ -48,7 +48,7 @@ const Header = ({ currentLink = "", loading = false }) => {
                 action: "@vivek9patel linkedin",
               });
             }}
-            className={`font-semibold text-xl no-underline text-center w-32 transition ease-linear duration-1000 ${
+            className={`font-semibold block sm:hidden md:block text-xl no-underline text-center w-32 transition ease-linear duration-1000 ${
               false ? "animateFullWidth" : "animateNormalWidth"
             }`}
           >
@@ -171,10 +171,39 @@ const Header = ({ currentLink = "", loading = false }) => {
                 });
                 window.open("https://github.com/vivek9patel");
               }}
-              className={`mx-2 w-full sm:w-auto  mb-2 sm:mb-0 hover:underline-offset-2`}
+              className={`mx-2 w-full sm:w-auto ml-2 mb-2 sm:mb-0 hover:underline-offset-2`}
             >
               <a className=" flex  w-full sm:w-auto items-center justify-center hover:text-white">
                 <span className="flex-1">Github</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width={"14px"}
+                  height={"14px"}
+                  fill={"currentcolor"}
+                >
+                  <g data-name="Layer 2">
+                    <g data-name="external-link">
+                      <rect width="24" height="24" opacity="0"></rect>
+                      <path d="M20 11a1 1 0 0 0-1 1v6a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h6a1 1 0 0 0 0-2H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3v-6a1 1 0 0 0-1-1z"></path>
+                      <path d="M16 5h1.58l-6.29 6.28a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0L19 6.42V8a1 1 0 0 0 1 1 1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-4a1 1 0 0 0 0 2z"></path>
+                    </g>
+                  </g>
+                </svg>
+              </a>
+            </div>
+            <div
+              onClick={() => {
+                ReactGA.event({
+                  category: "Button.Click",
+                  action: "Linkedin Link",
+                });
+                window.open("https://www.linkedin.com/in/vivek9patel/");
+              }}
+              className={`mr-2 w-full sm:w-auto mb-2 sm:mb-0 hover:underline-offset-2`}
+            >
+              <a className=" flex  w-full sm:w-auto items-center justify-center hover:text-white">
+                <span className="flex-1">LinkedIn</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
