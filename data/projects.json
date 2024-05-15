@@ -39,7 +39,7 @@
   {
     "title": "VScode CSS Compatibility",
     "tagline": "A VS Code extension to check which CSS sytaxes are compatible or supported with all browsers and their versions.",
-    "year": 2023,
+    "year": 2024,
     "badges": [
       "Vscode Extension",
       "Typescript",
