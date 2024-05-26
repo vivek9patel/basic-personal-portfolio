@@ -7,8 +7,10 @@ import Markdown from 'markdown-to-jsx'
 
 import v9Icon from "../../images/v9.png"
 import tarsIcon from "../../images/tars.svg"
+import { v4 as uuidv4 } from 'uuid';
 
 const LOCAL_HISTORY_KEY = "tars-history";
+const LOCAL_SESSION_KEY = "session-id-tars"
 
 type History = {
   from: "user" | "tars",
@@ -24,27 +26,30 @@ const Gpt: NextPage = () => {
   const [isServerUp, setIsServerUp] = useState(true);
   const [queryProcessing, setQueryProcessing] = useState(false);
   const [query, setQuery] = useState("");
+  const [sessionId, setSessionId] = useState<string | null>(null);
   const [history, setHistory] = useState<History[]>([]);
   const historyRef = useRef(null);
 
   useEffect(() => {
-    fetch("https://vivek9patel-v9gpt-flask.hf.space/", {
+    fetch(process.env.NEXT_PUBLIC_TARS_ENDPOINT || "", {
         method: "GET",
       })
         .then((response) => response.status)
         .then((code) => {
             setIsServerUp(code === 200);
+            if(code === 200){
+              const oldHistory: History[] = JSON.parse(localStorage.getItem(LOCAL_HISTORY_KEY) || "[]");
+              setHistory(oldHistory);
+
+              let oldSessionId = localStorage.getItem(LOCAL_SESSION_KEY) || uuidv4();
+              localStorage.setItem(LOCAL_SESSION_KEY, oldSessionId);
+              setSessionId(oldSessionId);
+            }
         })
         .catch((error) => {
             console.error(error);
             setIsServerUp(false);
         });
-    
-    if(isServerUp){
-      const oldHistory: History[] = JSON.parse(localStorage.getItem(LOCAL_HISTORY_KEY) || "[]");
-      console.log("setting from old history")
-      setHistory(oldHistory);
-    }
   },[]);
 
   useEffect(() => {
@@ -56,11 +61,12 @@ const Gpt: NextPage = () => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     
-    return await fetch("https://vivek9patel-v9gpt-flask.hf.space/api", {
+    return await fetch(`${process.env.NEXT_PUBLIC_TARS_ENDPOINT}/api`, {
       method: "POST",
       headers: myHeaders,
       body: JSON.stringify({
-        "query": newQuery
+        "query": newQuery,
+        "session_id": sessionId
       }),
     })
       .then((response) => {

@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@emailjs/browser": "^3.11.0",
+    "@types/uuid": "^9.0.8",
     "@vercel/analytics": "^1.0.1",
     "@vercel/edge-config": "^0.1.11",
     "markdown-to-jsx": "^7.4.7",
@@ -17,7 +18,8 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-ga4": "^2.1.0",
-    "rehype-highlight": "^5.0.2"
+    "rehype-highlight": "^5.0.2",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.0",
