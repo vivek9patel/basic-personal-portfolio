@@ -27,8 +27,8 @@ const Hr = ({ width = "100%" }) => {
 const Button = (props: ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
-      {...props}
       data-cursor={true} // This is for custom cursor
+      {...props}
       className={`font-light whitespace-nowrap flex justify-center items-center bg-v9-secondary-black px-3 py-1 border-2 rounded-md border-opacity-5 transition-colors ${
         props.disabled
           ? "opacity-50"

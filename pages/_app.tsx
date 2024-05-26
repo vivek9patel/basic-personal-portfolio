@@ -45,7 +45,9 @@ function MyApp({ Component, pageProps }: AppProps) {
               <Component {...pageProps} />
             </div>
           </div>
-          <Footer />
+          {
+            currentLink !== "tars" && <Footer />
+          }
         </Context>
       </SessionProvider>
     </>

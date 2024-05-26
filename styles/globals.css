@@ -294,3 +294,17 @@ button {
     width: 80px;
   }
 }
+
+.safe-full-screen{
+  height: calc(100vh - 140px);
+}
+
+.custom-markdown a{
+  text-decoration: underline;
+  color: #FF55BB;
+}
+
+.custom-markdown p > strong{
+  display: block;
+  margin-top: 10px;
+}

@@ -11,6 +11,7 @@
     "@emailjs/browser": "^3.11.0",
     "@vercel/analytics": "^1.0.1",
     "@vercel/edge-config": "^0.1.11",
+    "markdown-to-jsx": "^7.4.7",
     "next": "12.0.7",
     "next-auth": "^4.22.1",
     "react": "17.0.2",
