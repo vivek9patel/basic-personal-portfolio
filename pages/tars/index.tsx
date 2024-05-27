@@ -9,8 +9,8 @@ import v9Icon from "../../images/v9.png"
 import tarsIcon from "../../images/tars.svg"
 import { v4 as uuidv4 } from 'uuid';
 
-const LOCAL_HISTORY_KEY = "tars-history";
-const LOCAL_SESSION_KEY = "session-id-tars"
+export const LOCAL_HISTORY_KEY = "tars-history";
+export const LOCAL_SESSION_KEY = "session-id-tars"
 
 type History = {
   from: "user" | "tars",
@@ -91,6 +91,7 @@ const Gpt: NextPage = () => {
   }
 
   const submitQuery = async (newQuery: string) => {
+    if(queryProcessing || !isServerUp) return;
     pushQueryToHistory("user", newQuery);
     setQueryProcessing(true);
     ReactGA.event({
@@ -143,13 +144,22 @@ const Gpt: NextPage = () => {
                 <div className="text-center h-full content-center">
                     {
                         isServerUp ?
-                        <span className="Arialic_Hollow text-4xl text-gray-400">Hey I'm Tars!</span>
+                        <div>
+                          <div className="Arialic_Hollow text-4xl text-gray-400">Hey I'm Tars!</div>
+                          <div className="text-gray-500 mt-2">I am a RAG based LLM assistant, created by Vivek to answer visitor's questions.</div>
+                        </div>
                         :
                         <span className=" text-gray-300">Sorry, server is down, please come back later : &#40;</span>
                     }
                 </div>
             }
         </div>
+      <div className="flex text-sm mb-2 overflow-x-scroll">
+        <SampleQuery question="Can you share a recommendation from someone who has worked with Vivek?" callBackFun={submitQuery} />
+        <SampleQuery question="What is Vivek's education background?" callBackFun={submitQuery} />
+        <SampleQuery question="What are some examples of problems Vivek has solved in past roles?" callBackFun={submitQuery} />
+        <SampleQuery question="Can you list some projects and frameworks Vivek has worked on?" callBackFun={submitQuery} />
+      </div>
       <div className="w-full flex flex-col sm:flex-row items-center justify-evenly">
         <input
             type="text"
@@ -194,4 +204,20 @@ function TarsMessage({message}: {message: string}){
       </div>
     </div>
   )
+}
+
+function SampleQuery({question, callBackFun}: {question: string, callBackFun: any}){
+  return (
+    <div
+      onClick={() => {
+        callBackFun(question);
+      }}
+      style={{
+        wordWrap: "break-word",
+        flex: "0 0 auto"
+      }}
+      className="border w-96 rounded-md px-2 py-1 mr-2 opacity-60 hover:opacity-100 transition-all duration-300 border-opacity-50">
+      <p>{question}</p>
+    </div>
+  );
 }

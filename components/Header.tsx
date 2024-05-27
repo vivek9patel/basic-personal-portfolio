@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import LikeCounter from "./LikeCounter";
 import ReactGA from "react-ga4";
+import AskTarsButton from "./AskTarsButton";
 
 const Header = ({ currentLink = "", loading = false }) => {
   const [themeMode, setThemeMode] = useState<"light" | "dark">("light");
@@ -38,6 +39,7 @@ const Header = ({ currentLink = "", loading = false }) => {
       }`}
     >
       <LikeCounter />
+      <AskTarsButton currentLink={currentLink} />
       <div className="flex justify-center">
         <div className=" w-full px-10 sm:w-[600px] md:w-[700px] lg:w-[800px] xl:w-[1000px] 2xl:w-[1200px] py-4 flex justify-between relative">
           <div

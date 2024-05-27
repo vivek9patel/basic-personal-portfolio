@@ -45,7 +45,7 @@ const Home: NextPage = () => {
             <div className=" mt-4">
               <span className="hidden sm:inline-block mr-4">I'm a </span>
               <span className=" text-v9-yellow whitespace-nowrap">
-                Frontend Engineer
+                Software Engineer
               </span>
               .
             </div>
