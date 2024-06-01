@@ -140,10 +140,10 @@ export default function LikeCounter() {
 
   if (likeCount && status === "authenticated") {
     return (
-      <div className=" select-none z-30 absolute hidden md:flex flex-col transition-all ease-linear duration-75 items-center -bottom-32 right-14 ">
+      <div className=" select-none z-30 absolute flex flex-col transition-all ease-linear duration-75 items-center -bottom-32 right-4 md:right-14 ">
         <div
           className={`absolute top-5 -right-8 -translate-y-1/2 transition-transform duration-300 text-white ${
-            emojiVisible ? "translate-x-[0px]" : "-translate-x-[50px]"
+            emojiVisible ? "-translate-x-[100px] md:translate-x-[0px]" : "-translate-x-[50px]"
           }`}
         >
           {getEmojiBasedOnIncrements()}

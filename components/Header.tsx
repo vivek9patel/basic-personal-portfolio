@@ -119,7 +119,7 @@ const Header = ({ currentLink = "", loading = false }) => {
           <div
             className={` ${
               isHmMenuBtnClicked ? "flex" : "hidden"
-            } sm:flex absolute text-right right-0 top-full bg-v9-secondary-black border border-v9-light-grey border-opacity-40 rounded p-2 sm:p-0 sm:border-none sm:bg-transparent sm:top-0 sm:right mr-10 sm:m-0 flex-col sm:relative sm:flex-row items-center transition-none `}
+            } sm:flex absolute z-50 text-right right-0 top-full bg-v9-secondary-black border border-v9-light-grey border-opacity-40 rounded p-2 sm:p-0 sm:border-none sm:bg-transparent sm:top-0 sm:right mr-10 sm:m-0 flex-col sm:relative sm:flex-row items-center transition-none `}
           >
             <Link href="/">
               <a
