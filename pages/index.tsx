@@ -7,6 +7,7 @@ import { ProjectListContext } from "../context";
 import { fetchProjectsStar } from "../helpers/helpers";
 import { useRouter } from "next/router";
 
+import hubspotLogo from "../images/hubspot.svg"
 import uopxLogo from "../images/uopx-phoenixbird-red.png";
 import hackerrankLogo from "../images/HackerRank_logo.png";
 import hmsLogo from "../images/100ms_logo.png";
@@ -65,16 +66,16 @@ const Home: NextPage = () => {
             <p className="">
               I'm a developer based in{" "}
               <Anchor
-                href="https://www.google.com/maps/place/Phoenix,+AZ,+USA/@33.6055497,-112.4547016,10z"
+                href="https://www.google.com/maps/place/durham+nc/data=!4m2!3m1!1s0x89ace471120f66f1:0xe17ada898a46f27e?sa=X&ved=1t:155783&ictx=111"
                 target={"_blank"}
                 onClick={() => {
                   ReactGA.event({
                     category: "Link.Click",
-                    action: "Tempe Location",
+                    action: "Durham Location",
                   });
                 }}
               >
-                Phoenix, AZ
+                Durham, NC
               </Anchor>
               , with 2 years of experience working with various software applications, and teams from US and India. I
               specialize in building{" "}
@@ -121,7 +122,45 @@ const Home: NextPage = () => {
         <Hr width="100%" />
         <div className="flex justify-between flex-col lg:flex-row">
           <div className=" text-4xl xl:text-5xl mb-6 lg:mb-0 flex items-center justify-center Arialic_Hollow text-v9-light-grey font-light">
-            Jun '24 - Present
+            Mar '25 - Present
+          </div>
+          <div className="flex justify-center">
+            <img
+              src={hubspotLogo.src}
+              alt="HubSpot Logo"
+              className="h-12 mr-4 mt-1 hidden sm:block"
+            ></img>
+            <div className="flex flex-col justify-between sm:w-[500px]">
+              <div className=" text-v9-light-grey font-light">
+                Full Time - Present
+              </div>
+              <div className="text-lg sm:text-xl">
+                Engineering at{" "}
+                <Anchor
+                  onClick={() => {
+                    ReactGA.event({
+                      category: "Link.Click",
+                      action: "HubSpot Link",
+                    });
+                  }}
+                  href="https://www.google.com/search?q=husbpot"
+                >
+                  HubSpot
+                </Anchor>
+              </div>
+              <div className="text-light text-v9-light-grey mt-2">
+                {/* I develop robust, responsive components with a focus on
+                accessibility, enhancing user experiences alongside Adobe AEM,
+                Adobe ADA, and Adobe Target. <br></br>
+                Worked on building new microservice with Spring Boot, Java, Elasticsearch, Docker, Terraform and AWS. */}
+              </div>
+            </div>
+          </div>
+        </div>
+        <Hr width="100%" />
+        <div className="flex justify-between flex-col lg:flex-row">
+          <div className=" text-4xl xl:text-5xl mb-6 lg:mb-0 flex items-center justify-center Arialic_Hollow text-v9-light-grey font-light">
+            Jun '24 - Feb'25
           </div>
           <div className="flex justify-center">
             <img
@@ -131,7 +170,7 @@ const Home: NextPage = () => {
             ></img>
             <div className="flex flex-col justify-between sm:w-[500px]">
               <div className=" text-v9-light-grey font-light">
-                Full Time - Present
+                Full Time - 9 months
               </div>
               <div className="text-lg sm:text-xl">
                 Engineer II at{" "}
