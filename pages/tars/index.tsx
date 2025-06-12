@@ -17,6 +17,24 @@ type History = {
   message: string
 };
 
+// Array of sample questions for random selection
+const SAMPLE_QUESTIONS = [
+  "Can you share a recommendation from someone who has worked with Vivek?",
+  "What is Vivek's education background?",
+  "What are some examples of problems Vivek has solved in past roles?",
+  "Can you list some projects and frameworks Vivek has worked on?",
+  "What's Vivek's biggest professional achievement?",
+  "How does Vivek approach problem-solving in his projects?",
+  "What programming languages and technologies is Vivek most passionate about?",
+  "Can you tell me about Vivek's leadership style and team collaboration?",
+  "What unique skills or expertise does Vivek bring to a team?",
+  "How does Vivek stay updated with the latest technology trends?",
+  "What's the most challenging project Vivek has worked on?",
+  "Can you describe Vivek's work philosophy and values?",
+  "What industries or domains has Vivek gained experience in?",
+  "How does Vivek balance technical excellence with business requirements?"
+];
+
 const Gpt: NextPage = () => {
   useEffect(() => {
     // google analytics
@@ -28,7 +46,33 @@ const Gpt: NextPage = () => {
   const [query, setQuery] = useState("");
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [history, setHistory] = useState<History[]>([]);
+  const [selectedQuestions, setSelectedQuestions] = useState<string[]>([]);
   const historyRef = useRef(null);
+
+  // Function to randomly select 4 questions
+  const getRandomQuestions = () => {
+    const shuffled = [...SAMPLE_QUESTIONS].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, 4);
+  };
+
+  // Function to clear chat history
+  const clearChatHistory = () => {
+    setHistory([]);
+    setSelectedQuestions(getRandomQuestions());
+  };
+
+  useEffect(() => {
+    // Listen for custom clear history event
+    const handleClearHistory = () => {
+      clearChatHistory();
+    };
+
+    window.addEventListener('clearTarsHistory', handleClearHistory);
+
+    return () => {
+      window.removeEventListener('clearTarsHistory', handleClearHistory);
+    };
+  }, []);
 
   useEffect(() => {
     fetch(process.env.NEXT_PUBLIC_TARS_ENDPOINT || "", {
@@ -50,12 +94,20 @@ const Gpt: NextPage = () => {
             console.error(error);
             setIsServerUp(false);
         });
+
+    // Set random questions on component mount
+    setSelectedQuestions(getRandomQuestions());
   },[]);
 
   useEffect(() => {
     // @ts-ignore
     historyRef.current?.lastElementChild?.scrollIntoView();
   },[history]);
+
+  // Save history to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem(LOCAL_HISTORY_KEY, JSON.stringify(history));
+  }, [history]);
 
   const fetchResponse = async (newQuery: string) => {
     const myHeaders = new Headers();
@@ -87,7 +139,6 @@ const Gpt: NextPage = () => {
       from,
       message: newQuery
     }]);
-    localStorage.setItem(LOCAL_HISTORY_KEY, JSON.stringify(history));
   }
 
   const submitQuery = async (newQuery: string) => {
@@ -146,7 +197,7 @@ const Gpt: NextPage = () => {
                         isServerUp ?
                         <div>
                           <div className="Arialic_Hollow text-4xl text-gray-400">Hey I'm Tars!</div>
-                          <div className="text-gray-500 mt-2">I am a RAG based LLM assistant, created by Vivek to answer visitor's questions.</div>
+                          <div className="text-gray-500 mt-2">I'm here to help you get to know Vivek better. Ask me anything about his work, projects, or experience!</div>
                         </div>
                         :
                         <span className=" text-gray-300">Sorry, server is down, please come back later : &#40;</span>
@@ -155,10 +206,31 @@ const Gpt: NextPage = () => {
             }
         </div>
       <div className="flex text-sm mb-2 overflow-x-scroll">
-        <SampleQuery question="Can you share a recommendation from someone who has worked with Vivek?" callBackFun={submitQuery} />
-        <SampleQuery question="What is Vivek's education background?" callBackFun={submitQuery} />
-        <SampleQuery question="What are some examples of problems Vivek has solved in past roles?" callBackFun={submitQuery} />
-        <SampleQuery question="Can you list some projects and frameworks Vivek has worked on?" callBackFun={submitQuery} />
+        {selectedQuestions.map((question, index) => (
+          <SampleQuery key={index} question={question} callBackFun={submitQuery} />
+        ))}
+        <div
+          onClick={() => setSelectedQuestions(getRandomQuestions())}
+          className="border rounded-full w-10 h-10 ml-2 opacity-60 hover:opacity-100 transition-all duration-300 border-opacity-50 flex items-center justify-center"
+          style={{ flex: "0 0 auto" }}
+          title="Refresh questions"
+        >
+          <svg 
+            width="16" 
+            height="16" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+            className="text-gray-400"
+          >
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <polyline points="1 20 1 14 7 14"></polyline>
+            <path d="m3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+          </svg>
+        </div>
       </div>
       <div className="w-full flex flex-col sm:flex-row items-center justify-evenly">
         <input

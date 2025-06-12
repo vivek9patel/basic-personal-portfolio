@@ -19,8 +19,20 @@ export default function AskTarsButton({currentLink}: {currentLink: string}){
             action: "Delete Tars Session Button",
         });
         localStorage.setItem("tars-history", "[]");
-        deleteChatSession();
-        clientRouter.reload();
+        
+        // Dispatch custom event for TARS page to listen to BEFORE the API call
+        if (currentLink === "tars") {
+            window.dispatchEvent(new CustomEvent('clearTarsHistory'));
+        } else {
+            clientRouter.reload();
+        }
+        
+        // Try to delete the chat session, but don't let it block the UI update
+        try {
+            await deleteChatSession();
+        } catch (error) {
+            console.error("Error in deleteChatSession:", error);
+        }
     }
 
     if(currentLink === "tars"){
