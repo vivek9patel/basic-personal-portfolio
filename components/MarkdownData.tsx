@@ -7,7 +7,7 @@ export default function MarkdownData({
   content: MDXRemoteSerializeResult;
 }) {
   return (
-    <div className="prose prose-xl prose-a:text-v9-pink dark:prose-dark">
+    <div className="prose prose-xl prose-a:text-accent dark:prose-dark">
       <MDXRemote {...content} />
     </div>
   );

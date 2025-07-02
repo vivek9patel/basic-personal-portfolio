@@ -12,6 +12,9 @@
     "@types/uuid": "^9.0.8",
     "@vercel/analytics": "^1.0.1",
     "@vercel/edge-config": "^0.1.11",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.525.0",
     "markdown-to-jsx": "^7.4.7",
     "next": "12.0.7",
     "next-auth": "^4.22.1",
@@ -19,6 +22,8 @@
     "react-dom": "17.0.2",
     "react-ga4": "^2.1.0",
     "rehype-highlight": "^5.0.2",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss-animate": "^1.0.7",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

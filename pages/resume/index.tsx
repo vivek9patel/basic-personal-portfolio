@@ -54,7 +54,7 @@ const Resume: NextPage = () => {
         >
           <button
             data-cursor={true}
-            className="bg-v9-yellow text-black font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition ease-linear duration-1000"
+            className="bg-primary text-black font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition ease-linear duration-1000"
           >
             Download
           </button>

@@ -6,7 +6,7 @@ const Anchor = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => {
       {...props}
       data-cursor={true} // This is for custom cursor
       target="_blank"
-      className={`text-v9-pink whitespace-nowrap underline underline-offset-2 hover:text-v9-yellow p-1 hover:no-underline ${
+      className={`text-accent whitespace-nowrap underline underline-offset-2 hover:text-primary p-1 hover:no-underline ${
         props.className ? props.className : ""
       }`}
     ></a>
@@ -29,10 +29,10 @@ const Button = (props: ButtonHTMLAttributes<HTMLButtonElement>) => {
     <button
       data-cursor={true} // This is for custom cursor
       {...props}
-      className={`font-light whitespace-nowrap flex justify-center items-center bg-v9-secondary-black px-3 py-1 border-2 rounded-md border-opacity-5 transition-colors ${
+      className={`font-light whitespace-nowrap flex justify-center items-center bg-card px-3 py-1 border-2 rounded-md border-opacity-5 transition-colors ${
         props.disabled
-          ? "opacity-50"
-          : "hover:border-v9-pink hover:border-opacity-30 "
+          ? "opacity-50 pointer-events-none"
+          : "hover:border-accent hover:border-opacity-30 "
       } ${props.className ? props.className : ""}`}
     />
   );

@@ -51,14 +51,14 @@ export default function EmailBox() {
         type="text"
         ref={senderNameRef}
         data-cursor-focusable="true"
-        className="border border-v9-light-grey custom-scroll-bar-x border-opacity-50 bg-v9-primary-black p-4 rounded flex-1 focus:border-v9-yellow active:border-v9-yellow outline-none"
+        className="border border-border custom-scroll-bar-x border-opacity-50 bg-background p-4 rounded flex-1 focus:border-primary active:border-primary outline-none"
         placeholder="xyz@v9.com"
       ></input>
       <textarea
         id="contact-form"
         data-cursor-focusable="true"
         ref={subjectRef}
-        className="border border-v9-light-grey custom-scroll-bar-x border-opacity-50 bg-v9-primary-black p-4 rounded flex-1 focus:border-v9-yellow active:border-v9-yellow outline-none"
+        className="border border-border custom-scroll-bar-x border-opacity-50 bg-background p-4 rounded flex-1 focus:border-primary active:border-primary outline-none"
         rows={5}
         placeholder="Hey Vivek, This is an awesome website!"
       ></textarea>

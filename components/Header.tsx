@@ -34,9 +34,7 @@ const Header = ({ currentLink = "", loading = false }) => {
 
   return (
     <div
-      className={`sticky z-50 top-0 left-0 transition-none transform dark:text-slate-300  ${
-        themeMode === "dark" ? " bg-v9-primary-black" : "bg-white"
-      }`}
+      className={`sticky z-50 top-0 left-0 transition-none transform dark:text-slate-300 `}
     >
       <LikeCounter />
       <AskTarsButton currentLink={currentLink} />
@@ -119,12 +117,12 @@ const Header = ({ currentLink = "", loading = false }) => {
           <div
             className={` ${
               isHmMenuBtnClicked ? "flex" : "hidden"
-            } sm:flex absolute z-50 text-right right-0 top-full bg-v9-secondary-black border border-v9-light-grey border-opacity-40 rounded p-2 sm:p-0 sm:border-none sm:bg-transparent sm:top-0 sm:right mr-10 sm:m-0 flex-col sm:relative sm:flex-row items-center transition-none `}
+            } sm:flex absolute z-50 text-right right-0 top-full bg-card border border-border border-opacity-40 rounded p-2 sm:p-0 sm:border-none sm:bg-transparent sm:top-0 sm:right mr-10 sm:m-0 flex-col sm:relative sm:flex-row items-center transition-none `}
           >
             <Link href="/">
               <a
                 className={`mx-2 w-full mb-2 sm:mb-0 sm:w-auto ${
-                  currentLink === "" ? "text-v9-yellow" : "hover:text-white"
+                  currentLink === "" ? "text-primary" : "hover:text-white"
                 }  underline-offset-2`}
               >
                 Home
@@ -134,7 +132,7 @@ const Header = ({ currentLink = "", loading = false }) => {
               <a
                 className={`mx-2 w-full sm:w-auto mb-2 sm:mb-0 ${
                   currentLink === "projects"
-                    ? "text-v9-yellow"
+                    ? "text-primary"
                     : "hover:text-white"
                 }  underline-offset-2`}
               >
@@ -145,7 +143,7 @@ const Header = ({ currentLink = "", loading = false }) => {
               <a
                 className={`mx-2 w-full sm:w-auto  mb-2 sm:mb-0 ${
                   currentLink === "resume"
-                    ? "text-v9-yellow"
+                    ? "text-primary"
                     : "hover:text-white"
                 }  underline-offset-2`}
               >
@@ -232,22 +230,22 @@ const Header = ({ currentLink = "", loading = false }) => {
                 window.open("mailto:vivek.p9737@gmail.com");
               }}
               data-cursor={true}
-              className="mb-2 sm:mb-0 whitespace-nowrap text-center text-v9-green border border-v9-green rounded  w-full sm:w-auto px-1 text-sm hover:text-v9-yellow"
+              className="mb-2 sm:mb-0 whitespace-nowrap text-center text-secondary border border-secondary rounded  w-full sm:w-auto px-1 text-sm hover:text-primary"
             >
               Hire me!
             </div>
-            {/* <input
+            <input
             onChange={toggleThemeMode}
             checked={themeMode === "dark"}
             className="themeToggle mx-2"
             type="checkbox"
-          ></input> */}
+          ></input>
           </div>
         </div>
       </div>
       <div className="w-full dark:bg-gray-200 bg-black h-1">
         <div
-          className={`bg-v9-pink w-0 h-1 ${
+          className={`bg-accent w-0 h-1 ${
             loading ? "triggerLoader" : "trigeerLoaderDone"
           }`}
         ></div>

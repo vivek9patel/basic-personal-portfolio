@@ -45,7 +45,7 @@ const Home: NextPage = () => {
             <div className="">Hey, I'm Vivek Patel</div>
             <div className=" mt-4">
               <span className="hidden sm:inline-block mr-4">I'm a </span>
-              <span className=" text-v9-yellow whitespace-nowrap">
+              <span className=" text-primary whitespace-nowrap">
                 Software Engineer
               </span>
               .
@@ -59,10 +59,10 @@ const Home: NextPage = () => {
               <img alt="GitHub User's stars" src="https://img.shields.io/github/stars/vivek9patel" />
             </a>
           </div>
-          {/* <div className="text-lg md:text-xl text-v9-light-grey font-light mt-4 ">
+          {/* <div className="text-lg md:text-xl text-muted-foreground font-light mt-4 ">
             Bringing your vision to life, one pixel at a time. 🎨
           </div> */}
-          <div className=" text-v9-light-grey font-light space-y-1 mt-8">
+          <div className=" text-muted-foreground font-light space-y-1 mt-8">
             <p className="">
               I'm a developer based in{" "}
               <Anchor
@@ -112,8 +112,8 @@ const Home: NextPage = () => {
             View Resume
           </Button>
         </div>
-        <div className="text-v9-light-grey font-light mt-2 mb-4 ">
-          For over 3 years, I have cultivated a deep understanding and expertise
+        <div className="text-muted-foreground font-light mt-2 mb-4 ">
+          For over 2 years, I have cultivated a deep understanding and expertise
           in <span className="">Front-end Engineering</span>, always
           prioritizing the user's needs. In every project I undertake, my aim is
           to craft tailored, intuitive, and thoroughly tested experiences that
@@ -121,7 +121,7 @@ const Home: NextPage = () => {
         </div>
         <Hr width="100%" />
         <div className="flex justify-between flex-col lg:flex-row">
-          <div className=" text-4xl xl:text-5xl mb-6 lg:mb-0 flex items-center justify-center Arialic_Hollow text-v9-light-grey font-light">
+          <div className=" text-4xl xl:text-5xl mb-6 lg:mb-0 flex items-center justify-center Arialic_Hollow text-muted-foreground font-light">
             Mar '25 - Present
           </div>
           <div className="flex justify-center">
@@ -131,7 +131,7 @@ const Home: NextPage = () => {
               className="h-12 mr-4 mt-1 hidden sm:block"
             ></img>
             <div className="flex flex-col justify-between sm:w-[500px]">
-              <div className=" text-v9-light-grey font-light">
+              <div className=" text-muted-foreground font-light">
                 Full Time - Present
               </div>
               <div className="text-lg sm:text-xl">
@@ -148,7 +148,7 @@ const Home: NextPage = () => {
                   HubSpot
                 </Anchor>
               </div>
-              <div className="text-light text-v9-light-grey mt-2">
+              <div className="text-light text-muted-foreground mt-2">
                 {/* I develop robust, responsive components with a focus on
                 accessibility, enhancing user experiences alongside Adobe AEM,
                 Adobe ADA, and Adobe Target. <br></br>
@@ -159,7 +159,7 @@ const Home: NextPage = () => {
         </div>
         <Hr width="100%" />
         <div className="flex justify-between flex-col lg:flex-row">
-          <div className=" text-4xl xl:text-5xl mb-6 lg:mb-0 flex items-center justify-center Arialic_Hollow text-v9-light-grey font-light">
+          <div className=" text-4xl xl:text-5xl mb-6 lg:mb-0 flex items-center justify-center Arialic_Hollow text-muted-foreground font-light">
             Jun '24 - Feb'25
           </div>
           <div className="flex justify-center">
@@ -169,7 +169,7 @@ const Home: NextPage = () => {
               className="h-12 mr-4 mt-1 hidden sm:block"
             ></img>
             <div className="flex flex-col justify-between sm:w-[500px]">
-              <div className=" text-v9-light-grey font-light">
+              <div className=" text-muted-foreground font-light">
                 Full Time - 9 months
               </div>
               <div className="text-lg sm:text-xl">
@@ -186,7 +186,7 @@ const Home: NextPage = () => {
                   University of Phoenix
                 </Anchor>
               </div>
-              <div className="text-light text-v9-light-grey mt-2">
+              <div className="text-light text-muted-foreground mt-2">
                 {/* I develop robust, responsive components with a focus on
                 accessibility, enhancing user experiences alongside Adobe AEM,
                 Adobe ADA, and Adobe Target. <br></br>
@@ -197,7 +197,7 @@ const Home: NextPage = () => {
         </div>
         <Hr width="100%" />
         <div className="flex justify-between flex-col lg:flex-row">
-          <div className=" text-4xl xl:text-5xl mb-6 lg:mb-0 flex items-center justify-center Arialic_Hollow text-v9-light-grey font-light">
+          <div className=" text-4xl xl:text-5xl mb-6 lg:mb-0 flex items-center justify-center Arialic_Hollow text-muted-foreground font-light">
             May '23 - Apr '24
           </div>
           <div className="flex justify-center">
@@ -207,7 +207,7 @@ const Home: NextPage = () => {
               className="h-12 mr-4 mt-1 hidden sm:block"
             ></img>
             <div className="flex flex-col justify-between sm:w-[500px]">
-              <div className=" text-v9-light-grey font-light">
+              <div className=" text-muted-foreground font-light">
                 Internship - 1 year
               </div>
               <div className="text-lg sm:text-xl">
@@ -224,7 +224,7 @@ const Home: NextPage = () => {
                   University of Phoenix
                 </Anchor>
               </div>
-              <div className="text-light text-v9-light-grey mt-2">
+              <div className="text-light text-muted-foreground mt-2">
                 I develop robust, responsive components with a focus on
                 accessibility, enhancing user experiences alongside Adobe AEM,
                 Adobe ADA, and Adobe Target. <br></br>
@@ -235,7 +235,7 @@ const Home: NextPage = () => {
         </div>
         <Hr width="100%" />
         <div className="flex justify-between  flex-col lg:flex-row">
-          <div className="text-4xl xl:text-5xl  mb-6 lg:mb-0  flex items-center justify-center Arialic_Hollow text-v9-light-grey font-light">
+          <div className="text-4xl xl:text-5xl  mb-6 lg:mb-0  flex items-center justify-center Arialic_Hollow text-muted-foreground font-light">
             Jan '22 - Jun '22
           </div>
           <div className="flex justify-center">
@@ -245,7 +245,7 @@ const Home: NextPage = () => {
               className="h-14 mr-2 mt-1 hidden sm:block"
             ></img>
             <div className="flex flex-col justify-between sm:w-[500px]">
-              <div className=" text-v9-light-grey font-light">
+              <div className=" text-muted-foreground font-light">
                 Internship - 6 months
               </div>
               <div className="text-lg sm:text-xl">
@@ -262,7 +262,7 @@ const Home: NextPage = () => {
                   HackerRank
                 </Anchor>
               </div>
-              <div className="text-light text-v9-light-grey mt-2">
+              <div className="text-light text-muted-foreground mt-2">
                 I contributed to the optimization of a cloud-based Integrated
                 Development Environment (IDE), elevating efficiency. I worked on
                 theia, React.js, Typescript, Docker, and Kubernetes.
@@ -272,7 +272,7 @@ const Home: NextPage = () => {
         </div>
         <Hr width="100%" />
         <div className="flex justify-between  flex-col lg:flex-row">
-          <div className="text-4xl xl:text-5xl  mb-6 lg:mb-0   flex items-center justify-center Arialic_Hollow text-v9-light-grey font-light">
+          <div className="text-4xl xl:text-5xl  mb-6 lg:mb-0   flex items-center justify-center Arialic_Hollow text-muted-foreground font-light">
             Apr '21 - Jun '21
           </div>
           <div className="flex justify-center">
@@ -282,7 +282,7 @@ const Home: NextPage = () => {
               className="h-10 mr-4 mt-1 hidden sm:block"
             ></img>
             <div className="flex flex-col justify-between sm:w-[500px]">
-              <div className=" text-v9-light-grey font-light">
+              <div className=" text-muted-foreground font-light">
                 Internship - 3 months
               </div>
               <div className="text-lg sm:text-xl">
@@ -299,7 +299,7 @@ const Home: NextPage = () => {
                   100ms
                 </Anchor>
               </div>
-              <div className="text-light text-v9-light-grey mt-2">
+              <div className="text-light text-muted-foreground mt-2">
                 I worked with fontend Dashboard team, building a customised
                 video-conferencing app-builder using Next.js, Typescript,
                 Tailwind CSS, Vercel and AWS.
@@ -309,7 +309,7 @@ const Home: NextPage = () => {
         </div>
         <Hr width="100%" />
         <div className="flex justify-between  flex-col lg:flex-row">
-          <div className="text-4xl xl:text-5xl  mb-6 lg:mb-0   flex items-center justify-center Arialic_Hollow text-v9-light-grey font-light">
+          <div className="text-4xl xl:text-5xl  mb-6 lg:mb-0   flex items-center justify-center Arialic_Hollow text-muted-foreground font-light">
             Jun '20 - Mar '21
           </div>
           <div className="flex justify-center">
@@ -319,7 +319,7 @@ const Home: NextPage = () => {
               className="h-10 mr-4 mt-1 hidden sm:block"
             ></img>
             <div className="flex flex-col justify-between sm:w-[500px]">
-              <div className=" text-v9-light-grey font-light">
+              <div className=" text-muted-foreground font-light">
                 Part-time - 9 months
               </div>
               <div className="text-lg sm:text-xl">
@@ -336,7 +336,7 @@ const Home: NextPage = () => {
                   Webmate Web Services
                 </Anchor>
               </div>
-              <div className="text-light text-v9-light-grey mt-2">
+              <div className="text-light text-muted-foreground mt-2">
                 Led the establishment of an affordable software services
                 platform for small businesses during the pandemic, driving
                 client meeting management and exceptional customer satisfaction.
@@ -353,7 +353,7 @@ const Home: NextPage = () => {
             });
             window.open("https://www.linkedin.com/in/vivek9patel/", "_blank");
           }}
-          className=" text-v9-light-grey underline hover:text-white"
+          className=" text-muted-foreground underline hover:text-white"
         >
           See my recommendations on LinkedIn
           {" ->"}
@@ -382,7 +382,7 @@ const Home: NextPage = () => {
       {/* Contact email section */}
       <div className="mt-20 sm:mt-32">
         <div className="text-4xl sm:text-5xl font-medium">Contact Me</div>
-        <div className="font-light text-v9-light-grey mt-4 mb-10">
+        <div className="font-light text-muted-foreground mt-4 mb-10">
           I'm always open to new opportunities and connections. Feel free to
           reach out to me at{" "}
           <Anchor

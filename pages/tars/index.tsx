@@ -241,7 +241,7 @@ const Gpt: NextPage = () => {
                 setQuery(e.target.value);
             }}
             onKeyDown={handleKeyDown}
-            className="border w-full sm:w-auto mr-2 border-v9-light-grey custom-scroll-bar-x border-opacity-50 bg-v9-primary-black px-4 py-2 rounded flex-1 focus:border-v9-yellow active:border-v9-yellow outline-none"
+            className="border w-full sm:w-auto mr-2 border-border custom-scroll-bar-x border-opacity-50 bg-background px-4 py-2 rounded flex-1 focus:border-primary active:border-primary outline-none"
             placeholder="Ask me anything about Vivek..."
         ></input>
         <Button 

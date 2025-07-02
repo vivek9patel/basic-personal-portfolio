@@ -64,7 +64,7 @@ export default function AskTarsButton({currentLink}: {currentLink: string}){
                 clientRouter.push("/tars");
             }}
         >
-            <div className="w-10 h-10 border-2 rounded-full bg-v9-primary-black group-hover:border-v9-yellow transition-colors duration-300">
+            <div className="w-10 h-10 border-2 rounded-full bg-background group-hover:border-primary transition-colors duration-300">
                 <Avatar title="Ask Tars" url={tarsImage.src} width="w-full" height="h-full" />
             </div>
             <div className="mt-2 text-center text-sm group-hover:underline group-hover:text-white transition-colors duration-300">

@@ -60,7 +60,7 @@ const Projects: NextPage<Props> = () => {
         <div className="flex-1">
           <span>Filter by: </span>
           <select
-            className=" bg-v9-secondary-black py-1 px-2 ml-2 rounded border-2 border-opacity-5 outline-none text-v9-light-grey focus:border-v9-yellow"
+            className=" bg-card py-1 px-2 ml-2 rounded border-2 border-opacity-5 outline-none text-muted-foreground focus:border-primary"
             value={filterBy}
             onChange={(e) => {
               ReactGA.event({
@@ -79,7 +79,7 @@ const Projects: NextPage<Props> = () => {
         <div className="sm:ml-4 ml-0 mt-4 sm:mt-0 w-full sm:w-auto sm:flex-1 flex items-center">
           <span>Search by: </span>
           <input
-            className=" border border-v9-light-grey border-opacity-10 bg-v9-primary-black py-1 px-2 mx-2 rounded flex-1 focus:border-v9-yellow active:border-v9-yellow outline-none"
+            className=" border border-border border-opacity-10 bg-background py-1 px-2 mx-2 rounded flex-1 focus:border-primary active:border-primary outline-none"
             type="text"
             data-cursor-focusable="true"
             name="search-project"

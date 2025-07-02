@@ -166,8 +166,8 @@ export default function LikeCounter() {
           <div
             className={`absolute w-10 bottom-0 z-40  border-2 rounded-full ${
               likeIncrements === 9
-                ? "border-v9-yellow bg-v9-pink"
-                : "border-transparent bg-v9-pink"
+                ? "border-primary bg-accent"
+                : "border-transparent bg-accent"
             }`}
             style={{
               height: `${
@@ -177,8 +177,8 @@ export default function LikeCounter() {
           ></div>
         </div>
         <div
-          className={`font-light text-sm mt-1 group-hover:text-v9-yellow ${
-            likeIncrements === 9 ? "text-v9-yellow" : "text-v9-light-grey "
+          className={`font-light text-sm mt-1 group-hover:text-primary ${
+            likeIncrements === 9 ? "text-primary" : "text-muted-foreground "
           }`}
         >
           {formatNumber(likeCount)}

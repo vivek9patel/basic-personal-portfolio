@@ -21,12 +21,12 @@ export default function ProjectCard(props: ProjectCardProps) {
     setCardId(props.title.replace(/\s/g, "-").toLowerCase());
   }, [props.title]);
   return (
-    <div className=" flex flex-col justify-between py-6 px-6 border border-opacity-10 rounded-md bg-v9-secondary-black transition-colors">
+    <div className=" flex flex-col justify-between py-6 px-6 border border-opacity-10 rounded-md bg-card transition-colors">
       <div>
         <div className="flex items-center justify-between">
-          <div className="text-v9-pink">{props.year}</div>
+          <div className="text-accent">{props.year}</div>
           {props.stars ? (
-            <div className=" text-v9-yellow flex items-center">
+            <div className=" text-primary flex items-center">
               <span className="mr-2">{props.stars}</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -43,8 +43,8 @@ export default function ProjectCard(props: ProjectCardProps) {
             </div>
           ) : null}
         </div>
-        <div className=" text-lg 2xl:text-xl mt-2">{props.title}</div>
-        <div className=" text-v9-light-grey font-light mt-2">
+        <div className=" text-lg sm:text-xl font-medium mt-2">{props.title}</div>
+        <div className=" text-muted-foreground font-light mt-2">
           {props.tagline}
         </div>
       </div>
