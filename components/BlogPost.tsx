@@ -13,10 +13,10 @@ function BlogPost({ frontmatter, link }: Props): JSX.Element {
   return (
     <div className="py-6 px-6 border border-opacity-10 rounded-md cursor-pointer hover:shadow-md transition-shadow">
       <div className="mb-6">
-        <div className="text-accent font-bold text-2xl">{frontmatter.title}</div>
-        <div className="text-accent text-lg">{date}</div>
+        <div className="text-primary font-bold text-2xl">{frontmatter.title}</div>
+        <div className="text-primary text-lg">{date}</div>
         <Link href={`/blogs/${link}`}>
-          <a className="text-accent text-lg">Read more</a>
+          <a className="text-primary text-lg">Read more</a>
         </Link>
       </div>
     </div>

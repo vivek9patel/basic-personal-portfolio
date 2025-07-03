@@ -101,7 +101,7 @@ export default function Cursor() {
         width: boundingRect.width + "px",
         height: boundingRect.height + "px",
         borderRadius,
-        hoveredOver: false,
+        hoveredOver: true,
         hideDot: true,
         scrolling: false,
       });
@@ -123,11 +123,11 @@ export default function Cursor() {
   return (
     <>
       <div
-        className={`custom-cursor border-2 border-primary hidden lg:flex 
+        className={`top-0 left-0 fixed will-change-transform z-[999] pointer-events-none border-2 border-border hidden lg:flex 
         ${
           cursor.hoveredOver || cursor.scrolling
-            ? "border-opacity-100 cursor-hover-animation duration-300"
-            : "border-opacity-40 duration-150"
+            ? "duration-300 border-ring"
+            : "duration-150"
         }
         `}
         style={{
@@ -139,7 +139,7 @@ export default function Cursor() {
       />
       {!(cursor.hoveredOver || cursor.hideDot || cursor.scrolling) && (
         <div
-          className="fixed w-1 h-1 rounded-full bg-primary z-[999] pointer-events-none  hidden md:flex "
+          className="fixed w-1 h-1 rounded-full bg-primary z-[999] pointer-events-none hidden md:flex "
           style={{
             transform: `translate3d(${cursor.x + 14}px, ${cursor.y + 14}px, 0)`,
           }}

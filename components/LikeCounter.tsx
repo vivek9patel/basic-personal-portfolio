@@ -166,8 +166,8 @@ export default function LikeCounter() {
           <div
             className={`absolute w-10 bottom-0 z-40  border-2 rounded-full ${
               likeIncrements === 9
-                ? "border-primary bg-accent"
-                : "border-transparent bg-accent"
+                ? "border-primary bg-ring"
+                : "border-transparent bg-ring"
             }`}
             style={{
               height: `${

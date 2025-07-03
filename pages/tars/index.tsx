@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { Button } from "../../components/CustomHtml";
+import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
 import ReactGA from "react-ga4";
 import Avatar from "../../components/Avatar";

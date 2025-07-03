@@ -3,44 +3,28 @@ import Link from "next/link";
 import LikeCounter from "./LikeCounter";
 import ReactGA from "react-ga4";
 import AskTarsButton from "./AskTarsButton";
+import { useTheme } from "next-themes"
+import { Button } from "./ui/button";
 
 const Header = ({ currentLink = "", loading = false }) => {
-  const [themeMode, setThemeMode] = useState<"light" | "dark">("light");
+  const { theme, setTheme } = useTheme();
+
   const [isHmMenuBtnClicked, setIsHmMenuBtnClicked] = useState(false);
 
-  useEffect(() => {
-    const oldThemeMode = localStorage.getItem("themeMode");
-    if (oldThemeMode) setThemeMode(oldThemeMode as "light" | "dark");
-    else {
-      const html = document.querySelector("html");
-      if (html) {
-        setThemeMode(html.classList.contains("dark") ? "dark" : "light");
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    const html = document.querySelector("html");
-    if (html) {
-      if (themeMode === "dark") html.classList.add("dark");
-      else html.classList.remove("dark");
-    }
-    localStorage.setItem("themeMode", themeMode);
-  }, [themeMode]);
-
   const toggleThemeMode = () => {
-    setThemeMode(themeMode === "dark" ? "light" : "dark");
+    setTheme(theme === "dark" ? "light" : "dark");
   };
 
   return (
     <div
-      className={`sticky z-50 top-0 left-0 transition-none transform dark:text-slate-300 `}
+      className={`sticky bg-background z-50 top-0 left-0 transition-none transform `}
     >
       <LikeCounter />
       <AskTarsButton currentLink={currentLink} />
       <div className="flex justify-center">
         <div className=" w-full px-10 sm:w-[600px] md:w-[700px] lg:w-[800px] xl:w-[1000px] 2xl:w-[1200px] py-4 flex justify-between relative">
-          <div
+          <Button
+          variant="link"
             onClick={() => {
               window.open("https://www.linkedin.com/in/vivek9patel/");
               ReactGA.event({
@@ -48,14 +32,12 @@ const Header = ({ currentLink = "", loading = false }) => {
                 action: "@vivek9patel linkedin",
               });
             }}
-            className={`font-semibold block sm:hidden md:block text-xl no-underline text-center w-32 transition ease-linear duration-1000 ${
+            className={`font-thin sm:hidden md:block text-xl no-underline text-center w-32 transition ease-linear duration-1000 text-muted-foreground ${
               false ? "animateFullWidth" : "animateNormalWidth"
             }`}
           >
-            <a className=" hover:underline underline-offset-2 hover:text-white font-thin">
               @vivek9patel
-            </a>
-          </div>
+          </Button>
           <div
             className=" w-8 sm:hidden"
             onClick={() => {
@@ -120,37 +102,41 @@ const Header = ({ currentLink = "", loading = false }) => {
             } sm:flex absolute z-50 text-right right-0 top-full bg-card border border-border border-opacity-40 rounded p-2 sm:p-0 sm:border-none sm:bg-transparent sm:top-0 sm:right mr-10 sm:m-0 flex-col sm:relative sm:flex-row items-center transition-none `}
           >
             <Link href="/">
-              <a
-                className={`mx-2 w-full mb-2 sm:mb-0 sm:w-auto ${
-                  currentLink === "" ? "text-primary" : "hover:text-white"
-                }  underline-offset-2`}
+              <Button
+              variant="link"
+                className={`${
+                  currentLink === "" ? "text-primary" : "text-muted-foreground"
+                } `}
               >
                 Home
-              </a>
+              </Button>
             </Link>
             <Link href="/projects">
-              <a
-                className={`mx-2 w-full sm:w-auto mb-2 sm:mb-0 ${
+              <Button
+              variant="link"
+                className={`${
                   currentLink === "projects"
                     ? "text-primary"
-                    : "hover:text-white"
+                    : "text-muted-foreground"
                 }  underline-offset-2`}
               >
                 Projects
-              </a>
+              </Button>
             </Link>
             <Link href="/resume">
-              <a
-                className={`mx-2 w-full sm:w-auto  mb-2 sm:mb-0 ${
+              <Button
+              variant="link"
+                className={`${
                   currentLink === "resume"
                     ? "text-primary"
-                    : "hover:text-white"
-                }  underline-offset-2`}
+                    : "text-muted-foreground"
+                }  `}
               >
                 Resume
-              </a>
+              </Button>
             </Link>
-            <div
+            <Button
+              variant="link"
               onClick={() => {
                 ReactGA.send({
                   hitType: "pageview",
@@ -159,11 +145,12 @@ const Header = ({ currentLink = "", loading = false }) => {
                 });
                 window.open("https://meet.vivek9patel.com/");
               }}
-              className={`mx-4 w-full sm:w-auto  mb-2 sm:m-0 hover:underline-offset-2 hover:text-white`}
+              className={`text-muted-foreground`}
             >
-              <a className=" whitespace-nowrap">Let's chat</a>
-            </div>
-            <div
+              Let's chat
+            </Button>
+            <Button
+            variant="link"
               onClick={() => {
                 ReactGA.event({
                   category: "Button.Click",
@@ -171,28 +158,11 @@ const Header = ({ currentLink = "", loading = false }) => {
                 });
                 window.open("https://github.com/vivek9patel");
               }}
-              className={`mx-2 w-full sm:w-auto ml-2 mb-2 sm:mb-0 hover:underline-offset-2`}
-            >
-              <a className=" flex  w-full sm:w-auto items-center justify-center hover:text-white">
-                <span className="flex-1">Github</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width={"14px"}
-                  height={"14px"}
-                  fill={"currentcolor"}
-                >
-                  <g data-name="Layer 2">
-                    <g data-name="external-link">
-                      <rect width="24" height="24" opacity="0"></rect>
-                      <path d="M20 11a1 1 0 0 0-1 1v6a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h6a1 1 0 0 0 0-2H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3v-6a1 1 0 0 0-1-1z"></path>
-                      <path d="M16 5h1.58l-6.29 6.28a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0L19 6.42V8a1 1 0 0 0 1 1 1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-4a1 1 0 0 0 0 2z"></path>
-                    </g>
-                  </g>
-                </svg>
-              </a>
-            </div>
-            <div
+              className={`text-muted-foreground`}
+            >Github
+            </Button>
+            <Button
+            variant="link"
               onClick={() => {
                 ReactGA.event({
                   category: "Button.Click",
@@ -200,28 +170,12 @@ const Header = ({ currentLink = "", loading = false }) => {
                 });
                 window.open("https://www.linkedin.com/in/vivek9patel/");
               }}
-              className={`mr-2 w-full sm:w-auto mb-2 sm:mb-0 hover:underline-offset-2`}
+              className={`text-muted-foreground`}
             >
-              <a className=" flex  w-full sm:w-auto items-center justify-center hover:text-white">
-                <span className="flex-1">LinkedIn</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width={"14px"}
-                  height={"14px"}
-                  fill={"currentcolor"}
-                >
-                  <g data-name="Layer 2">
-                    <g data-name="external-link">
-                      <rect width="24" height="24" opacity="0"></rect>
-                      <path d="M20 11a1 1 0 0 0-1 1v6a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h6a1 1 0 0 0 0-2H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3v-6a1 1 0 0 0-1-1z"></path>
-                      <path d="M16 5h1.58l-6.29 6.28a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0L19 6.42V8a1 1 0 0 0 1 1 1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-4a1 1 0 0 0 0 2z"></path>
-                    </g>
-                  </g>
-                </svg>
-              </a>
-            </div>
-            <div
+              LinkedIn
+
+            </Button>
+            {/* <div
               onClick={() => {
                 ReactGA.event({
                   category: "Button.Click",
@@ -233,17 +187,17 @@ const Header = ({ currentLink = "", loading = false }) => {
               className="mb-2 sm:mb-0 whitespace-nowrap text-center text-secondary border border-secondary rounded  w-full sm:w-auto px-1 text-sm hover:text-primary"
             >
               Hire me!
-            </div>
+            </div> */}
             <input
             onChange={toggleThemeMode}
-            checked={themeMode === "dark"}
+            checked={theme === "dark"}
             className="themeToggle mx-2"
             type="checkbox"
           ></input>
           </div>
         </div>
       </div>
-      <div className="w-full dark:bg-gray-200 bg-black h-1">
+      <div className="w-full border-y border-border border-gray-400 h-1">
         <div
           className={`bg-accent w-0 h-1 ${
             loading ? "triggerLoader" : "trigeerLoaderDone"

@@ -1,7 +1,7 @@
 import { createRef, useEffect, useState } from "react";
-import { Button } from "./CustomHtml";
 import emailjs from "@emailjs/browser";
 import ReactGA from "react-ga4";
+import { Button } from "@/components/ui/button";
 
 export default function EmailBox() {
   const [loading, setLoading] = useState(false);

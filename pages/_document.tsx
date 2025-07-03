@@ -1,10 +1,11 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
 import MetaTags from "../components/meta/MetaTags";
 import { Analytics } from "@vercel/analytics/react";
+
 class MyDocument extends Document {
   render() {
     return (
-      <Html className="dark">
+      <Html suppressHydrationWarning>
         <Head>
           <MetaTags />
           <link

@@ -4,8 +4,19 @@ import { ProjectCardProps } from "../../components/ProjectCard";
 import { useContext, useEffect, useState } from "react";
 import { ProjectListContext } from "../../context";
 import { fetchProjectsStar } from "../../helpers/helpers";
-import { Hr } from "../../components/CustomHtml";
 import ReactGA from "react-ga4";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 
 type Props = {
   projectsList: Array<ProjectCardProps>;
@@ -58,38 +69,43 @@ const Projects: NextPage<Props> = () => {
     <div className="my-4 sm:my-10">
       <div className="flex sm:flex-row w-full sm:w-auto flex-col items-center text-sm 2xl:text-base">
         <div className="flex-1">
-          <span>Filter by: </span>
-          <select
-            className=" bg-card py-1 px-2 ml-2 rounded border-2 border-opacity-5 outline-none text-muted-foreground focus:border-primary"
-            value={filterBy}
-            onChange={(e) => {
+          <Select
+            onValueChange={(value) => {
               ReactGA.event({
                 category: "Button.Click",
-                action: "Filter Projects",
-                label: e.target.value,
+                action: "Sort Projects",
+                label: value,
               });
-              setFilterBy(e.target.value as TypeFilterBy);
+              setFilterBy(value as TypeFilterBy);
             }}
+            value={filterBy}
           >
-            <option value={"stars"}>stars</option>
-            <option value={"year"}>year</option>
-            <option value={"priority"}>vivek's favorite</option>
-          </select>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Sort by</SelectLabel>
+                <SelectItem value="stars">Stars</SelectItem>
+                <SelectItem value="year">Year</SelectItem>
+                <SelectItem value="priority">Priority</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
         <div className="sm:ml-4 ml-0 mt-4 sm:mt-0 w-full sm:w-auto sm:flex-1 flex items-center">
-          <span>Search by: </span>
-          <input
-            className=" border border-border border-opacity-10 bg-background py-1 px-2 mx-2 rounded flex-1 focus:border-primary active:border-primary outline-none"
+        <Label htmlFor="search-project">Filter by</Label>
+          <Input
             type="text"
             data-cursor-focusable="true"
             name="search-project"
-            placeholder="React, Python, D3, etc."
+            placeholder="React, Python, D3"
             onChange={filterByBadge}
           />
         </div>
       </div>
 
-      <Hr />
+      <Separator className="my-4" />
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 grid-rows-auto auto-rows-fr gap-x-5 gap-y-5">
         {customOrderedProjectList.map((project: ProjectCardProps, i) => (
           <ProjectCard key={i} {...project} />

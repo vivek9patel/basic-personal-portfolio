@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
-import { Anchor, Button, Hr } from "../components/CustomHtml";
+import { Anchor } from "../components/CustomHtml";
+import { Button } from "@/components/ui/button";
 import ProjectCard from "../components/ProjectCard";
 import { ProjectCardProps } from "../components/ProjectCard";
 import { useContext, useEffect, useState } from "react";
@@ -14,6 +15,7 @@ import hmsLogo from "../images/100ms_logo.png";
 import webmateLogo from "../images/webmate_logo.png";
 import EmailBox from "../components/EmailBox";
 import ReactGA from "react-ga4";
+import { Separator } from "@/components/ui/separator";
 
 const TRACKING_ID = process.env.NEXT_PUBLIC_TRACKING_ID;
 if (TRACKING_ID) ReactGA.initialize(TRACKING_ID);
@@ -46,16 +48,15 @@ const Home: NextPage = () => {
             <div className=" mt-4">
               <span className="hidden sm:inline-block mr-4">I'm a </span>
               <span className=" text-primary whitespace-nowrap">
-                Software Engineer
+                Frontend Magician 🪄
               </span>
-              .
             </div>
           </div>
           <div className="mt-4 flex items-center">
-            <a className="no-underline" href="https://github.com/vivek9patel" target="_blank">
+            <a className="no-underline text-primary" href="https://github.com/vivek9patel" target="_blank">
               <img alt="GitHub followers" src="https://img.shields.io/github/followers/vivek9patel" />
             </a>
-            <a className="no-underline ml-4" href="https://github.com/vivek9patel?tab=repositories&q=&type=&language=&sort=stargazers" target="_blank">
+            <a className="no-underline ml-4 text-primary" href="https://github.com/vivek9patel?tab=repositories&q=&type=&language=&sort=stargazers" target="_blank">
               <img alt="GitHub User's stars" src="https://img.shields.io/github/stars/vivek9patel" />
             </a>
           </div>
@@ -105,6 +106,7 @@ const Home: NextPage = () => {
         <div className="flex justify-between mb-6 items-center">
           <div className="text-4xl sm:text-5xl font-medium">Experience</div>
           <Button
+            variant="outline"
             onClick={() => {
               clientRouter.push("/resume");
             }}
@@ -119,7 +121,7 @@ const Home: NextPage = () => {
           to craft tailored, intuitive, and thoroughly tested experiences that
           align the goals of companies with the expectations of users.
         </div>
-        <Hr width="100%" />
+        <Separator className="my-4" />
         <div className="flex justify-between flex-col lg:flex-row">
           <div className=" text-4xl xl:text-5xl mb-6 lg:mb-0 flex items-center justify-center Arialic_Hollow text-muted-foreground font-light">
             Mar '25 - Present
@@ -157,7 +159,7 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
-        <Hr width="100%" />
+        <Separator className="my-4" />
         <div className="flex justify-between flex-col lg:flex-row">
           <div className=" text-4xl xl:text-5xl mb-6 lg:mb-0 flex items-center justify-center Arialic_Hollow text-muted-foreground font-light">
             Jun '24 - Feb'25
@@ -195,7 +197,7 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
-        <Hr width="100%" />
+        <Separator className="my-4" />
         <div className="flex justify-between flex-col lg:flex-row">
           <div className=" text-4xl xl:text-5xl mb-6 lg:mb-0 flex items-center justify-center Arialic_Hollow text-muted-foreground font-light">
             May '23 - Apr '24
@@ -233,7 +235,7 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
-        <Hr width="100%" />
+        <Separator className="my-4" />
         <div className="flex justify-between  flex-col lg:flex-row">
           <div className="text-4xl xl:text-5xl  mb-6 lg:mb-0  flex items-center justify-center Arialic_Hollow text-muted-foreground font-light">
             Jan '22 - Jun '22
@@ -270,7 +272,7 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
-        <Hr width="100%" />
+        <Separator className="my-4" />
         <div className="flex justify-between  flex-col lg:flex-row">
           <div className="text-4xl xl:text-5xl  mb-6 lg:mb-0   flex items-center justify-center Arialic_Hollow text-muted-foreground font-light">
             Apr '21 - Jun '21
@@ -307,7 +309,7 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
-        <Hr width="100%" />
+        <Separator className="my-4" />
         <div className="flex justify-between  flex-col lg:flex-row">
           <div className="text-4xl xl:text-5xl  mb-6 lg:mb-0   flex items-center justify-center Arialic_Hollow text-muted-foreground font-light">
             Jun '20 - Mar '21
@@ -344,7 +346,7 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
-        <Hr width="100%" />
+        <Separator className="my-4" />
         <div
           onClick={() => {
             ReactGA.event({
@@ -353,7 +355,7 @@ const Home: NextPage = () => {
             });
             window.open("https://www.linkedin.com/in/vivek9patel/", "_blank");
           }}
-          className=" text-muted-foreground underline hover:text-white"
+          className=" text-muted-foreground underline hover:text-ring"
         >
           See my recommendations on LinkedIn
           {" ->"}
@@ -365,6 +367,7 @@ const Home: NextPage = () => {
         <div className="flex justify-between mb-10 items-center">
           <div className="text-4xl sm:text-5xl font-medium">Projects</div>
           <Button
+            variant="outline"
             onClick={() => {
               clientRouter.push("/projects");
             }}

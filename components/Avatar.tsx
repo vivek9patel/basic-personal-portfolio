@@ -12,7 +12,7 @@ export default function Avatar({
     border?: boolean;
 }) {
     return (
-        <div className={`${width} ${height} rounded-full overflow-hidden ${border ? "border" : " border-0"} border-gray-800`}>
+        <div className={`${width} ${height} rounded-full overflow-hidden ${border ? "border" : " border-0"} border-gray-800 text-black`}>
             <img src={url} alt={title} className="w-full h-full"/>
         </div>
     );
