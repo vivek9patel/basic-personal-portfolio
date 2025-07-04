@@ -1,11 +1,11 @@
-import { createRef, useEffect, useState } from "react";
-import emailjs from "@emailjs/browser";
-import ReactGA from "react-ga4";
-import { Button } from "@/components/ui/button";
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
-import { Label } from "./ui/label";
-import { toast } from "sonner";
+import { createRef, useEffect, useState } from 'react';
+import emailjs from '@emailjs/browser';
+import ReactGA from 'react-ga4';
+import { Button } from '@/components/ui/button';
+import { Input } from './ui/input';
+import { Textarea } from './ui/textarea';
+import { Label } from './ui/label';
+import { toast } from 'sonner';
 
 export default function EmailBox() {
   const [loading, setLoading] = useState(false);
@@ -24,16 +24,16 @@ export default function EmailBox() {
   function canSendEmail(): boolean {
     const emailTimestamps = localStorage.getItem('emailTimestamps');
     if (!emailTimestamps) return true;
-    
+
     const timestamps = JSON.parse(emailTimestamps);
     const now = Date.now();
     const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-    
+
     // Filter out timestamps older than 24 hours
     const recentTimestamps = timestamps.filter((timestamp: number) => {
       return now - timestamp < twentyFourHours;
     });
-    
+
     // Allow up to 2 emails per 24 hours
     return recentTimestamps.length < 2;
   }
@@ -41,99 +41,101 @@ export default function EmailBox() {
   function getRemainingTime(): string {
     const emailTimestamps = localStorage.getItem('emailTimestamps');
     if (!emailTimestamps) return '';
-    
+
     const timestamps = JSON.parse(emailTimestamps);
     const now = Date.now();
     const twentyFourHours = 24 * 60 * 60 * 1000;
-    
+
     // Filter out timestamps older than 24 hours
     const recentTimestamps = timestamps.filter((timestamp: number) => {
       return now - timestamp < twentyFourHours;
     });
-    
+
     if (recentTimestamps.length === 0) return '';
-    
+
     // Find the oldest timestamp in the recent list
     const oldestTimestamp = Math.min(...recentTimestamps);
     const timeDiff = now - oldestTimestamp;
     const remainingTime = twentyFourHours - timeDiff;
-    
+
     const hours = Math.floor(remainingTime / (60 * 60 * 1000));
-    const minutes = Math.floor((remainingTime % (60 * 60 * 1000)) / (60 * 1000));
-    
+    const minutes = Math.floor(
+      (remainingTime % (60 * 60 * 1000)) / (60 * 1000)
+    );
+
     return `${hours}h ${minutes}m`;
   }
 
   function getEmailCount(): number {
     const emailTimestamps = localStorage.getItem('emailTimestamps');
     if (!emailTimestamps) return 0;
-    
+
     const timestamps = JSON.parse(emailTimestamps);
     const now = Date.now();
     const twentyFourHours = 24 * 60 * 60 * 1000;
-    
+
     // Filter out timestamps older than 24 hours
     const recentTimestamps = timestamps.filter((timestamp: number) => {
       return now - timestamp < twentyFourHours;
     });
-    
+
     return recentTimestamps.length;
   }
 
   function sendEmail(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    
+
     // Check if user can send email
     if (!canSendEmail()) {
       const remainingTime = getRemainingTime();
       const emailCount = getEmailCount();
-      toast.warning("Rate limit exceeded", {
+      toast.warning('Rate limit exceeded', {
         description: `You've sent ${emailCount}/2 emails in the last 24 hours. Next email available in ${remainingTime}.`,
       });
       return;
     }
-    
+
     const message = subjectRef.current?.value;
-    if (message === undefined || message === "") return;
+    if (message === undefined || message === '') return;
     const senderName = senderNameRef.current?.value;
     const socialId = socialIdRef.current?.value;
     setLoading(true);
     const templateParams = {
-      from_name: "vivek9patel.com",
-      to_name: "Vivek Patel",
-      subject: `${senderName ? senderName : "personal-site"}`,
-      message: `${message}${socialId ? `\n\nSocial ID: ${socialId}` : ""}`,
+      from_name: 'vivek9patel.com',
+      to_name: 'Vivek Patel',
+      subject: `${senderName ? senderName : 'personal-site'}`,
+      message: `${message}${socialId ? `\n\nSocial ID: ${socialId}` : ''}`,
     };
     emailjs
       // @ts-ignore
       .send(serviceID, templateID, templateParams)
       .then(() => {
         ReactGA.event({
-          category: "Button.Click",
-          action: "Emailjs Trigger",
+          category: 'Button.Click',
+          action: 'Emailjs Trigger',
         });
-        if (subjectRef.current) subjectRef.current.value = "";
-        if (socialIdRef.current) socialIdRef.current.value = "";
-        
+        if (subjectRef.current) subjectRef.current.value = '';
+        if (socialIdRef.current) socialIdRef.current.value = '';
+
         // Store the current timestamp in array
         const emailTimestamps = localStorage.getItem('emailTimestamps');
         const timestamps = emailTimestamps ? JSON.parse(emailTimestamps) : [];
         timestamps.push(Date.now());
         localStorage.setItem('emailTimestamps', JSON.stringify(timestamps));
-        
+
         const newEmailCount = getEmailCount();
         const remainingEmails = 2 - newEmailCount;
-        
-        toast.success("Email sent successfully!", {
+
+        toast.success('Email sent successfully!', {
           description: `Thanks for reaching out! I'll get back to you soon :)`,
         });
-        
+
         setLoading(false);
       })
-      .catch((e) => {
+      .catch(e => {
         console.log(e);
-        toast.error("Failed to send email", {
-          description: "Something went wrong. Please try again later.",
+        toast.error('Failed to send email', {
+          description: 'Something went wrong. Please try again later.',
         });
         setLoading(false);
       });

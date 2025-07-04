@@ -1,7 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Badge } from "@/components/ui/badge";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Star, Users } from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import { Badge } from '@/components/ui/badge';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { Star, Users } from 'lucide-react';
 
 interface GitHubStatsProps {
   username: string;
@@ -20,15 +25,22 @@ export default function GitHubStats({ username }: GitHubStatsProps) {
     const fetchGitHubStats = async () => {
       try {
         // Fetch user data for followers
-        const userResponse = await fetch(`https://api.github.com/users/${username}`);
+        const userResponse = await fetch(
+          `https://api.github.com/users/${username}`
+        );
         const userData = await userResponse.json();
-        
+
         // Fetch repositories to calculate total stars
-        const reposResponse = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`);
+        const reposResponse = await fetch(
+          `https://api.github.com/users/${username}/repos?per_page=100`
+        );
         const reposData = await reposResponse.json();
-        
-        const totalStars = reposData.reduce((acc: number, repo: any) => acc + repo.stargazers_count, 0);
-        
+
+        const totalStars = reposData.reduce(
+          (acc: number, repo: any) => acc + repo.stargazers_count,
+          0
+        );
+
         setStats({
           followers: userData.followers,
           stars: totalStars,
@@ -78,14 +90,14 @@ export default function GitHubStats({ username }: GitHubStatsProps) {
         {showFollowers && (
           <Tooltip>
             <TooltipTrigger asChild>
-              <a 
+              <a
                 href={`https://github.com/${username}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="no-underline"
               >
-                <Badge 
-                  variant="outline" 
+                <Badge
+                  variant="outline"
                   className="flex items-center gap-1 px-2 py-0.5 text-xs font-medium border-muted-foreground/20 text-muted-foreground hover:border-muted-foreground hover:bg-muted/50 transition-all duration-200"
                 >
                   <Users className="h-2.5 w-2.5" />
@@ -93,7 +105,7 @@ export default function GitHubStats({ username }: GitHubStatsProps) {
                 </Badge>
               </a>
             </TooltipTrigger>
-            <TooltipContent 
+            <TooltipContent
               side="bottom"
               className="bg-secondary text-secondary-foreground"
             >
@@ -101,18 +113,18 @@ export default function GitHubStats({ username }: GitHubStatsProps) {
             </TooltipContent>
           </Tooltip>
         )}
-        
+
         {showStars && (
           <Tooltip>
             <TooltipTrigger asChild>
-              <a 
+              <a
                 href={`https://github.com/${username}?tab=repositories&q=&type=&language=&sort=stargazers`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="no-underline"
               >
-                <Badge 
-                  variant="outline" 
+                <Badge
+                  variant="outline"
                   className="flex items-center gap-1 px-2 py-0.5 text-xs font-medium border-muted-foreground/20 text-muted-foreground hover:border-muted-foreground hover:bg-muted/50 transition-all duration-200"
                 >
                   <Star className="h-2.5 w-2.5" />
@@ -120,7 +132,7 @@ export default function GitHubStats({ username }: GitHubStatsProps) {
                 </Badge>
               </a>
             </TooltipTrigger>
-            <TooltipContent 
+            <TooltipContent
               side="bottom"
               className="bg-secondary text-secondary-foreground"
             >
@@ -131,4 +143,4 @@ export default function GitHubStats({ username }: GitHubStatsProps) {
       </div>
     </TooltipProvider>
   );
-} 
+}

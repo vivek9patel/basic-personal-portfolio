@@ -1,62 +1,62 @@
-import type { NextPage } from "next";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import { useEffect, useRef, useState } from "react";
-import ReactGA from "react-ga4";
-import Avatar from "../../components/Avatar";
-import Markdown from "markdown-to-jsx";
-import { RefreshCw, Send } from "lucide-react";
-import { toast } from "sonner";
+import type { NextPage } from 'next';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
+import { useEffect, useRef, useState } from 'react';
+import ReactGA from 'react-ga4';
+import Avatar from '../../components/Avatar';
+import Markdown from 'markdown-to-jsx';
+import { RefreshCw, Send } from 'lucide-react';
+import { toast } from 'sonner';
 
-import v9Icon from "../../images/v9.png";
-import tarsIcon from "../../images/tars.svg";
-import { v4 as uuidv4 } from "uuid";
+import v9Icon from '../../images/v9.png';
+import tarsIcon from '../../images/tars.svg';
+import { v4 as uuidv4 } from 'uuid';
 
-export const LOCAL_HISTORY_KEY = "tars-history";
-export const LOCAL_SESSION_KEY = "session-id-tars";
+export const LOCAL_HISTORY_KEY = 'tars-history';
+export const LOCAL_SESSION_KEY = 'session-id-tars';
 
 type History = {
-  from: "user" | "tars";
+  from: 'user' | 'tars';
   message: string;
   timestamp?: number;
 };
 
 // Array of sample questions for random selection
 const SAMPLE_QUESTIONS = [
-  "Can you share a recommendation from someone who has worked with Vivek?",
+  'Can you share a recommendation from someone who has worked with Vivek?',
   "What is Vivek's education background?",
-  "What are some examples of problems Vivek has solved in past roles?",
-  "Can you list some projects and frameworks Vivek has worked on?",
+  'What are some examples of problems Vivek has solved in past roles?',
+  'Can you list some projects and frameworks Vivek has worked on?',
   "What's Vivek's biggest professional achievement?",
-  "How does Vivek approach problem-solving in his projects?",
-  "What programming languages and technologies is Vivek most passionate about?",
+  'How does Vivek approach problem-solving in his projects?',
+  'What programming languages and technologies is Vivek most passionate about?',
   "Can you tell me about Vivek's leadership style and team collaboration?",
-  "What unique skills or expertise does Vivek bring to a team?",
-  "How does Vivek stay updated with the latest technology trends?",
+  'What unique skills or expertise does Vivek bring to a team?',
+  'How does Vivek stay updated with the latest technology trends?',
   "What's the most challenging project Vivek has worked on?",
   "Can you describe Vivek's work philosophy and values?",
-  "What industries or domains has Vivek gained experience in?",
-  "How does Vivek balance technical excellence with business requirements?",
+  'What industries or domains has Vivek gained experience in?',
+  'How does Vivek balance technical excellence with business requirements?',
 ];
 
 const Gpt: NextPage = () => {
   useEffect(() => {
     // google analytics
-    ReactGA.send({ hitType: "pageview", page: "/tars", title: "Tars" });
+    ReactGA.send({ hitType: 'pageview', page: '/tars', title: 'Tars' });
   }, []);
 
   const [isServerUp, setIsServerUp] = useState(false);
   const [queryProcessing, setQueryProcessing] = useState(false);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [history, setHistory] = useState<History[]>([]);
   const [selectedQuestions, setSelectedQuestions] = useState<string[]>([]);
   const [lastRequestTime, setLastRequestTime] = useState<number>(0);
   const [cooldownRemaining, setCooldownRemaining] = useState<number>(0);
   const historyRef = useRef<HTMLDivElement>(null);
-  
+
   // Rate limiting configuration
   const RATE_LIMIT_MS = 3000; // 3 seconds cooldown between requests
 
@@ -82,18 +82,18 @@ const Gpt: NextPage = () => {
   // Update cooldown timer
   useEffect(() => {
     if (lastRequestTime === 0) return;
-    
+
     const updateCooldown = () => {
       const now = Date.now();
       const timeSinceLastRequest = now - lastRequestTime;
       const remaining = Math.max(0, RATE_LIMIT_MS - timeSinceLastRequest);
       setCooldownRemaining(remaining);
-      
+
       if (remaining > 0) {
         setTimeout(updateCooldown, 100);
       }
     };
-    
+
     updateCooldown();
   }, [lastRequestTime, RATE_LIMIT_MS]);
 
@@ -103,23 +103,23 @@ const Gpt: NextPage = () => {
       clearChatHistory();
     };
 
-    window.addEventListener("clearTarsHistory", handleClearHistory);
+    window.addEventListener('clearTarsHistory', handleClearHistory);
 
     return () => {
-      window.removeEventListener("clearTarsHistory", handleClearHistory);
+      window.removeEventListener('clearTarsHistory', handleClearHistory);
     };
   }, []);
 
   useEffect(() => {
-    fetch(process.env.NEXT_PUBLIC_TARS_ENDPOINT || "", {
-      method: "GET",
+    fetch(process.env.NEXT_PUBLIC_TARS_ENDPOINT || '', {
+      method: 'GET',
     })
-      .then((response) => response.status)
-      .then((code) => {
+      .then(response => response.status)
+      .then(code => {
         setIsServerUp(code === 200);
         if (code === 200) {
           const oldHistory: History[] = JSON.parse(
-            localStorage.getItem(LOCAL_HISTORY_KEY) || "[]"
+            localStorage.getItem(LOCAL_HISTORY_KEY) || '[]'
           );
           setHistory(oldHistory);
 
@@ -129,7 +129,7 @@ const Gpt: NextPage = () => {
           setSessionId(oldSessionId);
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
         setIsServerUp(false);
       });
@@ -152,31 +152,31 @@ const Gpt: NextPage = () => {
 
   const fetchResponse = async (newQuery: string) => {
     const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append('Content-Type', 'application/json');
 
     return await fetch(`${process.env.NEXT_PUBLIC_TARS_ENDPOINT}/api`, {
-      method: "POST",
+      method: 'POST',
       headers: myHeaders,
       body: JSON.stringify({
         query: newQuery,
         session_id: sessionId,
       }),
     })
-      .then((response) => {
-        if (response.status !== 200) return "";
+      .then(response => {
+        if (response.status !== 200) return '';
         return response.json();
       })
-      .then((response) => {
+      .then(response => {
         return response.response;
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
-        return "";
+        return '';
       });
   };
 
-  const pushQueryToHistory = (from: "user" | "tars", newQuery: string) => {
-    setHistory((oldHistory) => [
+  const pushQueryToHistory = (from: 'user' | 'tars', newQuery: string) => {
+    setHistory(oldHistory => [
       ...oldHistory,
       {
         from,
@@ -188,27 +188,29 @@ const Gpt: NextPage = () => {
 
   const submitQuery = async (newQuery: string) => {
     if (queryProcessing || !isServerUp) return;
-    
+
     if (!canMakeRequest()) {
       const remainingSeconds = Math.ceil(cooldownRemaining / 1000);
-      toast.warning(`Please wait ${remainingSeconds} second${remainingSeconds > 1 ? 's' : ''} before sending another message`);
+      toast.warning(
+        `Please wait ${remainingSeconds} second${remainingSeconds > 1 ? 's' : ''} before sending another message`
+      );
       return;
     }
-    
+
     setLastRequestTime(Date.now());
-    pushQueryToHistory("user", newQuery);
+    pushQueryToHistory('user', newQuery);
     setQueryProcessing(true);
     ReactGA.event({
-      category: "Button.Click",
-      action: "Tars Query submit",
+      category: 'Button.Click',
+      action: 'Tars Query submit',
       label: newQuery,
     });
     const response: string = await fetchResponse(newQuery);
     setQueryProcessing(false);
     pushQueryToHistory(
-      "tars",
+      'tars',
       !response
-        ? "Sorry, I am not feeling well today, please come back later."
+        ? 'Sorry, I am not feeling well today, please come back later.'
         : response
     );
     // Refresh questions after each response
@@ -216,19 +218,19 @@ const Gpt: NextPage = () => {
   };
 
   const handleKeyDown = (e: any) => {
-    if (e.key === "Enter" && query !== "") {
+    if (e.key === 'Enter' && query !== '') {
       submitQuery(query);
-      setQuery("");
+      setQuery('');
     }
   };
 
   const handleAskBtnSubmit = () => {
     submitQuery(query);
-    setQuery("");
+    setQuery('');
   };
 
   return (
-    <div className="flex flex-col" style={{ height: "calc(100vh - 120px)" }}>
+    <div className="flex flex-col" style={{ height: 'calc(100vh - 120px)' }}>
       {/* Header */}
       <div className="border-b border-border p-2 py-4 flex items-center justify-between flex-shrink-0">
         <div className="flex items-center gap-3">
@@ -237,10 +239,10 @@ const Gpt: NextPage = () => {
             <h1 className="font-semibold text-foreground">TARS</h1>
             <p
               className={`text-sm font-medium ${
-                isServerUp ? "text-green-500" : "text-red-500"
+                isServerUp ? 'text-green-500' : 'text-red-500'
               }`}
             >
-              {isServerUp ? "Online" : "Offline"}
+              {isServerUp ? 'Online' : 'Offline'}
             </p>
           </div>
         </div>
@@ -252,7 +254,7 @@ const Gpt: NextPage = () => {
           {history.length > 0 ? (
             <>
               {history.map((message, index) =>
-                message.from === "user" ? (
+                message.from === 'user' ? (
                   <UserMessage key={index} message={message.message} />
                 ) : (
                   <TarsMessage key={index} message={message.message} />
@@ -289,14 +291,14 @@ const Gpt: NextPage = () => {
         {selectedQuestions.length > 0 && (
           <div className="flex justify-between gap-2 mb-1">
             <div className="flex flex-nowrap gap-2 overflow-x-auto">
-            {selectedQuestions.map((question, index) => (
-              <SampleQuery
-                key={index}
-                question={question}
-                callBackFun={submitQuery}
-              />
-            ))}
-              </div>
+              {selectedQuestions.map((question, index) => (
+                <SampleQuery
+                  key={index}
+                  question={question}
+                  callBackFun={submitQuery}
+                />
+              ))}
+            </div>
             <Button
               onClick={() => setSelectedQuestions(getRandomQuestions())}
               variant="ghost"
@@ -315,17 +317,22 @@ const Gpt: NextPage = () => {
             <Input
               data-cursor-focusable="true"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={e => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
               className="flex-1"
-              placeholder={"Ask me anything about Vivek..."}
+              placeholder={'Ask me anything about Vivek...'}
               disabled={queryProcessing || !isServerUp || cooldownRemaining > 0}
             />
             <Button
               onClick={handleAskBtnSubmit}
-              disabled={query === "" || queryProcessing || !isServerUp || cooldownRemaining > 0}
+              disabled={
+                query === '' ||
+                queryProcessing ||
+                !isServerUp ||
+                cooldownRemaining > 0
+              }
               size="icon"
-              title={"Send message"}
+              title={'Send message'}
             >
               <Send className="h-4 w-4" />
             </Button>
@@ -369,11 +376,11 @@ function TarsMessage({
                 <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"></div>
                 <div
                   className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"
-                  style={{ animationDelay: "0.1s" }}
+                  style={{ animationDelay: '0.1s' }}
                 ></div>
                 <div
                   className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"
-                  style={{ animationDelay: "0.2s" }}
+                  style={{ animationDelay: '0.2s' }}
                 ></div>
               </div>
             </div>
@@ -384,8 +391,8 @@ function TarsMessage({
                   overrides: {
                     a: {
                       props: {
-                        target: "_blank",
-                        rel: "noopener noreferrer",
+                        target: '_blank',
+                        rel: 'noopener noreferrer',
                       },
                     },
                   },
@@ -415,8 +422,8 @@ function SampleQuery({
       variant="outline"
       className={`duration-300 transition-colors text-xs py-1 px-2 whitespace-nowrap ${
         disabled
-          ? "opacity-30 cursor-not-allowed"
-          : "cursor-pointer opacity-60 hover:opacity-100"
+          ? 'opacity-30 cursor-not-allowed'
+          : 'cursor-pointer opacity-60 hover:opacity-100'
       }`}
       onClick={() => callBackFun(question)}
     >

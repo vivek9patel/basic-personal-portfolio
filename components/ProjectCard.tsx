@@ -1,9 +1,16 @@
-import { useEffect, useState } from "react";
-import { badgeImage } from "../helpers/helpers";
-import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import ReactGA from "react-ga4";
-import { Badge } from "./ui/badge";
+import { useEffect, useState } from 'react';
+import { badgeImage } from '../helpers/helpers';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from '@/components/ui/card';
+import ReactGA from 'react-ga4';
+import { Badge } from './ui/badge';
 
 export type ProjectCardProps = {
   title: string;
@@ -18,11 +25,11 @@ export type ProjectCardProps = {
 };
 
 export default function ProjectCard(props: ProjectCardProps) {
-  const [cardId, setCardId] = useState<string>("");
+  const [cardId, setCardId] = useState<string>('');
   useEffect(() => {
-    setCardId(props.title.replace(/\s/g, "-").toLowerCase());
+    setCardId(props.title.replace(/\s/g, '-').toLowerCase());
   }, [props.title]);
-  
+
   return (
     <Card className="flex flex-col justify-between transition-colors rounded-lg shadow">
       <CardHeader>
@@ -34,22 +41,26 @@ export default function ProjectCard(props: ProjectCardProps) {
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"
-                width={"14px"}
-                height={"14px"}
-                fill={"currentcolor"}
+                width={'14px'}
+                height={'14px'}
+                fill={'currentcolor'}
               >
                 <path
                   fillRule="evenodd"
                   d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25zm0 2.445L6.615 5.5a.75.75 0 01-.564.41l-3.097.45 2.24 2.184a.75.75 0 01.216.664l-.528 3.084 2.769-1.456a.75.75 0 01.698 0l2.77 1.456-.53-3.084a.75.75 0 01.216-.664l2.24-2.183-3.096-.45a.75.75 0 01-.564-.41L8 2.694v.001z"
                 ></path>
               </svg>
-              </Badge>
+            </Badge>
           ) : null}
         </div>
-        <CardTitle className="text-lg sm:text-xl font-medium">{props.title}</CardTitle>
-        <CardDescription className="font-light">{props.tagline}</CardDescription>
+        <CardTitle className="text-lg sm:text-xl font-medium">
+          {props.title}
+        </CardTitle>
+        <CardDescription className="font-light">
+          {props.tagline}
+        </CardDescription>
       </CardHeader>
-      
+
       <CardContent>
         <div className="flex custom-scroll-bar-y justify-start items-center">
           {props.badges.map((badge, i) => (
@@ -62,18 +73,18 @@ export default function ProjectCard(props: ProjectCardProps) {
           ))}
         </div>
       </CardContent>
-      
+
       <CardFooter className="flex items-center">
         {props.github_url && (
           <Button
-          variant="outline"
+            variant="outline"
             onClick={() => {
               ReactGA.event({
-                category: "Button.Click",
-                action: "Project Github URL",
+                category: 'Button.Click',
+                action: 'Project Github URL',
                 label: props.github_url,
               });
-              window.open(props.github_url, "_blank");
+              window.open(props.github_url, '_blank');
             }}
             className="mx-1 flex-1 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
             id={`view-project-button-${cardId}`}
@@ -88,9 +99,9 @@ export default function ProjectCard(props: ProjectCardProps) {
               data-cursor={`view-project-button-${cardId}`}
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
-              width={"14px"}
-              height={"14px"}
-              fill={"currentcolor"}
+              width={'14px'}
+              height={'14px'}
+              fill={'currentcolor'}
             >
               <g data-name="Layer 2">
                 <g data-name="external-link">
@@ -107,11 +118,11 @@ export default function ProjectCard(props: ProjectCardProps) {
             variant="outline"
             onClick={() => {
               ReactGA.event({
-                category: "Button.Click",
-                action: "Project Demo URL",
+                category: 'Button.Click',
+                action: 'Project Demo URL',
                 label: props.demo_url,
               });
-              window.open(props.demo_url, "_blank");
+              window.open(props.demo_url, '_blank');
             }}
             className="mx-1 flex-1"
             id={`demo-project-button-${cardId}`}
@@ -126,9 +137,9 @@ export default function ProjectCard(props: ProjectCardProps) {
               data-cursor={`demo-project-button-${cardId}`}
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
-              width={"14px"}
-              height={"14px"}
-              fill={"currentcolor"}
+              width={'14px'}
+              height={'14px'}
+              fill={'currentcolor'}
             >
               <g data-name="Layer 2">
                 <g data-name="external-link">

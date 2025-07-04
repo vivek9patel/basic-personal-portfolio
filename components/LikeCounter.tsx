@@ -1,12 +1,17 @@
-import { useEffect, useState } from "react";
-import { fetchLikes, incrementLikesTo, formatNumber } from "../helpers/helpers";
-import heartImage from "../images/heart.svg";
-import { useSession, signIn, signOut } from "next-auth/react";
-import ReactGA from "react-ga4";
-import { Button } from "./ui/button";
-import { Badge } from "./ui/badge";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
-import { cn } from "@/lib/utils";
+import { useEffect, useState } from 'react';
+import { fetchLikes, incrementLikesTo, formatNumber } from '../helpers/helpers';
+import heartImage from '../images/heart.svg';
+import { useSession, signIn, signOut } from 'next-auth/react';
+import ReactGA from 'react-ga4';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from './ui/tooltip';
+import { cn } from '@/lib/utils';
 
 export default function LikeCounter() {
   const { status } = useSession();
@@ -22,7 +27,7 @@ export default function LikeCounter() {
   useEffect(() => {
     startAuthInterval();
     getLikes();
-    window.addEventListener("beforeunload", () => {
+    window.addEventListener('beforeunload', () => {
       signOut();
     });
   }, []);
@@ -38,7 +43,7 @@ export default function LikeCounter() {
   const updateLikesInDB = () => {
     setUpdateIncrementTimeout(
       setTimeout(() => {
-        incrementLikesTo(likeIncrements - oldLikeIncrements).then((res) => {
+        incrementLikesTo(likeIncrements - oldLikeIncrements).then(res => {
           if (res.status === 401) {
             startAuthInterval();
           }
@@ -48,7 +53,7 @@ export default function LikeCounter() {
   };
 
   useEffect(() => {
-    if (status === "authenticated") {
+    if (status === 'authenticated') {
       clearInterval(authInterval);
       return;
     }
@@ -57,14 +62,14 @@ export default function LikeCounter() {
   const startAuthInterval = () => {
     setAuthInterval(
       setInterval(() => {
-        signIn("credentials", { redirect: false });
+        signIn('credentials', { redirect: false });
       }, 3000)
     );
   };
 
   const getIncrementsFromLocalStorage = () => {
     let likeIncrements = parseInt(
-      localStorage.getItem("likeIncrements") || "0"
+      localStorage.getItem('likeIncrements') || '0'
     );
     if (likeIncrements < 0 || likeIncrements > 9) {
       likeIncrements = 0;
@@ -74,7 +79,7 @@ export default function LikeCounter() {
   };
 
   const getLikes = () => {
-    fetchLikes().then((res) => {
+    fetchLikes().then(res => {
       if (res && res.likes) {
         const previousIncrement = getIncrementsFromLocalStorage();
         changeLikeIncrements(previousIncrement);
@@ -84,7 +89,7 @@ export default function LikeCounter() {
   };
 
   const changeLikeIncrements = (increment: number) => {
-    localStorage.setItem("likeIncrements", increment.toString());
+    localStorage.setItem('likeIncrements', increment.toString());
     setLikeIncrements(increment);
   };
 
@@ -102,8 +107,8 @@ export default function LikeCounter() {
     changeLikeIncrements(likeIncrements + 1);
     setLikeCount(likeCount + 1);
     ReactGA.event({
-      category: "Button.Click",
-      action: "Like Counter",
+      category: 'Button.Click',
+      action: 'Like Counter',
     });
   };
 
@@ -142,7 +147,7 @@ export default function LikeCounter() {
     }
   };
 
-  if (likeCount && status === "authenticated") {
+  if (likeCount && status === 'authenticated') {
     return (
       <TooltipProvider>
         <div className="select-none z-30 absolute -bottom-32 right-4 md:right-14 flex flex-col items-center">
@@ -155,26 +160,27 @@ export default function LikeCounter() {
                 size="icon"
                 variant="ghost"
                 className={cn(
-                  "relative rounded-full h-10 w-10 bg-white shadow-xs transition-all duration-75",
-                  "overflow-hidden group hover:bg-white"
+                  'relative rounded-full h-10 w-10 bg-white shadow-xs transition-all duration-75',
+                  'overflow-hidden group hover:bg-white'
                 )}
               >
                 <div
                   className={cn(
-                    "absolute w-10 bottom-0 z-10 border-2 rounded-full transition-all duration-300",
+                    'absolute w-10 bottom-0 z-10 border-2 rounded-full transition-all duration-300',
                     likeIncrements === 9
-                      ? "border-primary bg-primary"
-                      : "border-transparent bg-primary"
+                      ? 'border-primary bg-primary'
+                      : 'border-transparent bg-primary'
                   )}
                   style={{
                     height: `${
-                      ((likeIncrements === 0 ? 0 : likeIncrements + 1) / 10) * 100
+                      ((likeIncrements === 0 ? 0 : likeIncrements + 1) / 10) *
+                      100
                     }%`,
                   }}
                 />
                 <div
                   className={cn(
-                    "bg-slate-300/20 rounded-full flex justify-center items-center h-9 w-9 z-20 relative"
+                    'bg-slate-300/20 rounded-full flex justify-center items-center h-9 w-9 z-20 relative'
                   )}
                 >
                   <img
@@ -186,18 +192,18 @@ export default function LikeCounter() {
                 </div>
               </Button>
             </TooltipTrigger>
-            <TooltipContent 
+            <TooltipContent
               side="left"
               className="bg-transparent border-0 shadow-none text-lg"
             >
               {getEmojiBasedOnIncrements()}
             </TooltipContent>
           </Tooltip>
-          <Badge 
-            variant={likeIncrements === 9 ? "default" : "outline"}
+          <Badge
+            variant={likeIncrements === 9 ? 'default' : 'outline'}
             className={cn(
-              "mt-2 font-light text-sm border-0",
-              likeIncrements === 9 ? "text-primary-foreground" : ""
+              'mt-2 font-light text-sm border-0',
+              likeIncrements === 9 ? 'text-primary-foreground' : ''
             )}
           >
             {formatNumber(likeCount)}

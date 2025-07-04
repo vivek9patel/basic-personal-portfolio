@@ -1,22 +1,22 @@
-import type { NextPage } from "next";
-import { Anchor } from "../components/CustomHtml";
-import { Button } from "@/components/ui/button";
-import ProjectCard from "../components/ProjectCard";
-import { ProjectCardProps } from "../components/ProjectCard";
-import { useContext, useEffect, useState } from "react";
-import { ProjectListContext } from "../context";
-import { fetchProjectsStar } from "../helpers/helpers";
-import { useRouter } from "next/router";
+import type { NextPage } from 'next';
+import { Anchor } from '../components/CustomHtml';
+import { Button } from '@/components/ui/button';
+import ProjectCard from '../components/ProjectCard';
+import { ProjectCardProps } from '../components/ProjectCard';
+import { useContext, useEffect, useState } from 'react';
+import { ProjectListContext } from '../context';
+import { fetchProjectsStar } from '../helpers/helpers';
+import { useRouter } from 'next/router';
 
-import hubspotLogo from "../images/hubspot.svg"
-import uopxLogo from "../images/uopx-phoenixbird-red.png";
-import hackerrankLogo from "../images/HackerRank_logo.png";
-import hmsLogo from "../images/100ms_logo.png";
-import webmateLogo from "../images/webmate_logo.png";
-import EmailBox from "../components/EmailBox";
-import ReactGA from "react-ga4";
-import { Separator } from "@/components/ui/separator";
-import GitHubStats from "../components/GitHubStats";
+import hubspotLogo from '../images/hubspot.svg';
+import uopxLogo from '../images/uopx-phoenixbird-red.png';
+import hackerrankLogo from '../images/HackerRank_logo.png';
+import hmsLogo from '../images/100ms_logo.png';
+import webmateLogo from '../images/webmate_logo.png';
+import EmailBox from '../components/EmailBox';
+import ReactGA from 'react-ga4';
+import { Separator } from '@/components/ui/separator';
+import GitHubStats from '../components/GitHubStats';
 
 const TRACKING_ID = process.env.NEXT_PUBLIC_TRACKING_ID;
 if (TRACKING_ID) ReactGA.initialize(TRACKING_ID);
@@ -34,8 +34,8 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     // google analytics
-    ReactGA.send({ hitType: "pageview", page: "/", title: "Home" });
-    fetchProjectsStar().then((updatedProjectsListWithStars) => {
+    ReactGA.send({ hitType: 'pageview', page: '/', title: 'Home' });
+    fetchProjectsStar().then(updatedProjectsListWithStars => {
       setProjectList([...updatedProjectsListWithStars]);
     });
   }, []);
@@ -61,30 +61,31 @@ const Home: NextPage = () => {
           </div> */}
           <div className=" text-muted-foreground font-light space-y-1 mt-8">
             <p className="">
-              I'm a developer based in{" "}
+              I'm a developer based in{' '}
               <Anchor
                 href="https://www.google.com/maps/place/durham+nc/data=!4m2!3m1!1s0x89ace471120f66f1:0xe17ada898a46f27e?sa=X&ved=1t:155783&ictx=111"
-                target={"_blank"}
+                target={'_blank'}
                 onClick={() => {
                   ReactGA.event({
-                    category: "Link.Click",
-                    action: "Durham Location",
+                    category: 'Link.Click',
+                    action: 'Durham Location',
                   });
                 }}
               >
                 Durham, NC
               </Anchor>
-              , with 2 years of experience working with various software applications, and teams from US and India. I
-              specialize in building{" "}
+              , with 2 years of experience working with various software
+              applications, and teams from US and India. I specialize in
+              building{' '}
               <Anchor
                 href="https://vivek9patel.github.io/"
                 onClick={() => {
                   ReactGA.event({
-                    category: "Link.Click",
-                    action: "Exceptional Link",
+                    category: 'Link.Click',
+                    action: 'Exceptional Link',
                   });
                 }}
-                target={"_blank"}
+                target={'_blank'}
               >
                 exceptional softwares
               </Anchor>
@@ -104,7 +105,7 @@ const Home: NextPage = () => {
           <Button
             variant="outline"
             onClick={() => {
-              clientRouter.push("/resume");
+              clientRouter.push('/resume');
             }}
           >
             View Resume
@@ -133,12 +134,12 @@ const Home: NextPage = () => {
                 Full Time - Present
               </div>
               <div className="text-lg sm:text-xl">
-                Engineering at{" "}
+                Engineering at{' '}
                 <Anchor
                   onClick={() => {
                     ReactGA.event({
-                      category: "Link.Click",
-                      action: "HubSpot Link",
+                      category: 'Link.Click',
+                      action: 'HubSpot Link',
                     });
                   }}
                   href="https://www.google.com/search?q=husbpot"
@@ -171,12 +172,12 @@ const Home: NextPage = () => {
                 Full Time - 9 months
               </div>
               <div className="text-lg sm:text-xl">
-                Engineer II at{" "}
+                Engineer II at{' '}
                 <Anchor
                   onClick={() => {
                     ReactGA.event({
-                      category: "Link.Click",
-                      action: "UOPX Link",
+                      category: 'Link.Click',
+                      action: 'UOPX Link',
                     });
                   }}
                   href="https://www.google.com/search?q=university+of+phoenix"
@@ -209,12 +210,12 @@ const Home: NextPage = () => {
                 Internship - 1 year
               </div>
               <div className="text-lg sm:text-xl">
-                Software Engineer at{" "}
+                Software Engineer at{' '}
                 <Anchor
                   onClick={() => {
                     ReactGA.event({
-                      category: "Link.Click",
-                      action: "UOPX Link",
+                      category: 'Link.Click',
+                      action: 'UOPX Link',
                     });
                   }}
                   href="https://www.google.com/search?q=university+of+phoenix"
@@ -226,7 +227,8 @@ const Home: NextPage = () => {
                 I develop robust, responsive components with a focus on
                 accessibility, enhancing user experiences alongside Adobe AEM,
                 Adobe ADA, and Adobe Target. <br></br>
-                Worked on building new microservice with Spring Boot, Java, Elasticsearch, Docker, Terraform and AWS.
+                Worked on building new microservice with Spring Boot, Java,
+                Elasticsearch, Docker, Terraform and AWS.
               </div>
             </div>
           </div>
@@ -247,12 +249,12 @@ const Home: NextPage = () => {
                 Internship - 6 months
               </div>
               <div className="text-lg sm:text-xl">
-                Software Engineer at{" "}
+                Software Engineer at{' '}
                 <Anchor
                   onClick={() => {
                     ReactGA.event({
-                      category: "Link.Click",
-                      action: "Hackerrank Link",
+                      category: 'Link.Click',
+                      action: 'Hackerrank Link',
                     });
                   }}
                   href="https://www.google.com/search?q=hackerrank"
@@ -284,12 +286,12 @@ const Home: NextPage = () => {
                 Internship - 3 months
               </div>
               <div className="text-lg sm:text-xl">
-                Software Engineer at{" "}
+                Software Engineer at{' '}
                 <Anchor
                   onClick={() => {
                     ReactGA.event({
-                      category: "Link.Click",
-                      action: "100ms Link",
+                      category: 'Link.Click',
+                      action: '100ms Link',
                     });
                   }}
                   href="https://www.google.com/search?q=100ms"
@@ -321,12 +323,12 @@ const Home: NextPage = () => {
                 Part-time - 9 months
               </div>
               <div className="text-lg sm:text-xl">
-                Co-founder at{" "}
+                Co-founder at{' '}
                 <Anchor
                   onClick={() => {
                     ReactGA.event({
-                      category: "Link.Click",
-                      action: "Webmate Link",
+                      category: 'Link.Click',
+                      action: 'Webmate Link',
                     });
                   }}
                   href="https://thewebmate.in/"
@@ -346,15 +348,15 @@ const Home: NextPage = () => {
         <div
           onClick={() => {
             ReactGA.event({
-              category: "Link.Click",
-              action: "Recommendations Link",
+              category: 'Link.Click',
+              action: 'Recommendations Link',
             });
-            window.open("https://www.linkedin.com/in/vivek9patel/", "_blank");
+            window.open('https://www.linkedin.com/in/vivek9patel/', '_blank');
           }}
           className=" text-muted-foreground underline hover:text-ring"
         >
           See my recommendations on LinkedIn
-          {" ->"}
+          {' ->'}
         </div>
       </div>
 
@@ -365,7 +367,7 @@ const Home: NextPage = () => {
           <Button
             variant="outline"
             onClick={() => {
-              clientRouter.push("/projects");
+              clientRouter.push('/projects');
             }}
           >
             View all
@@ -383,12 +385,12 @@ const Home: NextPage = () => {
         <div className="text-4xl sm:text-5xl font-medium">Contact Me</div>
         <div className="font-light text-muted-foreground mt-4 mb-10">
           I'm always open to new opportunities and connections. Feel free to
-          reach out to me at{" "}
+          reach out to me at{' '}
           <Anchor
             onClick={() => {
               ReactGA.event({
-                category: "Link.Click",
-                action: "MailTo Link",
+                category: 'Link.Click',
+                action: 'MailTo Link',
               });
             }}
             href="mailto:vivek.p9737@gmail.com"

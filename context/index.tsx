@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { createContext, useEffect, useState } from "react";
-import { ProjectCardProps } from "../components/ProjectCard";
-import projectsData from "../data/projects.json";
+import { createContext, useEffect, useState } from 'react';
+import { ProjectCardProps } from '../components/ProjectCard';
+import projectsData from '../data/projects.json';
 
 export const ProjectListContext = createContext<{
   projectList: ProjectCardProps[];

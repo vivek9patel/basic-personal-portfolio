@@ -1,12 +1,23 @@
-import type { NextPage } from "next";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { useEffect, useState } from "react";
-import ReactGA from "react-ga4";
-import { Download, ExternalLink, FileText, Eye, Loader2 } from "lucide-react";
+import type { NextPage } from 'next';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { useEffect, useState } from 'react';
+import ReactGA from 'react-ga4';
+import { Download, ExternalLink, FileText, Eye, Loader2 } from 'lucide-react';
 
 const Resume: NextPage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -14,7 +25,7 @@ const Resume: NextPage = () => {
 
   useEffect(() => {
     // google analytics
-    ReactGA.send({ hitType: "pageview", page: "/resume", title: "Resume" });
+    ReactGA.send({ hitType: 'pageview', page: '/resume', title: 'Resume' });
   }, []);
 
   const handleIframeLoad = () => {
@@ -28,18 +39,18 @@ const Resume: NextPage = () => {
 
   const handleViewFullPage = () => {
     ReactGA.event({
-      category: "Button.Click",
-      action: "Full Screen Resume",
+      category: 'Button.Click',
+      action: 'Full Screen Resume',
     });
-    window.open("/vivek_patel_resume.pdf", "_blank");
+    window.open('/vivek_patel_resume.pdf', '_blank');
   };
 
   const handleDownload = () => {
     ReactGA.event({
-      category: "Button.Click",
-      action: "Download Resume",
+      category: 'Button.Click',
+      action: 'Download Resume',
     });
-    
+
     // Create a temporary anchor element to trigger download
     const link = document.createElement('a');
     link.href = '/vivek_patel_resume.pdf';
@@ -58,7 +69,7 @@ const Resume: NextPage = () => {
           <h1 className="text-3xl font-bold tracking-tight">Resume</h1>
         </div>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Download my complete resume or view it directly in your browser. 
+          Download my complete resume or view it directly in your browser.
           Updated with my latest experience and skills.
         </p>
         <Badge variant="secondary" className="mt-2">
@@ -68,45 +79,45 @@ const Resume: NextPage = () => {
 
       {/* Action Buttons */}
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    onClick={handleViewFullPage}
-                    size="lg"
-                    className="flex items-center gap-2"
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                    View Full Page
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Open PDF in a new tab for better viewing experience</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                onClick={handleViewFullPage}
+                size="lg"
+                className="flex items-center gap-2"
+              >
+                <ExternalLink className="h-4 w-4" />
+                View Full Page
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Open PDF in a new tab for better viewing experience</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
 
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    onClick={handleDownload}
-                    variant="outline"
-                    size="lg"
-                    className="flex items-center gap-2"
-                    data-cursor={true}
-                  >
-                    <Download className="h-4 w-4" />
-                    Download PDF
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Download PDF to your device</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                onClick={handleDownload}
+                variant="outline"
+                size="lg"
+                className="flex items-center gap-2"
+                data-cursor={true}
+              >
+                <Download className="h-4 w-4" />
+                Download PDF
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Download PDF to your device</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
 
       <Separator className="my-8" />
 
@@ -118,7 +129,8 @@ const Resume: NextPage = () => {
             <CardTitle>Resume Preview</CardTitle>
           </div>
           <CardDescription>
-            Preview of my resume document. For best viewing experience, use the full page view.
+            Preview of my resume document. For best viewing experience, use the
+            full page view.
           </CardDescription>
         </CardHeader>
         <CardContent className="p-0">
@@ -127,17 +139,22 @@ const Resume: NextPage = () => {
               <div className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm z-10">
                 <div className="flex flex-col items-center gap-4">
                   <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                  <p className="text-sm text-muted-foreground">Loading resume...</p>
+                  <p className="text-sm text-muted-foreground">
+                    Loading resume...
+                  </p>
                 </div>
               </div>
             )}
-            
+
             {hasError ? (
               <div className="h-96 flex flex-col items-center justify-center text-center p-8">
                 <FileText className="h-16 w-16 text-muted-foreground mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Unable to display PDF</h3>
+                <h3 className="text-lg font-semibold mb-2">
+                  Unable to display PDF
+                </h3>
                 <p className="text-muted-foreground mb-4">
-                  Your browser might not support PDF viewing. Please try one of the options below:
+                  Your browser might not support PDF viewing. Please try one of
+                  the options below:
                 </p>
                 <div className="flex gap-4">
                   <Button onClick={handleViewFullPage} variant="outline">
@@ -169,14 +186,14 @@ const Resume: NextPage = () => {
       {/* Additional Info Section */}
       <div className="mt-8 text-center">
         <p className="text-sm text-muted-foreground">
-          Having trouble viewing the document? Try{" "}
+          Having trouble viewing the document? Try{' '}
           <button
             onClick={handleViewFullPage}
             className="text-primary hover:underline font-medium"
           >
             opening it in a new tab
-          </button>{" "}
-          or{" "}
+          </button>{' '}
+          or{' '}
           <button
             onClick={handleDownload}
             className="text-primary hover:underline font-medium"

@@ -1,12 +1,10 @@
 /* @import url('../fonts/Wotfard/wotfard.css'); */
-@import url("../fonts/Arialic/arialic.css");
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&display=swap");
+@import url('../fonts/Arialic/arialic.css');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-
 
 @layer base {
   :root {
@@ -43,21 +41,26 @@
     --sidebar-border: #000000;
     --sidebar-ring: #ff3333;
     --font-sans: DM Sans, sans-serif;
-    --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
     --font-mono: Space Mono, monospace;
     --radius: 0px;
-    --shadow-2xs: 4px 4px 0px 0px hsl(0 0% 0% / 0.50);
-    --shadow-xs: 4px 4px 0px 0px hsl(0 0% 0% / 0.50);
-    --shadow-sm: 4px 4px 0px 0px hsl(0 0% 0% / 1.00), 4px 1px 2px -1px hsl(0 0% 0% / 1.00);
-    --shadow: 4px 4px 0px 0px hsl(0 0% 0% / 1.00), 4px 1px 2px -1px hsl(0 0% 0% / 1.00);
-    --shadow-md: 4px 4px 0px 0px hsl(0 0% 0% / 1.00), 4px 2px 4px -1px hsl(0 0% 0% / 1.00);
-    --shadow-lg: 4px 4px 0px 0px hsl(0 0% 0% / 1.00), 4px 4px 6px -1px hsl(0 0% 0% / 1.00);
-    --shadow-xl: 4px 4px 0px 0px hsl(0 0% 0% / 1.00), 4px 8px 10px -1px hsl(0 0% 0% / 1.00);
-    --shadow-2xl: 4px 4px 0px 0px hsl(0 0% 0% / 2.50);
+    --shadow-2xs: 4px 4px 0px 0px hsl(0 0% 0% / 0.5);
+    --shadow-xs: 4px 4px 0px 0px hsl(0 0% 0% / 0.5);
+    --shadow-sm:
+      4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 1px 2px -1px hsl(0 0% 0% / 1);
+    --shadow:
+      4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 1px 2px -1px hsl(0 0% 0% / 1);
+    --shadow-md:
+      4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 2px 4px -1px hsl(0 0% 0% / 1);
+    --shadow-lg:
+      4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 4px 6px -1px hsl(0 0% 0% / 1);
+    --shadow-xl:
+      4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 8px 10px -1px hsl(0 0% 0% / 1);
+    --shadow-2xl: 4px 4px 0px 0px hsl(0 0% 0% / 2.5);
     --tracking-normal: 0em;
     --spacing: 0.25rem;
   }
-  
+
   .dark {
     --background: #000000;
     --foreground: #ffffff;
@@ -92,17 +95,22 @@
     --sidebar-border: #ffffff;
     --sidebar-ring: #ff6666;
     --font-sans: DM Sans, sans-serif;
-    --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
     --font-mono: Space Mono, monospace;
     --radius: 0px;
-    --shadow-2xs: 4px 4px 0px 0px hsl(0 0% 0% / 0.50);
-    --shadow-xs: 4px 4px 0px 0px hsl(0 0% 0% / 0.50);
-    --shadow-sm: 4px 4px 0px 0px hsl(0 0% 0% / 1.00), 4px 1px 2px -1px hsl(0 0% 0% / 1.00);
-    --shadow: 4px 4px 0px 0px hsl(0 0% 0% / 1.00), 4px 1px 2px -1px hsl(0 0% 0% / 1.00);
-    --shadow-md: 4px 4px 0px 0px hsl(0 0% 0% / 1.00), 4px 2px 4px -1px hsl(0 0% 0% / 1.00);
-    --shadow-lg: 4px 4px 0px 0px hsl(0 0% 0% / 1.00), 4px 4px 6px -1px hsl(0 0% 0% / 1.00);
-    --shadow-xl: 4px 4px 0px 0px hsl(0 0% 0% / 1.00), 4px 8px 10px -1px hsl(0 0% 0% / 1.00);
-    --shadow-2xl: 4px 4px 0px 0px hsl(0 0% 0% / 2.50);
+    --shadow-2xs: 4px 4px 0px 0px hsl(0 0% 0% / 0.5);
+    --shadow-xs: 4px 4px 0px 0px hsl(0 0% 0% / 0.5);
+    --shadow-sm:
+      4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 1px 2px -1px hsl(0 0% 0% / 1);
+    --shadow:
+      4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 1px 2px -1px hsl(0 0% 0% / 1);
+    --shadow-md:
+      4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 2px 4px -1px hsl(0 0% 0% / 1);
+    --shadow-lg:
+      4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 4px 6px -1px hsl(0 0% 0% / 1);
+    --shadow-xl:
+      4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 8px 10px -1px hsl(0 0% 0% / 1);
+    --shadow-2xl: 4px 4px 0px 0px hsl(0 0% 0% / 2.5);
   }
 }
 
@@ -128,16 +136,16 @@ button {
 .btnWithSlider {
   --button-text-color: white;
   --button-text-color-hover: white;
-  --border-color: #7D8082;
+  --border-color: #7d8082;
   --button-background-color: #ece8e1;
-  --highlight-color: #E95420;
+  --highlight-color: #e95420;
 
   position: relative;
   margin-bottom: 20px;
   text-transform: uppercase;
   font-weight: bold;
   font-size: 14px;
-  transition: all .15s ease;
+  transition: all 0.15s ease;
 }
 
 .btnWithSlider::before,
@@ -145,10 +153,11 @@ button {
   content: '';
   display: block;
   position: absolute;
-  right: 0; left: 0;
+  right: 0;
+  left: 0;
   height: calc(50% - 5px);
   border: 1px solid var(--border-color);
-  transition: all .15s ease;
+  transition: all 0.15s ease;
 }
 
 .btnWithSlider::before {
@@ -191,7 +200,9 @@ button {
 .btnSlider {
   display: block;
   position: absolute;
-  top: 0; bottom: -1px; left: -8px;
+  top: 0;
+  bottom: -1px;
+  left: -8px;
   width: 0;
   background-color: var(--highlight-color);
   transform: skew(-15deg);
@@ -211,7 +222,7 @@ button {
 }
 
 .Arialic_Hollow {
-  font-family: "Arialic Hollow";
+  font-family: 'Arialic Hollow';
 }
 
 .custom-scroll-bar-y {
@@ -279,7 +290,8 @@ button {
   --offset-diagonal: calc(var(--size) * 0.45);
   transform: scale(0.75);
   color: #ffaa00;
-  box-shadow: inset 0 0 0 var(--size),
+  box-shadow:
+    inset 0 0 0 var(--size),
     calc(var(--offset-orthogonal) * -1) 0 0 var(--ray-size),
     var(--offset-orthogonal) 0 0 var(--ray-size),
     0 calc(var(--offset-orthogonal) * -1) 0 var(--ray-size),
@@ -363,16 +375,16 @@ button {
   }
 }
 
-.safe-full-screen{
+.safe-full-screen {
   height: calc(100vh - 140px);
 }
 
-.custom-markdown a{
+.custom-markdown a {
   text-decoration: underline;
   color: var(--primary);
 }
 
-.custom-markdown p > strong{
+.custom-markdown p > strong {
   display: block;
   margin-top: 10px;
 }

@@ -1,5 +1,5 @@
-import { Anchor } from "./CustomHtml";
-import ReactGA from "react-ga4";
+import { Anchor } from './CustomHtml';
+import ReactGA from 'react-ga4';
 
 function Footer(): JSX.Element {
   return (
@@ -7,10 +7,10 @@ function Footer(): JSX.Element {
       <div className="w-full flex">
         <button
           onClick={() => {
-            window.open("https://ubuntu.vivek9patel.com");
+            window.open('https://ubuntu.vivek9patel.com');
             ReactGA.event({
-              category: "Button.Click",
-              action: "Boot Ubuntu",
+              category: 'Button.Click',
+              action: 'Boot Ubuntu',
             });
           }}
           className="btnWithSlider mx-2 sm:mx-10 flex-1 text-center btn--light"

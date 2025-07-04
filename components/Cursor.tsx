@@ -1,32 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export default function Cursor() {
   const [cursor, setCursor] = useState({
     x: 0,
     y: 0,
-    width: "32px",
-    height: "32px",
-    borderRadius: "100%",
+    width: '32px',
+    height: '32px',
+    borderRadius: '100%',
     hoveredOver: false,
     hideDot: false,
     scrolling: false,
   });
 
   useEffect(() => {
-    window.addEventListener("mousemove", moveCursor);
-    window.addEventListener("scroll", cursorScroll);
-    window.addEventListener("click", checkCursor);
+    window.addEventListener('mousemove', moveCursor);
+    window.addEventListener('scroll', cursorScroll);
+    window.addEventListener('click', checkCursor);
     return () => {
-      window.removeEventListener("mousemove", moveCursor);
-      window.removeEventListener("scroll", cursorScroll);
-      window.removeEventListener("click", checkCursor);
+      window.removeEventListener('mousemove', moveCursor);
+      window.removeEventListener('scroll', cursorScroll);
+      window.removeEventListener('click', checkCursor);
     };
   }, []);
 
   const moveCursor = (e: MouseEvent) => {
-    let width = "32px",
-      height = "32px",
-      borderRadius = "100%",
+    let width = '32px',
+      height = '32px',
+      borderRadius = '100%',
       x = e.clientX - 16,
       y = e.clientY - 16,
       hoveredOver = false;
@@ -35,19 +35,19 @@ export default function Cursor() {
       e.clientX,
       e.clientY
     );
-    let dataCursor = hoveredElement?.getAttribute("data-cursor");
+    let dataCursor = hoveredElement?.getAttribute('data-cursor');
     if (dataCursor) {
-      if (dataCursor !== "true") {
+      if (dataCursor !== 'true') {
         hoveredElement = hoveredElement?.closest(`[data-cursor="true"]`);
       }
       if (!hoveredElement) return;
       const computedStyle = window.getComputedStyle(hoveredElement);
       const boundingRect = hoveredElement.getBoundingClientRect();
-      width = boundingRect.width + "px";
-      height = boundingRect.height + "px";
-      borderRadius = computedStyle.borderRadius || "100%";
-      if (borderRadius === "0px") {
-        borderRadius = "4px";
+      width = boundingRect.width + 'px';
+      height = boundingRect.height + 'px';
+      borderRadius = computedStyle.borderRadius || '100%';
+      if (borderRadius === '0px') {
+        borderRadius = '4px';
       }
       x = boundingRect.x;
       y = boundingRect.y;
@@ -86,20 +86,20 @@ export default function Cursor() {
       e.clientY
     );
     let dataFocusableCursor = hoveredElement?.getAttribute(
-      "data-cursor-focusable"
+      'data-cursor-focusable'
     );
     if (dataFocusableCursor && hoveredElement) {
       const computedStyle = window.getComputedStyle(hoveredElement);
       const boundingRect = hoveredElement.getBoundingClientRect();
-      let borderRadius = computedStyle.borderRadius || "100%";
-      if (borderRadius === "0px") {
-        borderRadius = "4px";
+      let borderRadius = computedStyle.borderRadius || '100%';
+      if (borderRadius === '0px') {
+        borderRadius = '4px';
       }
       setCursor({
         x: boundingRect.x,
         y: boundingRect.y,
-        width: boundingRect.width + "px",
-        height: boundingRect.height + "px",
+        width: boundingRect.width + 'px',
+        height: boundingRect.height + 'px',
         borderRadius,
         hoveredOver: true,
         hideDot: true,
@@ -109,12 +109,12 @@ export default function Cursor() {
   };
 
   const resetCursor = () => {
-    setCursor((prev) => {
+    setCursor(prev => {
       return {
         ...prev,
-        width: "32px",
-        height: "32px",
-        borderRadius: "100%",
+        width: '32px',
+        height: '32px',
+        borderRadius: '100%',
         hoveredOver: false,
       };
     });
@@ -126,8 +126,8 @@ export default function Cursor() {
         className={`top-0 left-0 fixed will-change-transform z-[999] pointer-events-none border-2 border-border hidden lg:flex 
         ${
           cursor.hoveredOver || cursor.scrolling
-            ? "duration-300 border-primary"
-            : "duration-150"
+            ? 'duration-300 border-primary'
+            : 'duration-150'
         }
         `}
         style={{

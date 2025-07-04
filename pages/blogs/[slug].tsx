@@ -1,13 +1,13 @@
-import path from "path";
-import fs from "fs";
-import matter from "gray-matter";
-import FrontMatter from "../../interfaces/FrontMatter";
-import { unixToDate } from "../../helpers/helpers";
-import { serialize } from "next-mdx-remote/serialize";
-import MarkdownData from "../../components/MarkdownData";
-import rehypeHighlight from "rehype-highlight";
+import path from 'path';
+import fs from 'fs';
+import matter from 'gray-matter';
+import FrontMatter from '../../interfaces/FrontMatter';
+import { unixToDate } from '../../helpers/helpers';
+import { serialize } from 'next-mdx-remote/serialize';
+import MarkdownData from '../../components/MarkdownData';
+import rehypeHighlight from 'rehype-highlight';
 
-import type { MDXRemoteSerializeResult } from "next-mdx-remote";
+import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
 
 type Props = {
   frontmatter: FrontMatter;
@@ -32,9 +32,9 @@ export default function BlogPostPage({
 }
 
 export async function getStaticPaths() {
-  const blogs = fs.readdirSync(path.join("blogs"));
-  const paths = blogs.map((blog) => {
-    const slug = blog.replace(".mdx", "");
+  const blogs = fs.readdirSync(path.join('blogs'));
+  const paths = blogs.map(blog => {
+    const slug = blog.replace('.mdx', '');
     return {
       params: {
         slug,
@@ -49,8 +49,8 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }: any) {
   const blog = fs.readFileSync(
-    path.join("blogs", `${params.slug}.mdx`),
-    "utf-8"
+    path.join('blogs', `${params.slug}.mdx`),
+    'utf-8'
   );
   const { data: frontmatter, content } = matter(blog);
   const mdxSource = await serialize(content, {
