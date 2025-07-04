@@ -72,8 +72,8 @@ export default function AskTarsButton({currentLink}: {currentLink: string}){
                         </TooltipContent>
                     </Tooltip>
                     <Badge 
-                        variant="secondary"
-                        className="mt-2 text-sm border-0 bg-transparent text-foreground hover:text-accent-foreground"
+                        variant="outline"
+                        className="mt-2 text-sm border-0 bg-transparent"
                     >
                         Clear
                     </Badge>
