@@ -13,6 +13,13 @@ import {
 import { cn } from "@/lib/utils"
 import { Label } from "@/components/ui/label"
 
+// Polyfill for React.useId() for React 17 compatibility
+let idCounter = 0
+const useId = () => {
+  const [id] = React.useState(() => `form-${++idCounter}`)
+  return id
+}
+
 const Form = FormProvider
 
 type FormFieldContextValue<
@@ -74,7 +81,7 @@ const FormItem = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
-  const id = React.useId()
+  const id = useId()
 
   return (
     <FormItemContext.Provider value={{ id }}>

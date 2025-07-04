@@ -125,7 +125,7 @@ export default function EmailBox() {
         const remainingEmails = 2 - newEmailCount;
         
         toast.success("Email sent successfully!", {
-          description: `Thanks for reaching out! I'll get back to you soon.)`,
+          description: `Thanks for reaching out! I'll get back to you soon :)`,
         });
         
         setLoading(false);
