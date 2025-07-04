@@ -16,6 +16,7 @@ import webmateLogo from "../images/webmate_logo.png";
 import EmailBox from "../components/EmailBox";
 import ReactGA from "react-ga4";
 import { Separator } from "@/components/ui/separator";
+import GitHubStats from "../components/GitHubStats";
 
 const TRACKING_ID = process.env.NEXT_PUBLIC_TRACKING_ID;
 if (TRACKING_ID) ReactGA.initialize(TRACKING_ID);
@@ -53,12 +54,7 @@ const Home: NextPage = () => {
             </div>
           </div>
           <div className="mt-4 flex items-center">
-            <a className="no-underline text-primary" href="https://github.com/vivek9patel" target="_blank">
-              <img alt="GitHub followers" src="https://img.shields.io/github/followers/vivek9patel" />
-            </a>
-            <a className="no-underline ml-4 text-primary" href="https://github.com/vivek9patel?tab=repositories&q=&type=&language=&sort=stargazers" target="_blank">
-              <img alt="GitHub User's stars" src="https://img.shields.io/github/stars/vivek9patel" />
-            </a>
+            <GitHubStats username="vivek9patel" />
           </div>
           {/* <div className="text-lg md:text-xl text-muted-foreground font-light mt-4 ">
             Bringing your vision to life, one pixel at a time. 🎨

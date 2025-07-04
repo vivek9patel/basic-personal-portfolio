@@ -3,6 +3,10 @@ import { fetchLikes, incrementLikesTo, formatNumber } from "../helpers/helpers";
 import heartImage from "../images/heart.svg";
 import { useSession, signIn, signOut } from "next-auth/react";
 import ReactGA from "react-ga4";
+import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
+import { cn } from "@/lib/utils";
 
 export default function LikeCounter() {
   const { status } = useSession();
@@ -140,50 +144,66 @@ export default function LikeCounter() {
 
   if (likeCount && status === "authenticated") {
     return (
-      <div className=" select-none z-30 absolute flex flex-col transition-all ease-linear duration-75 items-center -bottom-32 right-4 md:right-14 ">
-        <div
-          className={`absolute top-5 -right-8 -translate-y-1/2 transition-transform duration-300 text-white ${
-            emojiVisible ? "-translate-x-[100px] md:translate-x-[0px]" : "-translate-x-[50px]"
-          }`}
-        >
-          {getEmojiBasedOnIncrements()}
-        </div>
-        <div
-          className={` bg-white group relative rounded-full shadow-md shadow-gray-700 h-10 w-10 flex justify-center items-center overflow-hidden group-hover:shadow `}
-          onClick={updateLikes}
-          id="like-counter-button"
-          data-cursor={true}
-        >
-          <div
-            className={` bg-slate-300 rounded-full flex justify-center items-center h-9 w-9`}
+      <TooltipProvider>
+        <div className="select-none z-30 absolute -bottom-32 right-4 md:right-14 flex flex-col items-center">
+          <Tooltip open={emojiVisible}>
+            <TooltipTrigger asChild>
+              <Button
+                onClick={updateLikes}
+                id="like-counter-button"
+                data-cursor={true}
+                size="icon"
+                variant="ghost"
+                className={cn(
+                  "relative rounded-full h-10 w-10 bg-white shadow-xs transition-all duration-75",
+                  "overflow-hidden group hover:bg-white"
+                )}
+              >
+                <div
+                  className={cn(
+                    "absolute w-10 bottom-0 z-10 border-2 rounded-full transition-all duration-300",
+                    likeIncrements === 9
+                      ? "border-primary bg-primary"
+                      : "border-transparent bg-primary"
+                  )}
+                  style={{
+                    height: `${
+                      ((likeIncrements === 0 ? 0 : likeIncrements + 1) / 10) * 100
+                    }%`,
+                  }}
+                />
+                <div
+                  className={cn(
+                    "bg-slate-300/20 rounded-full flex justify-center items-center h-9 w-9 z-20 relative"
+                  )}
+                >
+                  <img
+                    data-cursor="like-counter-button"
+                    src={heartImage.src}
+                    className="w-full h-full z-30 rounded-full"
+                    alt="Heart"
+                  />
+                </div>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent 
+              side="left"
+              className="bg-transparent border-0 shadow-none text-lg"
+            >
+              {getEmojiBasedOnIncrements()}
+            </TooltipContent>
+          </Tooltip>
+          <Badge 
+            variant={likeIncrements === 9 ? "default" : "outline"}
+            className={cn(
+              "mt-2 font-light text-sm border-0",
+              likeIncrements === 9 ? "text-primary-foreground" : ""
+            )}
           >
-            <img
-              data-cursor="like-counter-button"
-              src={heartImage.src}
-              className="w-full h-full z-50 rounded-full"
-            />
-          </div>
-          <div
-            className={`absolute w-10 bottom-0 z-40  border-2 rounded-full ${
-              likeIncrements === 9
-                ? "border-primary bg-ring"
-                : "border-transparent bg-ring"
-            }`}
-            style={{
-              height: `${
-                ((likeIncrements === 0 ? 0 : likeIncrements + 1) / 10) * 100
-              }%`,
-            }}
-          ></div>
+            {formatNumber(likeCount)}
+          </Badge>
         </div>
-        <div
-          className={`font-light text-sm mt-1 group-hover:text-primary ${
-            likeIncrements === 9 ? "text-primary" : "text-muted-foreground "
-          }`}
-        >
-          {formatNumber(likeCount)}
-        </div>
-      </div>
+      </TooltipProvider>
     );
   }
 
