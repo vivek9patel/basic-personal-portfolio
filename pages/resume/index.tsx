@@ -39,6 +39,14 @@ const Resume: NextPage = () => {
       category: "Button.Click",
       action: "Download Resume",
     });
+    
+    // Create a temporary anchor element to trigger download
+    const link = document.createElement('a');
+    link.href = '/vivek_patel_resume.pdf';
+    link.download = 'vivek_patel_resume.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -59,14 +67,7 @@ const Resume: NextPage = () => {
       </div>
 
       {/* Action Buttons */}
-      <Card className="mb-8">
-        <CardHeader>
-          <CardTitle className="text-xl">Quick Actions</CardTitle>
-          <CardDescription>
-            Choose how you'd like to view or download my resume
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <TooltipProvider>
               <Tooltip>
@@ -89,17 +90,16 @@ const Resume: NextPage = () => {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <a href="/vivek_patel_resume.pdf" download onClick={handleDownload}>
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      className="flex items-center gap-2"
-                      data-cursor={true}
-                    >
-                      <Download className="h-4 w-4" />
-                      Download PDF
-                    </Button>
-                  </a>
+                  <Button
+                    onClick={handleDownload}
+                    variant="outline"
+                    size="lg"
+                    className="flex items-center gap-2"
+                    data-cursor={true}
+                  >
+                    <Download className="h-4 w-4" />
+                    Download PDF
+                  </Button>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>Download PDF to your device</p>
@@ -107,8 +107,6 @@ const Resume: NextPage = () => {
               </Tooltip>
             </TooltipProvider>
           </div>
-        </CardContent>
-      </Card>
 
       <Separator className="my-8" />
 
@@ -146,12 +144,10 @@ const Resume: NextPage = () => {
                     <ExternalLink className="h-4 w-4 mr-2" />
                     View in New Tab
                   </Button>
-                  <a href="/vivek_patel_resume.pdf" download onClick={handleDownload}>
-                    <Button>
-                      <Download className="h-4 w-4 mr-2" />
-                      Download PDF
-                    </Button>
-                  </a>
+                  <Button onClick={handleDownload}>
+                    <Download className="h-4 w-4 mr-2" />
+                    Download PDF
+                  </Button>
                 </div>
               </div>
             ) : (
@@ -181,14 +177,12 @@ const Resume: NextPage = () => {
             opening it in a new tab
           </button>{" "}
           or{" "}
-          <a
-            href="/vivek_patel_resume.pdf"
-            download
+          <button
             onClick={handleDownload}
             className="text-primary hover:underline font-medium"
           >
             downloading the PDF
-          </a>
+          </button>
           .
         </p>
       </div>

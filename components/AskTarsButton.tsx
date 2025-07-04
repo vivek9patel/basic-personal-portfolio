@@ -84,7 +84,7 @@ export default function AskTarsButton({currentLink}: {currentLink: string}){
 
     return (
         <TooltipProvider>
-            <div className="select-none z-30 absolute flex flex-col items-center -bottom-52 right-2 md:right-[48px]">
+            <div className="select-none z-30 absolute flex flex-col items-center -bottom-[220px] right-2 md:right-[48px]">
                 <Tooltip>
                     <TooltipTrigger asChild>
                         <Button

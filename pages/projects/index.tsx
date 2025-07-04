@@ -67,41 +67,69 @@ const Projects: NextPage<Props> = () => {
 
   return (
     <div className="my-4 sm:my-10">
-      <div className="flex sm:flex-row w-full sm:w-auto flex-col items-center text-sm 2xl:text-base">
-        <div className="flex-1">
-          <Select
-            onValueChange={(value) => {
-              ReactGA.event({
-                category: "Button.Click",
-                action: "Sort Projects",
-                label: value,
-              });
-              setFilterBy(value as TypeFilterBy);
-            }}
-            value={filterBy}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Sort by" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Sort by</SelectLabel>
-                <SelectItem value="stars">Stars</SelectItem>
-                <SelectItem value="year">Year</SelectItem>
-                <SelectItem value="priority">Priority</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="sm:ml-4 ml-0 mt-4 sm:mt-0 w-full sm:w-auto sm:flex-1 flex items-center">
-        <Label htmlFor="search-project">Filter by</Label>
-          <Input
-            type="text"
-            data-cursor-focusable="true"
-            name="search-project"
-            placeholder="React, Python, D3"
-            onChange={filterByBadge}
-          />
+      {/* Header Section */}
+      <div className="text-center mb-8">
+        <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-foreground">
+          Projects
+        </h1>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          A collection of projects showcasing my journey in software development, 
+          from web applications to browser extensions and data visualizations.
+        </p>
+      </div>
+
+      {/* Filters Section */}
+      <div className="mb-8">
+        <div className="flex sm:flex-row w-full sm:w-auto flex-col items-start sm:items-end gap-4 text-sm 2xl:text-base">
+          <div className="flex-1">
+            <Label htmlFor="sort-select" className="text-sm font-medium mb-2 block">
+              Sort by
+            </Label>
+            <Select
+              onValueChange={(value) => {
+                ReactGA.event({
+                  category: "Button.Click",
+                  action: "Sort Projects",
+                  label: value,
+                });
+                setFilterBy(value as TypeFilterBy);
+              }}
+              value={filterBy}
+            >
+              <SelectTrigger id="sort-select" className="w-[180px]">
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Sort by</SelectLabel>
+                  <SelectItem value="stars">Stars</SelectItem>
+                  <SelectItem value="year">Year</SelectItem>
+                  <SelectItem value="priority">Vivek's Favorites</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="sm:ml-4 ml-0 mt-4 sm:mt-0 w-full sm:w-auto sm:flex-1">
+            <Label htmlFor="search-project" className="text-sm font-medium mb-2 block">
+              Filter by technology
+            </Label>
+            <div className="relative">
+              <Input
+                type="text"
+                id="search-project"
+                data-cursor-focusable="true"
+                name="search-project"
+                placeholder="React, Python, D3, Next.js..."
+                onChange={filterByBadge}
+                className="pl-10"
+              />
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg className="h-5 w-5 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
