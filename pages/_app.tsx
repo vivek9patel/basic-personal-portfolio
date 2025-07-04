@@ -8,6 +8,7 @@ import Footer from "../components/Footer";
 import { SessionProvider } from "next-auth/react";
 import Cursor from "../components/Cursor";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = useState(false);
@@ -54,6 +55,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             {currentLink !== "tars" && <Footer />}
           </Context>
         </SessionProvider>
+        <Toaster />
       </ThemeProvider>
     </>
   );

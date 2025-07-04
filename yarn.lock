@@ -453,6 +453,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hookform/resolvers@npm:^5.1.1":
+  version: 5.1.1
+  resolution: "@hookform/resolvers@npm:5.1.1"
+  dependencies:
+    "@standard-schema/utils": "npm:^0.3.0"
+  peerDependencies:
+    react-hook-form: ^7.55.0
+  checksum: 10c0/74601ba4abb3159bbaa25175af9459a2c0337a28d8c0a5be95c7ae7b0a76ddafcf63c03eea8561fd099fe80b226194ad09e3824c53b9beda38393ff9fd264a03
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.9.2":
   version: 0.9.2
   resolution: "@humanwhocodes/config-array@npm:0.9.2"
@@ -1236,6 +1247,13 @@ __metadata:
   version: 1.1.0
   resolution: "@rushstack/eslint-patch@npm:1.1.0"
   checksum: 10c0/003c96236b7e1f377ade56276830f232de0d61bba02080901e0b3a216d74384687730a4beebcbf61332c08eebefd70333fd41813c3242d39682abd1e9bdeca19
+  languageName: node
+  linkType: hard
+
+"@standard-schema/utils@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@standard-schema/utils@npm:0.3.0"
+  checksum: 10c0/6eb74cd13e52d5fc74054df51e37d947ef53f3ab9e02c085665dcca3c38c60ece8d735cebbdf18fbb13c775fbcb9becb3f53109b0e092a63f0f7389ce0993fd0
   languageName: node
   linkType: hard
 
@@ -5409,6 +5427,7 @@ __metadata:
   resolution: "personal-site@workspace:."
   dependencies:
     "@emailjs/browser": "npm:^3.11.0"
+    "@hookform/resolvers": "npm:^5.1.1"
     "@radix-ui/react-label": "npm:2.0.2"
     "@radix-ui/react-select": "npm:1.2.2"
     "@radix-ui/react-separator": "npm:1.0.3"
@@ -5438,12 +5457,15 @@ __metadata:
     react: "npm:17.0.2"
     react-dom: "npm:17.0.2"
     react-ga4: "npm:^2.1.0"
+    react-hook-form: "npm:^7.59.0"
     rehype-highlight: "npm:^5.0.2"
+    sonner: "npm:1.4.0"
     tailwind-merge: "npm:^3.3.1"
     tailwindcss: "npm:^3.0.8"
     tailwindcss-animate: "npm:^1.0.7"
     typescript: "npm:4.5.4"
     uuid: "npm:^9.0.1"
+    zod: "npm:^3.25.72"
   languageName: unknown
   linkType: soft
 
@@ -5760,6 +5782,15 @@ __metadata:
   version: 2.1.0
   resolution: "react-ga4@npm:2.1.0"
   checksum: 10c0/314aa86dd7cb868535f26bfb8b537d3b3c20649c66b2b942fba72e081295441446932a4ae96499231c8a4836ab0a222a97b1bd03633b8cc1477991efe93444cd
+  languageName: node
+  linkType: hard
+
+"react-hook-form@npm:^7.59.0":
+  version: 7.59.0
+  resolution: "react-hook-form@npm:7.59.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18 || ^19
+  checksum: 10c0/6be30ce65121f4be0f491c2929142e2d9a390a8802f58fb7a41ab978ab8daa6fcd2c442258dbd1b053e6864a83c8f4b1d83de9c95f0efdf5c2120d3c21bd838e
   languageName: node
   linkType: hard
 
@@ -6255,6 +6286,16 @@ __metadata:
     ip-address: "npm:^9.0.5"
     smart-buffer: "npm:^4.2.0"
   checksum: 10c0/e427d0eb0451cfd04e20b9156ea8c0e9b5e38a8d70f21e55c30fbe4214eda37cfc25d782c63f9adc5fbdad6d062a0f127ef2cefc9a44b6fee2b9ea5d1ed10827
+  languageName: node
+  linkType: hard
+
+"sonner@npm:1.4.0":
+  version: 1.4.0
+  resolution: "sonner@npm:1.4.0"
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  checksum: 10c0/2e55de2de03dd0d103d36d18e36a891b16e42102ca789a2eea37635172d7035dea749e95ff0e36cc04f1c43c9fa72637a17a702ef184926bf1c33ed17fba18bd
   languageName: node
   linkType: hard
 
@@ -7327,6 +7368,13 @@ __metadata:
   version: 0.1.0
   resolution: "yocto-queue@npm:0.1.0"
   checksum: 10c0/dceb44c28578b31641e13695d200d34ec4ab3966a5729814d5445b194933c096b7ced71494ce53a0e8820685d1d010df8b2422e5bf2cdea7e469d97ffbea306f
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.25.72":
+  version: 3.25.72
+  resolution: "zod@npm:3.25.72"
+  checksum: 10c0/10a15e6ae66318966523a856fef75b0ad2ebf9b8edb9ce80ad64ec5cb849df5ecd549450bd6392abe5084d63a3aa30390edecb15c3cb7c61c022c113174f9f31
   languageName: node
   linkType: hard
 

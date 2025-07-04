@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@emailjs/browser": "^3.11.0",
+    "@hookform/resolvers": "^5.1.1",
     "@radix-ui/react-label": "2.0.2",
     "@radix-ui/react-select": "1.2.2",
     "@radix-ui/react-separator": "1.0.3",
@@ -26,10 +27,13 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-ga4": "^2.1.0",
+    "react-hook-form": "^7.59.0",
     "rehype-highlight": "^5.0.2",
+    "sonner": "1.4.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "zod": "^3.25.72"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.0",
