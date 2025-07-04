@@ -7,10 +7,9 @@ module.exports = {
   theme: {
   	extend: {
   		fontFamily: {
-  			sans: [
-  				'Inter',
-  				'sans-serif'
-  			]
+  			sans: 'var(--font-sans)',
+  			serif: 'var(--font-serif)',
+  			mono: 'var(--font-mono)'
   		},
   		colors: {
   			'ubuntu-orange': '#E95420',
