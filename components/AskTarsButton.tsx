@@ -50,7 +50,7 @@ export default function AskTarsButton({currentLink}: {currentLink: string}){
                                 variant="outline"
                                 size="icon"
                                 className={cn(
-                                    "w-10 h-10 rounded-full border-border bg-background hover:bg-accent",
+                                    "w-10 h-10 rounded-full border-border bg-background",
                                     "opacity-60 hover:opacity-100 transition-all duration-300",
                                     "text-foreground hover:text-foreground"
                                 )}

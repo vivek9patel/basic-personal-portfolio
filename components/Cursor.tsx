@@ -126,7 +126,7 @@ export default function Cursor() {
         className={`top-0 left-0 fixed will-change-transform z-[999] pointer-events-none border-2 border-border hidden lg:flex 
         ${
           cursor.hoveredOver || cursor.scrolling
-            ? "duration-300 border-ring"
+            ? "duration-300 border-accent"
             : "duration-150"
         }
         `}

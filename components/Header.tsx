@@ -5,6 +5,7 @@ import ReactGA from "react-ga4";
 import AskTarsButton from "./AskTarsButton";
 import { useTheme } from "next-themes"
 import { Button } from "./ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 
 const Header = ({ currentLink = "", loading = false }) => {
   const { theme, setTheme } = useTheme();
@@ -136,20 +137,6 @@ const Header = ({ currentLink = "", loading = false }) => {
               </Button>
             </Link>
             <Button
-              variant="link"
-              onClick={() => {
-                ReactGA.send({
-                  hitType: "pageview",
-                  page: "meet.vivek9patel.com",
-                  title: "V9 Meet",
-                });
-                window.open("https://meet.vivek9patel.com/");
-              }}
-              className={`text-muted-foreground`}
-            >
-              Let's chat
-            </Button>
-            <Button
             variant="link"
               onClick={() => {
                 ReactGA.event({
@@ -175,25 +162,37 @@ const Header = ({ currentLink = "", loading = false }) => {
               LinkedIn
 
             </Button>
-            {/* <div
+            <Button
+              variant="link"
               onClick={() => {
-                ReactGA.event({
-                  category: "Button.Click",
-                  action: "Hire Me",
+                ReactGA.send({
+                  hitType: "pageview",
+                  page: "meet.vivek9patel.com",
+                  title: "V9 Meet",
                 });
-                window.open("mailto:vivek.p9737@gmail.com");
+                window.open("https://meet.vivek9patel.com/");
               }}
-              data-cursor={true}
-              className="mb-2 sm:mb-0 whitespace-nowrap text-center text-secondary border border-secondary rounded  w-full sm:w-auto px-1 text-sm hover:text-primary"
+              className={`text-muted-foreground`}
             >
-              Hire me!
-            </div> */}
-            <input
-            onChange={toggleThemeMode}
-            checked={theme === "dark"}
-            className="themeToggle mx-2"
-            type="checkbox"
-          ></input>
+              Let's chat
+            </Button>
+             <TooltipProvider>
+               <Tooltip>
+                 <TooltipTrigger asChild>
+                   <div className="mx-2 radius-full">
+                     <input
+                       onChange={toggleThemeMode}
+                       checked={theme === "dark"}
+                       className="themeToggle"
+                       type="checkbox"
+                     />
+                   </div>
+                 </TooltipTrigger>
+                 <TooltipContent>
+                   <p>Toggle theme to {theme === "dark" ? "light" : "dark"}</p>
+                 </TooltipContent>
+               </Tooltip>
+             </TooltipProvider>
           </div>
         </div>
       </div>
