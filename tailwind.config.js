@@ -1,53 +1,77 @@
 module.exports = {
-  darkMode: "class",
+  darkMode: ["class", "class"],
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {
-      fontFamily: {
-        sans: ["Inter", "sans-serif"],
-      },
-      colors: {
-        "v9-light-grey": "#d4cfcf",
-        "v9-dark-grey": "#182635",
-        "v9-purple": "#162447",
-        "v9-cyan": "#00FFFF",
-        "v9-teal": "#00ffdc",
-        "v9-dark-teal": "#00FFC2",
-        "v9-pink": "#FF55BB",
-        "v9-yellow": "#FEFF86",
-        "v9-green": "#30C85E",
-        "v9-blue": "#4A97FE",
-        "v9-primary-black": "#181818",
-        "v9-secondary-black": "#1E1E1F",
-        "ubuntu-orange": "#E95420",
-      },
-      typography: ({ theme }) => ({
-        dark: {
-          css: {
-            "--tw-prose-counters": theme("colors.white"),
-            "--tw-prose-body": theme("colors.white"),
-            "--tw-prose-headings": theme("colors.white"),
-            // "--tw-prose-lead": theme("colors.pink[700]"),
-            "--tw-prose-links": theme("colors.v9-pink"),
-            "--tw-prose-bold": theme("colors.white"),
-            "--tw-prose-counters": theme("colors.white"),
-            "--tw-prose-bullets": theme("colors.white"),
-            "--tw-prose-hr": theme("colors.white"),
-            "--tw-prose-quotes": theme("colors.white"),
-            "--tw-prose-quote-borders": theme("colors.white"),
-            "--tw-prose-captions": theme("colors.white"),
-            "--tw-prose-code": theme("colors.white"),
-            "--tw-prose-pre-code": theme("colors.white"),
-            // "--tw-prose-pre-bg": theme("colors.pink[900]"),
-            "--tw-prose-th-borders": theme("colors.white"),
-            "--tw-prose-td-borders": theme("colors.white"),
-          },
-        },
-      }),
-    },
+  	extend: {
+  		fontFamily: {
+  			sans: [
+  				'Inter',
+  				'sans-serif'
+  			]
+  		},
+  		colors: {
+  			'ubuntu-orange': '#E95420',
+  			background: 'var(--background)',
+  			foreground: 'var(--foreground)',
+  			card: {
+  				DEFAULT: 'var(--card)',
+  				foreground: 'var(--card-foreground)'
+  			},
+  			popover: {
+  				DEFAULT: 'var(--popover)',
+  				foreground: 'var(--popover-foreground)'
+  			},
+  			primary: {
+  				DEFAULT: 'var(--primary)',
+  				foreground: 'var(--primary-foreground)'
+  			},
+  			secondary: {
+  				DEFAULT: 'var(--secondary)',
+  				foreground: 'var(--secondary-foreground)'
+  			},
+  			muted: {
+  				DEFAULT: 'var(--muted)',
+  				foreground: 'var(--muted-foreground)'
+  			},
+  			accent: {
+  				DEFAULT: 'var(--accent)',
+  				foreground: 'var(--accent-foreground)'
+  			},
+  			destructive: {
+  				DEFAULT: 'var(--destructive)',
+  				foreground: 'var(--destructive-foreground)'
+  			},
+  			border: 'var(--border)',
+  			input: 'var(--input)',
+  			ring: 'var(--ring)',
+  			chart: {
+  				'1': 'var(--chart-1)',
+  				'2': 'var(--chart-2)',
+  				'3': 'var(--chart-3)',
+  				'4': 'var(--chart-4)',
+  				'5': 'var(--chart-5)'
+  			}
+  		},
+  		boxShadow: {
+  			'2xs': 'var(--shadow-2xs)',
+  			'xs': 'var(--shadow-xs)',
+  			'sm': 'var(--shadow-sm)',
+  			'DEFAULT': 'var(--shadow)',
+  			'md': 'var(--shadow-md)',
+  			'lg': 'var(--shadow-lg)',
+  			'xl': 'var(--shadow-xl)',
+  			'2xl': 'var(--shadow-2xl)',
+  		},
+  		typography: '({ theme }) => ({\n        dark: {\n          css: {\n            "--tw-prose-counters": theme("colors.white"),\n            "--tw-prose-body": theme("colors.white"),\n            "--tw-prose-headings": theme("colors.white"),\n            // "--tw-prose-lead": theme("colors.pink[700]"),\n            "--tw-prose-links": theme("colors.primary.DEFAULT"),\n            "--tw-prose-bold": theme("colors.white"),\n            "--tw-prose-counters": theme("colors.white"),\n            "--tw-prose-bullets": theme("colors.white"),\n            "--tw-prose-hr": theme("colors.white"),\n            "--tw-prose-quotes": theme("colors.white"),\n            "--tw-prose-quote-borders": theme("colors.white"),\n            "--tw-prose-captions": theme("colors.white"),\n            "--tw-prose-code": theme("colors.white"),\n            "--tw-prose-pre-code": theme("colors.white"),\n            // "--tw-prose-pre-bg": theme("colors.pink[900]"),\n            "--tw-prose-th-borders": theme("colors.white"),\n            "--tw-prose-td-borders": theme("colors.white"),\n          },\n        },\n      })',
+  		borderRadius: {
+  			lg: 'var(--radius)',
+  			md: 'calc(var(--radius) - 2px)',
+  			sm: 'calc(var(--radius) - 4px)'
+  		}
+  	}
   },
-  plugins: [require("@tailwindcss/typography")],
+  plugins: [require("@tailwindcss/typography"), require("tailwindcss-animate")],
 };

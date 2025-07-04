@@ -3,256 +3,280 @@ import Link from "next/link";
 import LikeCounter from "./LikeCounter";
 import ReactGA from "react-ga4";
 import AskTarsButton from "./AskTarsButton";
+import { useTheme } from "next-themes"
+import { Button } from "./ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
+import { Menu, X, Github, Linkedin, MessageCircle } from "lucide-react";
 
 const Header = ({ currentLink = "", loading = false }) => {
-  const [themeMode, setThemeMode] = useState<"light" | "dark">("light");
-  const [isHmMenuBtnClicked, setIsHmMenuBtnClicked] = useState(false);
-
-  useEffect(() => {
-    const oldThemeMode = localStorage.getItem("themeMode");
-    if (oldThemeMode) setThemeMode(oldThemeMode as "light" | "dark");
-    else {
-      const html = document.querySelector("html");
-      if (html) {
-        setThemeMode(html.classList.contains("dark") ? "dark" : "light");
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    const html = document.querySelector("html");
-    if (html) {
-      if (themeMode === "dark") html.classList.add("dark");
-      else html.classList.remove("dark");
-    }
-    localStorage.setItem("themeMode", themeMode);
-  }, [themeMode]);
+  const { theme, setTheme } = useTheme();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleThemeMode = () => {
-    setThemeMode(themeMode === "dark" ? "light" : "dark");
+    setTheme(theme === "dark" ? "light" : "dark");
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
+  // Close mobile menu on escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        closeMobileMenu();
+      }
+    };
+
+    if (isMobileMenuOpen) {
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden'; // Prevent scroll when menu is open
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobileMenuOpen]);
+
+  const NavLinks = ({ mobile = false, onLinkClick = () => {} }) => (
+    <>
+      <Link href="/">
+        <Button
+          variant="link"
+          onClick={onLinkClick}
+          className={`${
+            currentLink === "" ? "text-primary" : "text-muted-foreground"
+          } ${mobile ? "justify-start w-full text-lg h-12" : ""}`}
+        >
+          Home
+        </Button>
+      </Link>
+      <Link href="/projects">
+        <Button
+          variant="link"
+          onClick={onLinkClick}
+          className={`${
+            currentLink === "projects"
+              ? "text-primary"
+              : "text-muted-foreground"
+          } underline-offset-2 ${mobile ? "justify-start w-full text-lg h-12" : ""}`}
+        >
+          Projects
+        </Button>
+      </Link>
+      <Link href="/resume">
+        <Button
+          variant="link"
+          onClick={onLinkClick}
+          className={`${
+            currentLink === "resume"
+              ? "text-primary"
+              : "text-muted-foreground"
+          } ${mobile ? "justify-start w-full text-lg h-12" : ""}`}
+        >
+          Resume
+        </Button>
+      </Link>
+      {
+        mobile && (
+          <Link href="/tars">
+          <Button
+            variant="link"
+            onClick={onLinkClick}
+            className={`${
+              currentLink === "tars"
+                ? "text-primary"
+                : "text-muted-foreground"
+            } ${mobile ? "justify-start w-full text-lg h-12" : ""}`}
+          >
+            Tars AI
+          </Button>
+        </Link>
+        )
+      }
+      <Button
+        variant="link"
+        onClick={() => {
+          ReactGA.event({
+            category: "Button.Click",
+            action: "Github Link",
+          });
+          window.open("https://github.com/vivek9patel");
+          onLinkClick();
+        }}
+        className={`text-muted-foreground ${mobile ? "justify-start w-full text-lg h-12" : ""}`}
+      >
+        {mobile && <Github className="mr-2 h-4 w-4" />}
+        Github
+      </Button>
+      <Button
+        variant="link"
+        onClick={() => {
+          ReactGA.event({
+            category: "Button.Click",
+            action: "Linkedin Link",
+          });
+          window.open("https://www.linkedin.com/in/vivek9patel/");
+          onLinkClick();
+        }}
+        className={`text-muted-foreground ${mobile ? "justify-start w-full text-lg h-12" : ""}`}
+      >
+        {mobile && <Linkedin className="mr-2 h-4 w-4" />}
+        LinkedIn
+      </Button>
+      <Button
+        variant="link"
+        onClick={() => {
+          ReactGA.send({
+            hitType: "pageview",
+            page: "meet.vivek9patel.com",
+            title: "V9 Meet",
+          });
+          window.open("https://meet.vivek9patel.com/");
+          onLinkClick();
+        }}
+        className={`text-muted-foreground ${mobile ? "justify-start w-full text-lg h-12" : ""}`}
+      >
+        {mobile && <MessageCircle className="mr-2 h-4 w-4" />}
+        Let's chat
+      </Button>
+    </>
+  );
+
   return (
-    <div
-      className={`sticky z-50 top-0 left-0 transition-none transform dark:text-slate-300  ${
-        themeMode === "dark" ? " bg-v9-primary-black" : "bg-white"
-      }`}
-    >
-      <LikeCounter />
-      <AskTarsButton currentLink={currentLink} />
-      <div className="flex justify-center">
-        <div className=" w-full px-10 sm:w-[600px] md:w-[700px] lg:w-[800px] xl:w-[1000px] 2xl:w-[1200px] py-4 flex justify-between relative">
-          <div
-            onClick={() => {
-              window.open("https://www.linkedin.com/in/vivek9patel/");
-              ReactGA.event({
-                category: "Button.Click",
-                action: "@vivek9patel linkedin",
-              });
-            }}
-            className={`font-semibold block sm:hidden md:block text-xl no-underline text-center w-32 transition ease-linear duration-1000 ${
-              false ? "animateFullWidth" : "animateNormalWidth"
-            }`}
-          >
-            <a className=" hover:underline underline-offset-2 hover:text-white font-thin">
-              @vivek9patel
-            </a>
-          </div>
-          <div
-            className=" w-8 sm:hidden"
-            onClick={() => {
-              setIsHmMenuBtnClicked(!isHmMenuBtnClicked);
-            }}
-          >
-            <svg
-              className="w-full cursor-pointer"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 10 10"
-              stroke="#eee"
-              strokeWidth=".6"
-              fill="rgba(0,0,0,0)"
-              strokeLinecap="round"
-            >
-              <path d="M2,3L5,3L8,3M2,5L8,5M2,7L5,7L8,7">
-                <animate
-                  dur="0.2s"
-                  attributeName="d"
-                  values="M2,3L5,3L8,3M2,5L8,5M2,7L5,7L8,7;M3,3L5,5L7,3M5,5L5,5M3,7L5,5L7,7"
-                  fill="freeze"
-                  begin="start.begin"
-                />
-                <animate
-                  dur="0.2s"
-                  attributeName="d"
-                  values="M3,3L5,5L7,3M5,5L5,5M3,7L5,5L7,7;M2,3L5,3L8,3M2,5L8,5M2,7L5,7L8,7"
-                  fill="freeze"
-                  begin="reverse.begin"
-                />
-              </path>
-              <rect width="10" height="10" stroke="none">
-                <animate
-                  dur="2s"
-                  id="reverse"
-                  attributeName="width"
-                  begin="click"
-                />
-              </rect>
-              <rect width="10" height="10" stroke="none">
-                <animate
-                  dur="0.001s"
-                  id="start"
-                  attributeName="width"
-                  values="10;0"
-                  fill="freeze"
-                  begin="click"
-                />
-                <animate
-                  dur="0.001s"
-                  attributeName="width"
-                  values="0;10"
-                  fill="freeze"
-                  begin="reverse.begin"
-                />
-              </rect>
-            </svg>
-          </div>
-          <div
-            className={` ${
-              isHmMenuBtnClicked ? "flex" : "hidden"
-            } sm:flex absolute z-50 text-right right-0 top-full bg-v9-secondary-black border border-v9-light-grey border-opacity-40 rounded p-2 sm:p-0 sm:border-none sm:bg-transparent sm:top-0 sm:right mr-10 sm:m-0 flex-col sm:relative sm:flex-row items-center transition-none `}
-          >
-            <Link href="/">
-              <a
-                className={`mx-2 w-full mb-2 sm:mb-0 sm:w-auto ${
-                  currentLink === "" ? "text-v9-yellow" : "hover:text-white"
-                }  underline-offset-2`}
-              >
-                Home
-              </a>
-            </Link>
-            <Link href="/projects">
-              <a
-                className={`mx-2 w-full sm:w-auto mb-2 sm:mb-0 ${
-                  currentLink === "projects"
-                    ? "text-v9-yellow"
-                    : "hover:text-white"
-                }  underline-offset-2`}
-              >
-                Projects
-              </a>
-            </Link>
-            <Link href="/resume">
-              <a
-                className={`mx-2 w-full sm:w-auto  mb-2 sm:mb-0 ${
-                  currentLink === "resume"
-                    ? "text-v9-yellow"
-                    : "hover:text-white"
-                }  underline-offset-2`}
-              >
-                Resume
-              </a>
-            </Link>
-            <div
+    <>
+      <div
+        className={`sticky bg-background z-50 top-0 left-0 transition-none transform `}
+      >
+        <LikeCounter />
+        <AskTarsButton currentLink={currentLink} />
+        <div className="flex justify-center">
+          <div className=" w-full px-10 sm:w-[600px] md:w-[700px] lg:w-[800px] xl:w-[1000px] 2xl:w-[1200px] py-4 flex justify-between relative">
+            <Button
+              variant="link"
               onClick={() => {
-                ReactGA.send({
-                  hitType: "pageview",
-                  page: "meet.vivek9patel.com",
-                  title: "V9 Meet",
-                });
-                window.open("https://meet.vivek9patel.com/");
-              }}
-              className={`mx-4 w-full sm:w-auto  mb-2 sm:m-0 hover:underline-offset-2 hover:text-white`}
-            >
-              <a className=" whitespace-nowrap">Let's chat</a>
-            </div>
-            <div
-              onClick={() => {
-                ReactGA.event({
-                  category: "Button.Click",
-                  action: "Github Link",
-                });
-                window.open("https://github.com/vivek9patel");
-              }}
-              className={`mx-2 w-full sm:w-auto ml-2 mb-2 sm:mb-0 hover:underline-offset-2`}
-            >
-              <a className=" flex  w-full sm:w-auto items-center justify-center hover:text-white">
-                <span className="flex-1">Github</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width={"14px"}
-                  height={"14px"}
-                  fill={"currentcolor"}
-                >
-                  <g data-name="Layer 2">
-                    <g data-name="external-link">
-                      <rect width="24" height="24" opacity="0"></rect>
-                      <path d="M20 11a1 1 0 0 0-1 1v6a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h6a1 1 0 0 0 0-2H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3v-6a1 1 0 0 0-1-1z"></path>
-                      <path d="M16 5h1.58l-6.29 6.28a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0L19 6.42V8a1 1 0 0 0 1 1 1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-4a1 1 0 0 0 0 2z"></path>
-                    </g>
-                  </g>
-                </svg>
-              </a>
-            </div>
-            <div
-              onClick={() => {
-                ReactGA.event({
-                  category: "Button.Click",
-                  action: "Linkedin Link",
-                });
                 window.open("https://www.linkedin.com/in/vivek9patel/");
-              }}
-              className={`mr-2 w-full sm:w-auto mb-2 sm:mb-0 hover:underline-offset-2`}
-            >
-              <a className=" flex  w-full sm:w-auto items-center justify-center hover:text-white">
-                <span className="flex-1">LinkedIn</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width={"14px"}
-                  height={"14px"}
-                  fill={"currentcolor"}
-                >
-                  <g data-name="Layer 2">
-                    <g data-name="external-link">
-                      <rect width="24" height="24" opacity="0"></rect>
-                      <path d="M20 11a1 1 0 0 0-1 1v6a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h6a1 1 0 0 0 0-2H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3v-6a1 1 0 0 0-1-1z"></path>
-                      <path d="M16 5h1.58l-6.29 6.28a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0L19 6.42V8a1 1 0 0 0 1 1 1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-4a1 1 0 0 0 0 2z"></path>
-                    </g>
-                  </g>
-                </svg>
-              </a>
-            </div>
-            <div
-              onClick={() => {
                 ReactGA.event({
                   category: "Button.Click",
-                  action: "Hire Me",
+                  action: "@vivek9patel linkedin",
                 });
-                window.open("mailto:vivek.p9737@gmail.com");
               }}
-              data-cursor={true}
-              className="mb-2 sm:mb-0 whitespace-nowrap text-center text-v9-green border border-v9-green rounded  w-full sm:w-auto px-1 text-sm hover:text-v9-yellow"
+              className={`font-thin sm:hidden md:block text-xl no-underline text-center w-32 transition ease-linear duration-1000 text-muted-foreground ${
+                false ? "animateFullWidth" : "animateNormalWidth"
+              }`}
             >
-              Hire me!
+              @vivek9patel
+            </Button>
+
+            {/* Mobile Menu Button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="sm:hidden"
+              onClick={toggleMobileMenu}
+              aria-label="Toggle mobile menu"
+            >
+              {isMobileMenuOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </Button>
+
+            {/* Desktop Menu */}
+            <div className="hidden sm:flex items-center space-x-1">
+              <NavLinks />
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="mx-2 radius-full">
+                      <input
+                        onChange={toggleThemeMode}
+                        checked={theme === "dark"}
+                        className="themeToggle"
+                        type="checkbox"
+                      />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Toggle theme to {theme === "dark" ? "light" : "dark"}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
-            {/* <input
-            onChange={toggleThemeMode}
-            checked={themeMode === "dark"}
-            className="themeToggle mx-2"
-            type="checkbox"
-          ></input> */}
+          </div>
+        </div>
+
+        <div className="w-full border-y border-border border-gray-400 h-1">
+          <div
+            className={`bg-accent w-0 h-1 ${
+              loading ? "triggerLoader" : "trigeerLoaderDone"
+            }`}
+          ></div>
+        </div>
+      </div>
+
+      {/* Mobile Menu Overlay - Moved outside header */}
+      {isMobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 sm:hidden"
+          onClick={closeMobileMenu}
+        />
+      )}
+
+      {/* Mobile Menu Drawer - Moved outside header */}
+      <div
+        className={`fixed top-0 right-0 h-screen w-80 bg-background border-l border-border shadow-2xl transform transition-transform duration-300 ease-in-out z-50 sm:hidden ${
+          isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        <div className="p-6 h-full bg-background">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-lg font-semibold text-foreground">Navigation</h2>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={closeMobileMenu}
+              aria-label="Close mobile menu"
+            >
+              <X className="h-5 w-5" />
+            </Button>
+          </div>
+          
+          <div className="flex flex-col space-y-1">
+            <NavLinks mobile={true} onLinkClick={closeMobileMenu} />
+            
+            <div className="border-t border-border pt-4 mt-6">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Theme</span>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="mx-2 radius-full">
+                        <input
+                          onChange={toggleThemeMode}
+                          checked={theme === "dark"}
+                          className="themeToggle"
+                          type="checkbox"
+                        />
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Toggle theme to {theme === "dark" ? "light" : "dark"}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div className="w-full dark:bg-gray-200 bg-black h-1">
-        <div
-          className={`bg-v9-pink w-0 h-1 ${
-            loading ? "triggerLoader" : "trigeerLoaderDone"
-          }`}
-        ></div>
-      </div>
-    </div>
+    </>
   );
 };
 

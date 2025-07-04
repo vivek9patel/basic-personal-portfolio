@@ -22,7 +22,7 @@ export default function BlogPostPage({
 
   return (
     <>
-      <div className="dark:text-white text-black mx-20 px-6 py-4">
+      <div className="text-black mx-20 px-6 py-4">
         <div className="m-4">{title}</div>
         <div className="m-4">{date}</div>
         <MarkdownData content={content} />

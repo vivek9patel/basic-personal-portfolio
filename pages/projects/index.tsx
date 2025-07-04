@@ -4,8 +4,19 @@ import { ProjectCardProps } from "../../components/ProjectCard";
 import { useContext, useEffect, useState } from "react";
 import { ProjectListContext } from "../../context";
 import { fetchProjectsStar } from "../../helpers/helpers";
-import { Hr } from "../../components/CustomHtml";
 import ReactGA from "react-ga4";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 
 type Props = {
   projectsList: Array<ProjectCardProps>;
@@ -56,40 +67,73 @@ const Projects: NextPage<Props> = () => {
 
   return (
     <div className="my-4 sm:my-10">
-      <div className="flex sm:flex-row w-full sm:w-auto flex-col items-center text-sm 2xl:text-base">
-        <div className="flex-1">
-          <span>Filter by: </span>
-          <select
-            className=" bg-v9-secondary-black py-1 px-2 ml-2 rounded border-2 border-opacity-5 outline-none text-v9-light-grey focus:border-v9-yellow"
-            value={filterBy}
-            onChange={(e) => {
-              ReactGA.event({
-                category: "Button.Click",
-                action: "Filter Projects",
-                label: e.target.value,
-              });
-              setFilterBy(e.target.value as TypeFilterBy);
-            }}
-          >
-            <option value={"stars"}>stars</option>
-            <option value={"year"}>year</option>
-            <option value={"priority"}>vivek's favorite</option>
-          </select>
-        </div>
-        <div className="sm:ml-4 ml-0 mt-4 sm:mt-0 w-full sm:w-auto sm:flex-1 flex items-center">
-          <span>Search by: </span>
-          <input
-            className=" border border-v9-light-grey border-opacity-10 bg-v9-primary-black py-1 px-2 mx-2 rounded flex-1 focus:border-v9-yellow active:border-v9-yellow outline-none"
-            type="text"
-            data-cursor-focusable="true"
-            name="search-project"
-            placeholder="React, Python, D3, etc."
-            onChange={filterByBadge}
-          />
+      {/* Header Section */}
+      <div className="text-center mb-8">
+        <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-foreground">
+          Projects
+        </h1>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          A collection of projects showcasing my journey in software development, 
+          from web applications to browser extensions and data visualizations.
+        </p>
+      </div>
+
+      {/* Filters Section */}
+      <div className="mb-8">
+        <div className="flex sm:flex-row w-full sm:w-auto flex-col items-start sm:items-end gap-4 text-sm 2xl:text-base">
+          <div className="flex-1">
+            <Label htmlFor="sort-select" className="text-sm font-medium mb-2 block">
+              Sort by
+            </Label>
+            <Select
+              onValueChange={(value) => {
+                ReactGA.event({
+                  category: "Button.Click",
+                  action: "Sort Projects",
+                  label: value,
+                });
+                setFilterBy(value as TypeFilterBy);
+              }}
+              value={filterBy}
+            >
+              <SelectTrigger id="sort-select" className="w-[180px]">
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Sort by</SelectLabel>
+                  <SelectItem value="stars">Stars</SelectItem>
+                  <SelectItem value="year">Year</SelectItem>
+                  <SelectItem value="priority">Vivek's Favorites</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="sm:ml-4 ml-0 mt-4 sm:mt-0 w-full sm:w-auto sm:flex-1">
+            <Label htmlFor="search-project" className="text-sm font-medium mb-2 block">
+              Filter by technology
+            </Label>
+            <div className="relative">
+              <Input
+                type="text"
+                id="search-project"
+                data-cursor-focusable="true"
+                name="search-project"
+                placeholder="React, Python, D3, Next.js..."
+                onChange={filterByBadge}
+                className="pl-10"
+              />
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg className="h-5 w-5 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <Hr />
+      <Separator className="my-4" />
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 grid-rows-auto auto-rows-fr gap-x-5 gap-y-5">
         {customOrderedProjectList.map((project: ProjectCardProps, i) => (
           <ProjectCard key={i} {...project} />
