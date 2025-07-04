@@ -8,6 +8,7 @@ import ReactGA from "react-ga4";
 import Avatar from "../../components/Avatar";
 import Markdown from "markdown-to-jsx";
 import { RefreshCw, Send } from "lucide-react";
+import { toast } from "sonner";
 
 import v9Icon from "../../images/v9.png";
 import tarsIcon from "../../images/tars.svg";
@@ -52,7 +53,12 @@ const Gpt: NextPage = () => {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [history, setHistory] = useState<History[]>([]);
   const [selectedQuestions, setSelectedQuestions] = useState<string[]>([]);
+  const [lastRequestTime, setLastRequestTime] = useState<number>(0);
+  const [cooldownRemaining, setCooldownRemaining] = useState<number>(0);
   const historyRef = useRef<HTMLDivElement>(null);
+  
+  // Rate limiting configuration
+  const RATE_LIMIT_MS = 3000; // 3 seconds cooldown between requests
 
   // Function to randomly select 3 questions
   const getRandomQuestions = () => {
@@ -65,6 +71,31 @@ const Gpt: NextPage = () => {
     setHistory([]);
     setSelectedQuestions(getRandomQuestions());
   };
+
+  // Rate limiting check
+  const canMakeRequest = () => {
+    const now = Date.now();
+    const timeSinceLastRequest = now - lastRequestTime;
+    return timeSinceLastRequest >= RATE_LIMIT_MS;
+  };
+
+  // Update cooldown timer
+  useEffect(() => {
+    if (lastRequestTime === 0) return;
+    
+    const updateCooldown = () => {
+      const now = Date.now();
+      const timeSinceLastRequest = now - lastRequestTime;
+      const remaining = Math.max(0, RATE_LIMIT_MS - timeSinceLastRequest);
+      setCooldownRemaining(remaining);
+      
+      if (remaining > 0) {
+        setTimeout(updateCooldown, 100);
+      }
+    };
+    
+    updateCooldown();
+  }, [lastRequestTime, RATE_LIMIT_MS]);
 
   useEffect(() => {
     // Listen for custom clear history event
@@ -157,6 +188,14 @@ const Gpt: NextPage = () => {
 
   const submitQuery = async (newQuery: string) => {
     if (queryProcessing || !isServerUp) return;
+    
+    if (!canMakeRequest()) {
+      const remainingSeconds = Math.ceil(cooldownRemaining / 1000);
+      toast.warning(`Please wait ${remainingSeconds} second${remainingSeconds > 1 ? 's' : ''} before sending another message`);
+      return;
+    }
+    
+    setLastRequestTime(Date.now());
     pushQueryToHistory("user", newQuery);
     setQueryProcessing(true);
     ReactGA.event({
@@ -177,7 +216,6 @@ const Gpt: NextPage = () => {
   };
 
   const handleKeyDown = (e: any) => {
-    if (queryProcessing || !isServerUp) return;
     if (e.key === "Enter" && query !== "") {
       submitQuery(query);
       setQuery("");
@@ -185,7 +223,6 @@ const Gpt: NextPage = () => {
   };
 
   const handleAskBtnSubmit = () => {
-    if (queryProcessing || !isServerUp) return;
     submitQuery(query);
     setQuery("");
   };
@@ -281,13 +318,14 @@ const Gpt: NextPage = () => {
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
               className="flex-1"
-              placeholder="Ask me anything about Vivek..."
-              disabled={queryProcessing || !isServerUp}
+              placeholder={"Ask me anything about Vivek..."}
+              disabled={queryProcessing || !isServerUp || cooldownRemaining > 0}
             />
             <Button
               onClick={handleAskBtnSubmit}
-              disabled={query === "" || queryProcessing || !isServerUp}
+              disabled={query === "" || queryProcessing || !isServerUp || cooldownRemaining > 0}
               size="icon"
+              title={"Send message"}
             >
               <Send className="h-4 w-4" />
             </Button>
@@ -341,7 +379,20 @@ function TarsMessage({
             </div>
           ) : (
             <div className="text-sm custom-markdown text-foreground">
-              <Markdown>{message}</Markdown>
+              <Markdown
+                options={{
+                  overrides: {
+                    a: {
+                      props: {
+                        target: "_blank",
+                        rel: "noopener noreferrer",
+                      },
+                    },
+                  },
+                }}
+              >
+                {message}
+              </Markdown>
             </div>
           )}
         </div>
@@ -353,14 +404,20 @@ function TarsMessage({
 function SampleQuery({
   question,
   callBackFun,
+  disabled = false,
 }: {
   question: string;
   callBackFun: any;
+  disabled?: boolean;
 }) {
   return (
     <Badge
       variant="outline"
-      className="cursor-pointer duration-300 transition-colors text-xs py-1 px-2 opacity-60 hover:opacity-100 whitespace-nowrap"
+      className={`duration-300 transition-colors text-xs py-1 px-2 whitespace-nowrap ${
+        disabled
+          ? "opacity-30 cursor-not-allowed"
+          : "cursor-pointer opacity-60 hover:opacity-100"
+      }`}
       onClick={() => callBackFun(question)}
     >
       {question}
