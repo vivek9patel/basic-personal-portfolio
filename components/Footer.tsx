@@ -4,7 +4,7 @@ import ReactGA from 'react-ga4';
 function Footer(): JSX.Element {
   return (
     <>
-      <div className="w-full flex">
+      <div className="w-full flex mt-4">
         <button
           onClick={() => {
             window.open('https://ubuntu.vivek9patel.com');
