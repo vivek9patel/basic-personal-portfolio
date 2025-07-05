@@ -196,3 +196,49 @@ export const loadThemePreference = (): {
     return null;
   }
 };
+
+// Utility to instantly apply saved theme from localStorage CSS variables
+// This provides immediate theme application without waiting for theme loading
+export const applyInstantThemeFromCache = (): boolean => {
+  try {
+    const cachedTheme = localStorage.getItem('theme-cache');
+    const cachedMode = localStorage.getItem('theme-mode-cache');
+
+    if (cachedTheme && cachedMode) {
+      const themeData = JSON.parse(cachedTheme);
+      const mode = JSON.parse(cachedMode) as 'light' | 'dark';
+
+      // Apply cached theme colors instantly
+      const root = document.documentElement;
+      const colors = themeData.colors[mode];
+
+      Object.entries(colors).forEach(([key, value]) => {
+        const cssVar = `--${camelToKebab(key)}`;
+        root.style.setProperty(cssVar, value as string, 'important');
+      });
+
+      return true;
+    }
+  } catch (error) {
+    console.warn('Failed to apply instant theme from cache:', error);
+  }
+
+  return false;
+};
+
+// Enhanced save function that also caches theme data for instant application
+export const saveThemeWithCache = (
+  theme: ThemeConfig,
+  mode: 'light' | 'dark'
+): void => {
+  // Save preference
+  saveThemePreference(theme.name, mode);
+
+  // Cache theme data for instant application
+  try {
+    localStorage.setItem('theme-cache', JSON.stringify(theme));
+    localStorage.setItem('theme-mode-cache', JSON.stringify(mode));
+  } catch (error) {
+    console.warn('Failed to cache theme data:', error);
+  }
+};

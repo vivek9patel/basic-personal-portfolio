@@ -16,6 +16,19 @@ import { Separator } from '../components/ui/separator';
 const ThemeDemo: NextPage = () => {
   const { currentTheme, mode } = useThemeManager();
 
+  if (!currentTheme) {
+    return (
+      <div className="min-h-screen bg-background text-foreground p-8 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-2">Loading Theme...</h1>
+          <p className="text-muted-foreground">
+            Please wait while the theme loads.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background text-foreground p-8">
       <div className="max-w-6xl mx-auto space-y-8">

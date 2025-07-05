@@ -13,6 +13,8 @@ import {
   applyThemeWithTransition,
   saveThemePreference,
   loadThemePreference,
+  applyInstantThemeFromCache,
+  saveThemeWithCache,
 } from '../lib/theme-utils';
 import ReactGA from 'react-ga4';
 
@@ -77,41 +79,57 @@ export const useThemeManager = (): UseThemeManagerReturn => {
         // Clean up any invalid theme preferences first
         cleanupInvalidThemePreference();
 
-        // Only load the default theme initially for faster startup
-        let defaultTheme = await getThemeByName('default');
+        // Apply cached theme INSTANTLY to eliminate loading flash
+        const hasInstantTheme = applyInstantThemeFromCache();
 
-        if (!defaultTheme) {
-          // Fallback: try to get any available theme
-          const themeNames = getAvailableThemeNames();
-          if (themeNames.length > 0) {
-            defaultTheme = await getThemeByName(themeNames[0]);
+        // Check for saved preference FIRST before loading any theme
+        const savedPreference = loadThemePreference();
+        let themeToLoad = 'default';
+        let modeToUse = mode;
+
+        if (savedPreference) {
+          themeToLoad = savedPreference.themeName;
+          modeToUse = savedPreference.mode;
+        }
+
+        // Load the target theme (either saved or default)
+        let targetTheme = await getThemeByName(themeToLoad);
+
+        if (!targetTheme) {
+          // If saved theme doesn't exist, fall back to default
+          targetTheme = await getThemeByName('default');
+
+          if (!targetTheme) {
+            // If default doesn't exist, try to get any available theme
+            const themeNames = getAvailableThemeNames();
+            if (themeNames.length > 0) {
+              targetTheme = await getThemeByName(themeNames[0]);
+            }
           }
         }
 
-        if (!defaultTheme) {
+        if (!targetTheme) {
           throw new Error('No themes available');
         }
 
-        // Try to load saved theme preference
-        const savedPreference = loadThemePreference();
+        // Apply the theme only once we know which one to use
+        setCurrentTheme(targetTheme);
 
-        if (savedPreference) {
-          const savedTheme = await getThemeByName(savedPreference.themeName);
-          if (savedTheme) {
-            setCurrentTheme(savedTheme);
-            // Set the mode from saved preference
-            setNextTheme(savedPreference.mode);
-            applyTheme(savedTheme, savedPreference.mode);
-          } else {
-            // Fallback to default if saved theme not found
-            setCurrentTheme(defaultTheme);
-            applyTheme(defaultTheme, mode);
-          }
-        } else {
-          // No saved preference, use default
-          setCurrentTheme(defaultTheme);
-          applyTheme(defaultTheme, mode);
+        // Set the mode before applying the theme to avoid mode mismatch
+        if (savedPreference && savedPreference.mode !== mode) {
+          setNextTheme(savedPreference.mode);
         }
+
+        // Apply the theme with the correct mode (only if we didn't apply instant theme, or if theme differs)
+        if (
+          !hasInstantTheme ||
+          savedPreference?.themeName !== targetTheme.name
+        ) {
+          applyTheme(targetTheme, modeToUse);
+        }
+
+        // Cache the theme for next time
+        saveThemeWithCache(targetTheme, modeToUse);
       } catch (error) {
         console.error('Error initializing theme:', error);
         // Create a minimal fallback theme
@@ -271,7 +289,7 @@ export const useThemeManager = (): UseThemeManagerReturn => {
 
         setCurrentTheme(theme);
         applyThemeWithTransition(theme, mode);
-        saveThemePreference(themeName, mode);
+        saveThemeWithCache(theme, mode);
       } else {
         // Track theme fallback
         ReactGA.event({
@@ -287,7 +305,7 @@ export const useThemeManager = (): UseThemeManagerReturn => {
         if (defaultTheme) {
           setCurrentTheme(defaultTheme);
           applyThemeWithTransition(defaultTheme, mode);
-          saveThemePreference('default', mode);
+          saveThemeWithCache(defaultTheme, mode);
         }
       }
     },
@@ -309,7 +327,7 @@ export const useThemeManager = (): UseThemeManagerReturn => {
 
     setNextTheme(newMode);
     // Save the current theme with the new mode
-    saveThemePreference(currentTheme.name, newMode);
+    saveThemeWithCache(currentTheme, newMode);
   }, [mode, currentTheme, setNextTheme]);
 
   // Apply a theme configuration directly
@@ -318,7 +336,7 @@ export const useThemeManager = (): UseThemeManagerReturn => {
       const targetMode = themeMode || mode;
       setCurrentTheme(theme);
       applyThemeWithTransition(theme, targetMode);
-      saveThemePreference(theme.name, targetMode);
+      saveThemeWithCache(theme, targetMode);
 
       if (themeMode && themeMode !== mode) {
         setNextTheme(themeMode);
@@ -342,7 +360,7 @@ export const useThemeManager = (): UseThemeManagerReturn => {
 
       setCurrentTheme(defaultTheme);
       applyThemeWithTransition(defaultTheme, mode);
-      saveThemePreference(defaultTheme.name, mode);
+      saveThemeWithCache(defaultTheme, mode);
     }
   }, [mode, availableThemes, currentTheme]);
 

@@ -161,9 +161,7 @@ const Header = ({ currentLink = '', loading = false }) => {
                   action: '@vivek9patel linkedin',
                 });
               }}
-              className={`font-thin text-sm sm:text-base md:text-lg lg:text-xl no-underline text-center min-w-0 flex-shrink-0 transition ease-linear duration-1000 text-muted-foreground ${
-                false ? 'animateFullWidth' : 'animateNormalWidth'
-              }`}
+              className="font-thin text-sm sm:text-base md:text-lg lg:text-xl no-underline text-center min-w-0 flex-shrink-0 text-muted-foreground"
             >
               <span className="truncate max-w-[100px] xs:max-w-[120px] sm:max-w-[150px] md:max-w-none">
                 @vivek9patel

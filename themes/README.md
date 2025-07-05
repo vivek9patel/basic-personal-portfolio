@@ -151,31 +151,3 @@ Each color mode (light/dark) must include all these properties:
 3. **Consistency**: Follow the existing theme patterns
 4. **Testing**: Test both light and dark modes thoroughly
 5. **Documentation**: Add comments for complex color choices
-
-## API Usage
-
-The theme system provides these functions:
-
-```typescript
-import { getAvailableThemes, getThemeByName } from '../themes';
-
-// Get all themes
-const themes = await getAvailableThemes();
-
-// Get specific theme
-const theme = await getThemeByName('sunset');
-
-// Use in components
-const { currentTheme, setTheme } = useThemeManager();
-await setTheme('sunset');
-```
-
-## Future Enhancements
-
-When ready for API integration:
-1. Replace file-based loading with API calls
-2. Add theme validation
-3. Implement theme sharing between users
-4. Add theme creation UI
-
-The current system is designed to easily support these future enhancements without breaking changes. 

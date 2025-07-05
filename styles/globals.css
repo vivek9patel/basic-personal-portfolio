@@ -250,14 +250,6 @@ button {
   animation: width-animate-90-to-full 300ms forwards;
 }
 
-.animateFullWidth {
-  animation: width-animate-full 1000ms forwards;
-}
-
-.animateNormalWidth {
-  animation: width-animate-80px 1000ms;
-}
-
 @keyframes width-animate-90 {
   0% {
     width: 0%;
@@ -291,26 +283,6 @@ button {
 
   100% {
     width: 0%;
-  }
-}
-
-@keyframes width-animate-full {
-  0% {
-    width: 80px;
-  }
-
-  100% {
-    width: 100%;
-  }
-}
-
-@keyframes width-animate-80px {
-  0% {
-    width: 80%;
-  }
-
-  100% {
-    width: 80px;
   }
 }
 

@@ -288,7 +288,7 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
         </div>
 
         {/* Current Theme Preview */}
-        {showPreview && (
+        {showPreview && currentTheme && (
           <div className="space-y-2">
             <label className="text-sm font-medium">Current Theme</label>
             <div className="p-3 border rounded-lg bg-muted/50">
