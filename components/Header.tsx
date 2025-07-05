@@ -5,13 +5,8 @@ import ReactGA from 'react-ga4';
 import AskTarsButton from './AskTarsButton';
 import { useTheme } from 'next-themes';
 import { Button } from './ui/button';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from './ui/tooltip';
 import { Menu, X, Github, Linkedin, MessageCircle } from 'lucide-react';
+import { ThemeSelector } from './ThemeSelector';
 
 const Header = ({ currentLink = '', loading = false }) => {
   const { theme, setTheme } = useTheme();
@@ -154,8 +149,9 @@ const Header = ({ currentLink = '', loading = false }) => {
       >
         <LikeCounter />
         <AskTarsButton currentLink={currentLink} />
-        <div className="flex justify-center">
-          <div className=" w-full px-10 sm:w-[600px] md:w-[700px] lg:w-[800px] xl:w-[1000px] 2xl:w-[1200px] py-4 flex justify-between relative">
+        <div className="flex justify-center header-nav-container">
+          <div className="w-full px-3 sm:px-6 md:px-8 lg:px-10 sm:w-[600px] md:w-[700px] lg:w-[800px] xl:w-[1000px] 2xl:w-[1200px] py-4 flex justify-between items-center relative header-nav-content">
+            {/* Logo/Brand - Responsive sizing */}
             <Button
               variant="link"
               onClick={() => {
@@ -165,48 +161,37 @@ const Header = ({ currentLink = '', loading = false }) => {
                   action: '@vivek9patel linkedin',
                 });
               }}
-              className={`font-thin sm:hidden md:block text-xl no-underline text-center w-32 transition ease-linear duration-1000 text-muted-foreground ${
-                false ? 'animateFullWidth' : 'animateNormalWidth'
-              }`}
+              className="font-thin text-sm sm:text-base md:text-lg lg:text-xl no-underline text-center min-w-0 flex-shrink-0 text-muted-foreground"
             >
-              @vivek9patel
+              <span className="truncate max-w-[100px] xs:max-w-[120px] sm:max-w-[150px] md:max-w-none">
+                @vivek9patel
+              </span>
             </Button>
 
-            {/* Mobile Menu Button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="sm:hidden"
-              onClick={toggleMobileMenu}
-              aria-label="Toggle mobile menu"
-            >
-              {isMobileMenuOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
+            {/* Mobile Controls - Theme selector and Menu button */}
+            <div className="sm:hidden flex items-center gap-2 flex-shrink-0">
+              <div className="theme-dropdown-container">
+                <ThemeSelector compact />
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                className={`${isMobileMenuOpen ? 'opacity-0 pointer-events-none' : ''}`}
+                onClick={toggleMobileMenu}
+                aria-label="Toggle mobile menu"
+              >
                 <Menu className="h-5 w-5" />
-              )}
-            </Button>
+              </Button>
+            </div>
 
-            {/* Desktop Menu */}
-            <div className="hidden sm:flex items-center space-x-1">
-              <NavLinks />
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="mx-2 radius-full">
-                      <input
-                        onChange={toggleThemeMode}
-                        checked={theme === 'dark'}
-                        className="themeToggle"
-                        type="checkbox"
-                      />
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Toggle theme to {theme === 'dark' ? 'light' : 'dark'}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+            {/* Desktop Menu - Responsive spacing and overflow handling */}
+            <div className="hidden sm:flex items-center gap-1 md:gap-2 lg:gap-3 flex-1 justify-end min-w-0">
+              <div className="flex items-center gap-1 md:gap-2 lg:gap-3 overflow-x-auto scrollbar-hide flex-shrink min-w-0">
+                <NavLinks />
+              </div>
+              <div className="theme-dropdown-container ml-2">
+                <ThemeSelector compact />
+              </div>
             </div>
           </div>
         </div>
@@ -228,13 +213,13 @@ const Header = ({ currentLink = '', loading = false }) => {
         />
       )}
 
-      {/* Mobile Menu Drawer - Moved outside header */}
+      {/* Mobile Menu Drawer - Responsive width */}
       <div
-        className={`fixed top-0 right-0 h-screen w-80 bg-background border-l border-border shadow-2xl transform transition-transform duration-300 ease-in-out z-50 sm:hidden ${
+        className={`fixed top-0 right-0 h-screen w-72 xs:w-80 sm:w-96 max-w-[85vw] bg-background border-l border-border shadow-2xl transform transition-transform duration-300 ease-in-out z-50 sm:hidden ${
           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <div className="p-6 h-full bg-background">
+        <div className="p-4 sm:p-6 h-full bg-background overflow-y-auto">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-semibold text-foreground">
               Navigation
@@ -251,31 +236,6 @@ const Header = ({ currentLink = '', loading = false }) => {
 
           <div className="flex flex-col space-y-1">
             <NavLinks mobile={true} onLinkClick={closeMobileMenu} />
-
-            <div className="border-t border-border pt-4 mt-6">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Theme</span>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="mx-2 radius-full">
-                        <input
-                          onChange={toggleThemeMode}
-                          checked={theme === 'dark'}
-                          className="themeToggle"
-                          type="checkbox"
-                        />
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>
-                        Toggle theme to {theme === 'dark' ? 'light' : 'dark'}
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
-            </div>
           </div>
         </div>
       </div>

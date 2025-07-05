@@ -55,16 +55,19 @@ export default function AskTarsButton({
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
+                id="clear-tars-history-button"
+                data-cursor="true"
                 onClick={handleClearTarsHistory}
                 variant="outline"
                 size="icon"
                 className={cn(
                   'w-10 h-10 rounded-full border-border bg-background',
                   'opacity-60 hover:opacity-100 transition-all duration-300',
-                  'text-foreground hover:text-foreground'
+                  'text-foreground hover:text-white'
                 )}
               >
                 <div
+                  data-cursor="clear-tars-history-button"
                   className="w-6 h-6 flex items-center justify-center"
                   style={{
                     maskImage: `url(${deleteImage.src})`,
@@ -76,7 +79,7 @@ export default function AskTarsButton({
                 />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>
+            <TooltipContent side="bottom">
               <p>Clear Tars History</p>
             </TooltipContent>
           </Tooltip>
@@ -97,6 +100,8 @@ export default function AskTarsButton({
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
+              id="ask-tars-button"
+              data-cursor="true"
               onClick={() => {
                 ReactGA.event({
                   category: 'Button.Click',
@@ -109,10 +114,11 @@ export default function AskTarsButton({
               className={cn(
                 'w-10 h-10 rounded-full border border-border bg-background hover:border-primary',
                 'group transition-colors duration-300',
-                'shadow-xs text-foreground hover:text-foreground'
+                'shadow-xs text-foreground hover:text-white'
               )}
             >
               <div
+                data-cursor="ask-tars-button"
                 className="w-full h-full flex items-center justify-center"
                 style={{
                   maskImage: `url(${tarsImage.src})`,
@@ -124,7 +130,7 @@ export default function AskTarsButton({
               />
             </Button>
           </TooltipTrigger>
-          <TooltipContent>
+          <TooltipContent side="bottom">
             <p>Ask Tars about Vivek</p>
           </TooltipContent>
         </Tooltip>

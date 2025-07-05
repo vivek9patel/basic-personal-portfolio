@@ -48,9 +48,7 @@ const Home: NextPage = () => {
             <div className="">Hey, I'm Vivek Patel</div>
             <div className=" mt-4">
               <span className="hidden sm:inline-block mr-4">I'm a </span>
-              <span className=" text-primary whitespace-nowrap">
-                Frontend Magician 🪄
-              </span>
+              <span className="text-primary">Frontend Magician 🪄</span>
             </div>
           </div>
           <div className="mt-4 flex items-center">
