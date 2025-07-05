@@ -37,9 +37,16 @@ export default function Cursor() {
     );
     let dataCursor = hoveredElement?.getAttribute('data-cursor');
     if (dataCursor) {
+      // If the element has data-cursor but it's not "true", look for a parent with data-cursor="true"
+      // Otherwise, use the current element if it has any data-cursor value
       if (dataCursor !== 'true') {
-        hoveredElement = hoveredElement?.closest(`[data-cursor="true"]`);
+        const parentWithTrueCursor = hoveredElement?.closest(`[data-cursor="true"]`);
+        if (parentWithTrueCursor) {
+          hoveredElement = parentWithTrueCursor;
+        }
+        // If no parent with data-cursor="true" exists, still use the current element
       }
+      
       if (!hoveredElement) return;
       const computedStyle = window.getComputedStyle(hoveredElement);
       const boundingRect = hoveredElement.getBoundingClientRect();
@@ -135,6 +142,8 @@ export default function Cursor() {
           width: cursor.width,
           height: cursor.height,
           borderRadius: cursor.borderRadius,
+          transitionProperty: 'width, height, border-radius, border-color, transform',
+          transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       />
       {!(cursor.hoveredOver || cursor.hideDot || cursor.scrolling) && (
