@@ -1,40 +1,47 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTheme } from 'next-themes';
-import { ThemeConfig, getAvailableThemes, getThemeByName, getThemeMetadata, getAvailableThemeNames, cleanupInvalidThemePreference } from '../themes';
-import { 
-  applyTheme, 
-  applyThemeWithTransition, 
-  saveThemePreference, 
-  loadThemePreference 
+import {
+  ThemeConfig,
+  getAvailableThemes,
+  getThemeByName,
+  getThemeMetadata,
+  getAvailableThemeNames,
+  cleanupInvalidThemePreference,
+} from '../themes';
+import {
+  applyTheme,
+  applyThemeWithTransition,
+  saveThemePreference,
+  loadThemePreference,
 } from '../lib/theme-utils';
 import ReactGA from 'react-ga4';
 
 export interface UseThemeManagerReturn {
   // Current theme configuration
   currentTheme: ThemeConfig | null;
-  
+
   // Available themes (lazy loaded)
   themes: ThemeConfig[];
-  
+
   // Theme metadata (always available)
   themeMetadata: Array<{ name: string; displayName: string }>;
-  
+
   // Current mode (light/dark)
   mode: 'light' | 'dark';
-  
+
   // Theme management functions
   setTheme: (themeName: string) => Promise<void>;
   toggleMode: () => void;
   applyThemeConfig: (theme: ThemeConfig, mode?: 'light' | 'dark') => void;
-  
+
   // Loading state
   isLoading: boolean;
-  
+
   // Theme utilities
   resetToDefault: () => Promise<void>;
   previewTheme: (theme: ThemeConfig, mode?: 'light' | 'dark') => void;
   cancelPreview: () => void;
-  
+
   // Lazy loading utilities
   loadAllThemes: () => Promise<void>;
 }
@@ -65,14 +72,14 @@ export const useThemeManager = (): UseThemeManagerReturn => {
 
     const initializeTheme = async () => {
       setIsLoading(true);
-      
+
       try {
         // Clean up any invalid theme preferences first
         cleanupInvalidThemePreference();
-        
+
         // Only load the default theme initially for faster startup
         let defaultTheme = await getThemeByName('default');
-        
+
         if (!defaultTheme) {
           // Fallback: try to get any available theme
           const themeNames = getAvailableThemeNames();
@@ -80,14 +87,14 @@ export const useThemeManager = (): UseThemeManagerReturn => {
             defaultTheme = await getThemeByName(themeNames[0]);
           }
         }
-        
+
         if (!defaultTheme) {
           throw new Error('No themes available');
         }
-        
+
         // Try to load saved theme preference
         const savedPreference = loadThemePreference();
-        
+
         if (savedPreference) {
           const savedTheme = await getThemeByName(savedPreference.themeName);
           if (savedTheme) {
@@ -217,7 +224,12 @@ export const useThemeManager = (): UseThemeManagerReturn => {
 
   // Apply theme when mode changes (but not during initialization)
   useEffect(() => {
-    if (!isLoading && isInitialized && !previewState.isPreviewActive && currentTheme) {
+    if (
+      !isLoading &&
+      isInitialized &&
+      !previewState.isPreviewActive &&
+      currentTheme
+    ) {
       // When mode changes, ensure we're applying the correct saved theme
       const savedPreference = loadThemePreference();
       if (savedPreference && savedPreference.themeName !== currentTheme.name) {
@@ -236,54 +248,63 @@ export const useThemeManager = (): UseThemeManagerReturn => {
         applyThemeWithTransition(currentTheme, mode, 200);
       }
     }
-  }, [mode, currentTheme, isLoading, isInitialized, previewState.isPreviewActive]);
+  }, [
+    mode,
+    currentTheme,
+    isLoading,
+    isInitialized,
+    previewState.isPreviewActive,
+  ]);
 
   // Set theme by name
-  const setTheme = useCallback(async (themeName: string) => {
-    const theme = await getThemeByName(themeName);
-    if (theme) {
-      // Track successful theme change
-      ReactGA.event({
-        category: 'Theme',
-        action: 'Theme Applied',
-        label: themeName,
-        value: 1
-      });
+  const setTheme = useCallback(
+    async (themeName: string) => {
+      const theme = await getThemeByName(themeName);
+      if (theme) {
+        // Track successful theme change
+        ReactGA.event({
+          category: 'Theme',
+          action: 'Theme Applied',
+          label: themeName,
+          value: 1,
+        });
 
-      setCurrentTheme(theme);
-      applyThemeWithTransition(theme, mode);
-      saveThemePreference(themeName, mode);
-    } else {
-      // Track theme fallback
-      ReactGA.event({
-        category: 'Theme',
-        action: 'Theme Fallback',
-        label: `${themeName} -> default`,
-        value: 1
-      });
+        setCurrentTheme(theme);
+        applyThemeWithTransition(theme, mode);
+        saveThemePreference(themeName, mode);
+      } else {
+        // Track theme fallback
+        ReactGA.event({
+          category: 'Theme',
+          action: 'Theme Fallback',
+          label: `${themeName} -> default`,
+          value: 1,
+        });
 
-      // Fallback to default theme if requested theme doesn't exist
-      console.warn(`Theme '${themeName}' not found, falling back to default`);
-      const defaultTheme = await getThemeByName('default');
-      if (defaultTheme) {
-        setCurrentTheme(defaultTheme);
-        applyThemeWithTransition(defaultTheme, mode);
-        saveThemePreference('default', mode);
+        // Fallback to default theme if requested theme doesn't exist
+        console.warn(`Theme '${themeName}' not found, falling back to default`);
+        const defaultTheme = await getThemeByName('default');
+        if (defaultTheme) {
+          setCurrentTheme(defaultTheme);
+          applyThemeWithTransition(defaultTheme, mode);
+          saveThemePreference('default', mode);
+        }
       }
-    }
-  }, [mode]);
+    },
+    [mode]
+  );
 
   // Toggle between light and dark mode
   const toggleMode = useCallback(() => {
     if (!currentTheme) return;
     const newMode = mode === 'light' ? 'dark' : 'light';
-    
+
     // Track mode toggle
     ReactGA.event({
       category: 'Theme',
       action: 'Mode Toggle',
       label: `${mode} to ${newMode}`,
-      value: 1
+      value: 1,
     });
 
     setNextTheme(newMode);
@@ -292,27 +313,31 @@ export const useThemeManager = (): UseThemeManagerReturn => {
   }, [mode, currentTheme, setNextTheme]);
 
   // Apply a theme configuration directly
-  const applyThemeConfig = useCallback((theme: ThemeConfig, themeMode?: 'light' | 'dark') => {
-    const targetMode = themeMode || mode;
-    setCurrentTheme(theme);
-    applyThemeWithTransition(theme, targetMode);
-    saveThemePreference(theme.name, targetMode);
-    
-    if (themeMode && themeMode !== mode) {
-      setNextTheme(themeMode);
-    }
-  }, [mode, setNextTheme]);
+  const applyThemeConfig = useCallback(
+    (theme: ThemeConfig, themeMode?: 'light' | 'dark') => {
+      const targetMode = themeMode || mode;
+      setCurrentTheme(theme);
+      applyThemeWithTransition(theme, targetMode);
+      saveThemePreference(theme.name, targetMode);
+
+      if (themeMode && themeMode !== mode) {
+        setNextTheme(themeMode);
+      }
+    },
+    [mode, setNextTheme]
+  );
 
   // Reset to default theme
   const resetToDefault = useCallback(async () => {
-    const defaultTheme = availableThemes.find(t => t.name === 'default') || availableThemes[0];
+    const defaultTheme =
+      availableThemes.find(t => t.name === 'default') || availableThemes[0];
     if (defaultTheme) {
       // Track theme reset
       ReactGA.event({
         category: 'Theme',
         action: 'Reset to Default',
         label: currentTheme?.name || 'unknown',
-        value: 1
+        value: 1,
       });
 
       setCurrentTheme(defaultTheme);
@@ -322,36 +347,39 @@ export const useThemeManager = (): UseThemeManagerReturn => {
   }, [mode, availableThemes, currentTheme]);
 
   // Preview a theme temporarily
-  const previewTheme = useCallback((theme: ThemeConfig, themeMode?: 'light' | 'dark') => {
-    if (!currentTheme) return;
-    
-    const targetMode = themeMode || mode;
-    
-    // Track theme preview
-    ReactGA.event({
-      category: 'Theme',
-      action: 'Theme Preview',
-      label: `${theme.name} (${targetMode})`,
-      value: 1
-    });
-    
-    // Save current state if not already previewing
-    if (!previewState.isPreviewActive) {
-      setPreviewState({
-        isPreviewActive: true,
-        originalTheme: currentTheme,
-        originalMode: mode,
+  const previewTheme = useCallback(
+    (theme: ThemeConfig, themeMode?: 'light' | 'dark') => {
+      if (!currentTheme) return;
+
+      const targetMode = themeMode || mode;
+
+      // Track theme preview
+      ReactGA.event({
+        category: 'Theme',
+        action: 'Theme Preview',
+        label: `${theme.name} (${targetMode})`,
+        value: 1,
       });
-    }
-    
-    // Apply preview theme
-    applyThemeWithTransition(theme, targetMode, 200);
-    
-    // Set temporary mode if different
-    if (themeMode && themeMode !== mode) {
-      setNextTheme(themeMode);
-    }
-  }, [mode, currentTheme, previewState.isPreviewActive, setNextTheme]);
+
+      // Save current state if not already previewing
+      if (!previewState.isPreviewActive) {
+        setPreviewState({
+          isPreviewActive: true,
+          originalTheme: currentTheme,
+          originalMode: mode,
+        });
+      }
+
+      // Apply preview theme
+      applyThemeWithTransition(theme, targetMode, 200);
+
+      // Set temporary mode if different
+      if (themeMode && themeMode !== mode) {
+        setNextTheme(themeMode);
+      }
+    },
+    [mode, currentTheme, previewState.isPreviewActive, setNextTheme]
+  );
 
   // Cancel preview and restore original theme
   const cancelPreview = useCallback(() => {
@@ -361,14 +389,18 @@ export const useThemeManager = (): UseThemeManagerReturn => {
         category: 'Theme',
         action: 'Cancel Preview',
         label: `${previewState.originalTheme.name} (${previewState.originalMode})`,
-        value: 1
+        value: 1,
       });
 
       // Restore original theme and mode
-      applyThemeWithTransition(previewState.originalTheme, previewState.originalMode, 200);
+      applyThemeWithTransition(
+        previewState.originalTheme,
+        previewState.originalMode,
+        200
+      );
       setCurrentTheme(previewState.originalTheme);
       setNextTheme(previewState.originalMode);
-      
+
       // Clear preview state
       setPreviewState({
         isPreviewActive: false,
@@ -408,4 +440,4 @@ export const useThemeManager = (): UseThemeManagerReturn => {
     cancelPreview,
     loadAllThemes: loadAllThemesFunction,
   };
-}; 
+};

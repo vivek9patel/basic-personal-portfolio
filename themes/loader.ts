@@ -19,29 +19,32 @@ export function getAvailableThemeNames(): string[] {
 export async function loadTheme(name: string): Promise<ThemeConfig | null> {
   const themeLoader = THEME_REGISTRY[name as keyof typeof THEME_REGISTRY];
   if (!themeLoader) {
-    console.warn(`Theme '${name}' not found in registry. Available themes:`, Object.keys(THEME_REGISTRY));
-    
+    console.warn(
+      `Theme '${name}' not found in registry. Available themes:`,
+      Object.keys(THEME_REGISTRY)
+    );
+
     // Fallback to default theme if the requested theme doesn't exist
     if (name !== 'default') {
       console.log(`Falling back to default theme`);
       return loadTheme('default');
     }
-    
+
     return null;
   }
-  
+
   try {
     const theme = await themeLoader();
     return theme;
   } catch (error) {
     console.error(`Error loading theme '${name}':`, error);
-    
+
     // Fallback to default theme on error
     if (name !== 'default') {
       console.log(`Error loading '${name}', falling back to default theme`);
       return loadTheme('default');
     }
-    
+
     return null;
   }
 }
@@ -49,15 +52,20 @@ export async function loadTheme(name: string): Promise<ThemeConfig | null> {
 // Load all themes (only when needed)
 export async function loadAllThemes(): Promise<ThemeConfig[]> {
   const themeNames = getAvailableThemeNames();
-  
+
   try {
     const themePromises = themeNames.map(name => loadTheme(name));
     const themes = await Promise.all(themePromises);
-    
+
     // Filter out null values (failed loads)
-    const validThemes = themes.filter((theme): theme is ThemeConfig => theme !== null);
-    
-    console.log(`Loaded ${validThemes.length} themes:`, validThemes.map(t => t.name));
+    const validThemes = themes.filter(
+      (theme): theme is ThemeConfig => theme !== null
+    );
+
+    console.log(
+      `Loaded ${validThemes.length} themes:`,
+      validThemes.map(t => t.name)
+    );
     return validThemes;
   } catch (error) {
     console.error('Error loading themes:', error);
@@ -71,22 +79,22 @@ const themeCache = new Map<string, ThemeConfig>();
 // Get all available themes (lazy loaded with caching)
 export async function getAvailableThemes(): Promise<ThemeConfig[]> {
   const themeNames = getAvailableThemeNames();
-  
+
   // Load only themes that aren't cached yet
   const uncachedThemes = themeNames.filter(name => !themeCache.has(name));
-  
+
   if (uncachedThemes.length > 0) {
-    const loadPromises = uncachedThemes.map(async (name) => {
+    const loadPromises = uncachedThemes.map(async name => {
       const theme = await loadTheme(name);
       if (theme) {
         themeCache.set(name, theme);
       }
       return theme;
     });
-    
+
     await Promise.all(loadPromises);
   }
-  
+
   // Return all cached themes
   return Array.from(themeCache.values());
 }
@@ -102,26 +110,32 @@ const THEME_DISPLAY_NAMES: Record<string, string> = {
 };
 
 // Get theme metadata without loading the full theme
-export function getThemeMetadata(): Array<{ name: string; displayName: string }> {
+export function getThemeMetadata(): Array<{
+  name: string;
+  displayName: string;
+}> {
   return getAvailableThemeNames().map(name => ({
     name,
-    displayName: THEME_DISPLAY_NAMES[name] || name.charAt(0).toUpperCase() + name.slice(1)
+    displayName:
+      THEME_DISPLAY_NAMES[name] || name.charAt(0).toUpperCase() + name.slice(1),
   }));
 }
 
 // Get theme by name (lazy loaded with caching)
-export async function getThemeByName(name: string): Promise<ThemeConfig | undefined> {
+export async function getThemeByName(
+  name: string
+): Promise<ThemeConfig | undefined> {
   // Check cache first
   if (themeCache.has(name)) {
     return themeCache.get(name);
   }
-  
+
   // Load theme if not cached
   const theme = await loadTheme(name);
   if (theme) {
     themeCache.set(name, theme);
   }
-  
+
   return theme || undefined;
 }
 
@@ -137,9 +151,14 @@ export function cleanupInvalidThemePreference(): void {
     if (saved) {
       const preference = JSON.parse(saved);
       const availableNames = getAvailableThemeNames();
-      
-      if (preference.themeName && !availableNames.includes(preference.themeName)) {
-        console.log(`Invalid theme preference '${preference.themeName}' found. Clearing preference to fallback to default.`);
+
+      if (
+        preference.themeName &&
+        !availableNames.includes(preference.themeName)
+      ) {
+        console.log(
+          `Invalid theme preference '${preference.themeName}' found. Clearing preference to fallback to default.`
+        );
         localStorage.removeItem('theme-preference');
       }
     }
@@ -147,4 +166,4 @@ export function cleanupInvalidThemePreference(): void {
     console.error('Error cleaning up theme preference:', error);
     localStorage.removeItem('theme-preference');
   }
-} 
+}

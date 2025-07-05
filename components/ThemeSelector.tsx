@@ -1,20 +1,26 @@
 import React, { useState } from 'react';
 import { useThemeManager } from '../hooks/useThemeManager';
 import { Button } from './ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from './ui/card';
 import { Badge } from './ui/badge';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from './ui/select';
-import { 
-  Tooltip, 
-  TooltipContent, 
-  TooltipProvider, 
-  TooltipTrigger 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 } from './ui/tooltip';
 import { Palette, Sun, Moon, Eye, X, RotateCcw } from 'lucide-react';
 import ReactGA from 'react-ga4';
@@ -34,17 +40,17 @@ interface ThemePreviewProps {
 const ThemePreview: React.FC<ThemePreviewProps> = ({ colors, name, mode }) => (
   <div className="flex items-center space-x-2">
     <div className="flex space-x-1">
-      <div 
+      <div
         className="w-4 h-4 rounded-full border border-gray-300"
         style={{ backgroundColor: colors.primary }}
         title={`Primary: ${colors.primary}`}
       />
-      <div 
+      <div
         className="w-4 h-4 rounded-full border border-gray-300"
         style={{ backgroundColor: colors.secondary }}
         title={`Secondary: ${colors.secondary}`}
       />
-      <div 
+      <div
         className="w-4 h-4 rounded-full border border-gray-300"
         style={{ backgroundColor: colors.accent }}
         title={`Accent: ${colors.accent}`}
@@ -52,7 +58,11 @@ const ThemePreview: React.FC<ThemePreviewProps> = ({ colors, name, mode }) => (
     </div>
     <span className="text-sm font-medium">{name}</span>
     <Badge variant="outline" className="text-xs">
-      {mode === 'light' ? <Sun className="w-3 h-3" /> : <Moon className="w-3 h-3" />}
+      {mode === 'light' ? (
+        <Sun className="w-3 h-3" />
+      ) : (
+        <Moon className="w-3 h-3" />
+      )}
     </Badge>
   </div>
 );
@@ -63,22 +73,22 @@ export interface ThemeSelectorProps {
   compact?: boolean;
 }
 
-export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ 
-  className = '', 
+export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
+  className = '',
   showPreview = true,
-  compact = false 
+  compact = false,
 }) => {
-  const { 
-    currentTheme, 
-    themes, 
+  const {
+    currentTheme,
+    themes,
     themeMetadata,
-    mode, 
-    setTheme, 
-    toggleMode, 
-    isLoading, 
+    mode,
+    setTheme,
+    toggleMode,
+    isLoading,
     resetToDefault,
     previewTheme,
-    cancelPreview 
+    cancelPreview,
   } = useThemeManager();
 
   const [isPreviewMode, setIsPreviewMode] = useState(false);
@@ -89,7 +99,7 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
       category: 'Theme',
       action: isPreviewMode ? 'Theme Preview' : 'Theme Change',
       label: themeName,
-      value: 1
+      value: 1,
     });
 
     if (isPreviewMode) {
@@ -108,7 +118,7 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
       category: 'Theme',
       action: isPreviewMode ? 'Exit Preview Mode' : 'Enter Preview Mode',
       label: currentTheme?.name || 'unknown',
-      value: 1
+      value: 1,
     });
 
     if (isPreviewMode) {
@@ -124,7 +134,7 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
         category: 'Theme',
         action: 'Apply Preview',
         label: currentTheme.name,
-        value: 1
+        value: 1,
       });
 
       setTheme(currentTheme.name);
@@ -144,19 +154,26 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
   if (compact) {
     return (
       <div className={`flex items-center gap-1 sm:gap-2 ${className}`}>
-        <Select value={currentTheme?.name || 'default'} onValueChange={handleThemeSelect}>
+        <Select
+          value={currentTheme?.name || 'default'}
+          onValueChange={handleThemeSelect}
+        >
           <SelectTrigger className="w-16 xs:w-20 sm:w-24 md:w-28 lg:w-32 text-xs sm:text-sm h-8 sm:h-9">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent 
-            align="end" 
-            side="bottom" 
+          <SelectContent
+            align="end"
+            side="bottom"
             sideOffset={4}
             className="w-32 sm:w-36 md:w-40 max-w-[90vw]"
             collisionPadding={8}
           >
-            {themeMetadata.map((theme) => (
-              <SelectItem key={theme.name} value={theme.name} className="text-xs sm:text-sm">
+            {themeMetadata.map(theme => (
+              <SelectItem
+                key={theme.name}
+                value={theme.name}
+                className="text-xs sm:text-sm"
+              >
                 <span className="truncate">{theme.displayName}</span>
               </SelectItem>
             ))}
@@ -166,16 +183,16 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button 
-                variant="outline" 
-                size="sm" 
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={() => {
                   // Track mode toggle
                   ReactGA.event({
                     category: 'Theme',
                     action: 'Mode Toggle',
                     label: `${mode} to ${mode === 'light' ? 'dark' : 'light'}`,
-                    value: 1
+                    value: 1,
                   });
                   toggleMode();
                 }}
@@ -189,7 +206,9 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
               </Button>
             </TooltipTrigger>
             <TooltipContent side="bottom" align="end">
-              <p className="text-xs">Toggle {mode === 'light' ? 'dark' : 'light'} mode</p>
+              <p className="text-xs">
+                Toggle {mode === 'light' ? 'dark' : 'light'} mode
+              </p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -204,30 +223,33 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
           <Palette className="w-5 h-5" />
           <span>Theme Settings</span>
         </CardTitle>
-        <CardDescription>
-          Customize your visual experience
-        </CardDescription>
+        <CardDescription>Customize your visual experience</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Theme Selection */}
         <div className="space-y-2">
           <label className="text-sm font-medium">Theme</label>
-          <Select value={currentTheme?.name || 'default'} onValueChange={handleThemeSelect}>
+          <Select
+            value={currentTheme?.name || 'default'}
+            onValueChange={handleThemeSelect}
+          >
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {themes.map((theme) => (
+              {themes.map(theme => (
                 <SelectItem key={theme.name} value={theme.name}>
                   <div className="flex items-center justify-between w-full">
                     <span>{theme.displayName}</span>
                     {showPreview && (
                       <div className="flex space-x-1 ml-2">
-                        <div 
+                        <div
                           className="w-3 h-3 rounded-full border"
-                          style={{ backgroundColor: theme.colors[mode].primary }}
+                          style={{
+                            backgroundColor: theme.colors[mode].primary,
+                          }}
                         />
-                        <div 
+                        <div
                           className="w-3 h-3 rounded-full border"
                           style={{ backgroundColor: theme.colors[mode].accent }}
                         />
@@ -244,7 +266,7 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
         <div className="space-y-2">
           <label className="text-sm font-medium">Mode</label>
           <div className="flex space-x-2">
-            <Button 
+            <Button
               variant={mode === 'light' ? 'default' : 'outline'}
               size="sm"
               onClick={() => mode !== 'light' && toggleMode()}
@@ -253,7 +275,7 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
               <Sun className="w-4 h-4 mr-2" />
               Light
             </Button>
-            <Button 
+            <Button
               variant={mode === 'dark' ? 'default' : 'outline'}
               size="sm"
               onClick={() => mode !== 'dark' && toggleMode()}
@@ -270,7 +292,7 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
           <div className="space-y-2">
             <label className="text-sm font-medium">Current Theme</label>
             <div className="p-3 border rounded-lg bg-muted/50">
-              <ThemePreview 
+              <ThemePreview
                 colors={{
                   primary: currentTheme.colors[mode].primary,
                   secondary: currentTheme.colors[mode].secondary,
@@ -290,8 +312,8 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   size="sm"
                   onClick={handlePreviewToggle}
                   className="flex-1"
@@ -310,7 +332,11 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>{isPreviewMode ? 'Exit preview mode' : 'Enter preview mode to test themes'}</p>
+                <p>
+                  {isPreviewMode
+                    ? 'Exit preview mode'
+                    : 'Enter preview mode to test themes'}
+                </p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -318,11 +344,7 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={resetToDefault}
-                >
+                <Button variant="outline" size="sm" onClick={resetToDefault}>
                   <RotateCcw className="w-4 h-4" />
                 </Button>
               </TooltipTrigger>
@@ -338,11 +360,7 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
             <p className="text-sm text-blue-700 dark:text-blue-300 mb-2">
               Preview mode is active. Select themes to preview them instantly.
             </p>
-            <Button 
-              size="sm" 
-              onClick={handleApplyPreview}
-              className="w-full"
-            >
+            <Button size="sm" onClick={handleApplyPreview} className="w-full">
               Apply Current Preview
             </Button>
           </div>
@@ -350,4 +368,4 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
       </CardContent>
     </Card>
   );
-}; 
+};

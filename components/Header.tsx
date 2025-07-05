@@ -165,7 +165,9 @@ const Header = ({ currentLink = '', loading = false }) => {
                 false ? 'animateFullWidth' : 'animateNormalWidth'
               }`}
             >
-              <span className="truncate max-w-[100px] xs:max-w-[120px] sm:max-w-[150px] md:max-w-none">@vivek9patel</span>
+              <span className="truncate max-w-[100px] xs:max-w-[120px] sm:max-w-[150px] md:max-w-none">
+                @vivek9patel
+              </span>
             </Button>
 
             {/* Mobile Controls - Theme selector and Menu button */}

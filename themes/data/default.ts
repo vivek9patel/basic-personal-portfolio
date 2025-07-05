@@ -82,13 +82,18 @@ export const defaultTheme: ThemeConfig = {
   shadows: {
     shadow2xs: '4px 4px 0px 0px hsl(0 0% 0% / 0.5)',
     shadowXs: '4px 4px 0px 0px hsl(0 0% 0% / 0.5)',
-    shadowSm: '4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 1px 2px -1px hsl(0 0% 0% / 1)',
-    shadow: '4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 1px 2px -1px hsl(0 0% 0% / 1)',
-    shadowMd: '4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 2px 4px -1px hsl(0 0% 0% / 1)',
-    shadowLg: '4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 4px 6px -1px hsl(0 0% 0% / 1)',
-    shadowXl: '4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 8px 10px -1px hsl(0 0% 0% / 1)',
+    shadowSm:
+      '4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 1px 2px -1px hsl(0 0% 0% / 1)',
+    shadow:
+      '4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 1px 2px -1px hsl(0 0% 0% / 1)',
+    shadowMd:
+      '4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 2px 4px -1px hsl(0 0% 0% / 1)',
+    shadowLg:
+      '4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 4px 6px -1px hsl(0 0% 0% / 1)',
+    shadowXl:
+      '4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 8px 10px -1px hsl(0 0% 0% / 1)',
     shadow2xl: '4px 4px 0px 0px hsl(0 0% 0% / 2.5)',
   },
   trackingNormal: '0em',
   spacing: '0.25rem',
-}; 
+};

@@ -6,9 +6,12 @@ const camelToKebab = (str: string): string => {
 };
 
 // Apply color variables to CSS custom properties
-const applyColorVariables = (colors: ThemeColors, isDark: boolean = false): void => {
+const applyColorVariables = (
+  colors: ThemeColors,
+  isDark: boolean = false
+): void => {
   const root = document.documentElement;
-  
+
   Object.entries(colors).forEach(([key, value]) => {
     const cssVar = `--${camelToKebab(key)}`;
     // Use !important to ensure our dynamic values override static CSS
@@ -19,7 +22,7 @@ const applyColorVariables = (colors: ThemeColors, isDark: boolean = false): void
 // Apply font variables to CSS custom properties
 const applyFontVariables = (fonts: ThemeConfig['fonts']): void => {
   const root = document.documentElement;
-  
+
   Object.entries(fonts).forEach(([key, value]) => {
     const cssVar = `--font-${key}`;
     root.style.setProperty(cssVar, value, 'important');
@@ -29,7 +32,7 @@ const applyFontVariables = (fonts: ThemeConfig['fonts']): void => {
 // Apply shadow variables to CSS custom properties
 const applyShadowVariables = (shadows: ThemeConfig['shadows']): void => {
   const root = document.documentElement;
-  
+
   Object.entries(shadows).forEach(([key, value]) => {
     const cssVar = `--${camelToKebab(key)}`;
     root.style.setProperty(cssVar, value, 'important');
@@ -39,16 +42,23 @@ const applyShadowVariables = (shadows: ThemeConfig['shadows']): void => {
 // Apply other theme variables
 const applyOtherVariables = (theme: ThemeConfig): void => {
   const root = document.documentElement;
-  
+
   root.style.setProperty('--radius', theme.radius, 'important');
-  root.style.setProperty('--tracking-normal', theme.trackingNormal, 'important');
+  root.style.setProperty(
+    '--tracking-normal',
+    theme.trackingNormal,
+    'important'
+  );
   root.style.setProperty('--spacing', theme.spacing, 'important');
 };
 
 // Main function to apply a complete theme
-export const applyTheme = (theme: ThemeConfig, mode: 'light' | 'dark' = 'light'): void => {
+export const applyTheme = (
+  theme: ThemeConfig,
+  mode: 'light' | 'dark' = 'light'
+): void => {
   const colors = mode === 'dark' ? theme.colors.dark : theme.colors.light;
-  
+
   // Apply all theme variables - these will override the minimal CSS fallbacks
   applyColorVariables(colors);
   applyFontVariables(theme.fonts);
@@ -60,11 +70,12 @@ export const applyTheme = (theme: ThemeConfig, mode: 'light' | 'dark' = 'light')
 export const getCurrentThemeFromCSS = (): Partial<ThemeConfig> => {
   const root = document.documentElement;
   const computedStyle = getComputedStyle(root);
-  
+
   // This is a helper function to extract current theme values
   // Mainly useful for debugging or creating theme presets
-  const getVar = (name: string) => computedStyle.getPropertyValue(`--${name}`).trim();
-  
+  const getVar = (name: string) =>
+    computedStyle.getPropertyValue(`--${name}`).trim();
+
   return {
     colors: {
       light: {
@@ -147,18 +158,18 @@ export const getCurrentThemeFromCSS = (): Partial<ThemeConfig> => {
 
 // Function to smoothly transition between themes
 export const applyThemeWithTransition = (
-  theme: ThemeConfig, 
+  theme: ThemeConfig,
   mode: 'light' | 'dark' = 'light',
   duration: number = 300
 ): void => {
   const root = document.documentElement;
-  
+
   // Add transition to root element
   root.style.transition = `all ${duration}ms ease-in-out`;
-  
+
   // Apply the theme
   applyTheme(theme, mode);
-  
+
   // Remove transition after animation completes
   setTimeout(() => {
     root.style.transition = '';
@@ -166,16 +177,22 @@ export const applyThemeWithTransition = (
 };
 
 // Utility to save theme preference to localStorage
-export const saveThemePreference = (themeName: string, mode: 'light' | 'dark'): void => {
+export const saveThemePreference = (
+  themeName: string,
+  mode: 'light' | 'dark'
+): void => {
   localStorage.setItem('theme-preference', JSON.stringify({ themeName, mode }));
 };
 
 // Utility to load theme preference from localStorage
-export const loadThemePreference = (): { themeName: string; mode: 'light' | 'dark' } | null => {
+export const loadThemePreference = (): {
+  themeName: string;
+  mode: 'light' | 'dark';
+} | null => {
   try {
     const saved = localStorage.getItem('theme-preference');
     return saved ? JSON.parse(saved) : null;
   } catch {
     return null;
   }
-}; 
+};

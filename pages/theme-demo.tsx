@@ -3,7 +3,13 @@ import { NextPage } from 'next';
 import { ThemeSelector } from '../components/ThemeSelector';
 import { useThemeManager } from '../hooks/useThemeManager';
 import { Button } from '../components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Separator } from '../components/ui/separator';
 
@@ -20,12 +26,8 @@ const ThemeDemo: NextPage = () => {
             Test the dynamic theme switching system
           </p>
           <div className="flex justify-center items-center space-x-2">
-            <Badge variant="outline">
-              Current: {currentTheme.displayName}
-            </Badge>
-            <Badge variant="outline">
-              Mode: {mode}
-            </Badge>
+            <Badge variant="outline">Current: {currentTheme.displayName}</Badge>
+            <Badge variant="outline">Mode: {mode}</Badge>
           </div>
         </div>
 
@@ -74,7 +76,9 @@ const ThemeDemo: NextPage = () => {
                   </p>
                   <div className="flex space-x-2">
                     <Button size="sm">Primary</Button>
-                    <Button variant="secondary" size="sm">Secondary</Button>
+                    <Button variant="secondary" size="sm">
+                      Secondary
+                    </Button>
                   </div>
                 </div>
               </CardContent>
@@ -84,9 +88,7 @@ const ThemeDemo: NextPage = () => {
             <Card>
               <CardHeader>
                 <CardTitle>Color Palette</CardTitle>
-                <CardDescription>
-                  Current theme colors
-                </CardDescription>
+                <CardDescription>Current theme colors</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 gap-2">
@@ -120,21 +122,29 @@ const ThemeDemo: NextPage = () => {
             <Card>
               <CardHeader>
                 <CardTitle>Button Variants</CardTitle>
-                <CardDescription>
-                  Different button styles
-                </CardDescription>
+                <CardDescription>Different button styles</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   <div className="flex flex-wrap gap-2">
                     <Button size="sm">Default</Button>
-                    <Button variant="secondary" size="sm">Secondary</Button>
-                    <Button variant="outline" size="sm">Outline</Button>
+                    <Button variant="secondary" size="sm">
+                      Secondary
+                    </Button>
+                    <Button variant="outline" size="sm">
+                      Outline
+                    </Button>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    <Button variant="destructive" size="sm">Destructive</Button>
-                    <Button variant="ghost" size="sm">Ghost</Button>
-                    <Button variant="link" size="sm">Link</Button>
+                    <Button variant="destructive" size="sm">
+                      Destructive
+                    </Button>
+                    <Button variant="ghost" size="sm">
+                      Ghost
+                    </Button>
+                    <Button variant="link" size="sm">
+                      Link
+                    </Button>
                   </div>
                 </div>
               </CardContent>
@@ -150,9 +160,7 @@ const ThemeDemo: NextPage = () => {
           <Card>
             <CardHeader>
               <CardTitle>{currentTheme.displayName} Theme</CardTitle>
-              <CardDescription>
-                Theme configuration details
-              </CardDescription>
+              <CardDescription>Theme configuration details</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -164,50 +172,73 @@ const ThemeDemo: NextPage = () => {
                       <span>{currentTheme.name}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Display Name:</span>
+                      <span className="text-muted-foreground">
+                        Display Name:
+                      </span>
                       <span>{currentTheme.displayName}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Border Radius:</span>
+                      <span className="text-muted-foreground">
+                        Border Radius:
+                      </span>
                       <span>{currentTheme.radius}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Font Family:</span>
-                      <span className="truncate">{currentTheme.fonts.sans}</span>
+                      <span className="text-muted-foreground">
+                        Font Family:
+                      </span>
+                      <span className="truncate">
+                        {currentTheme.fonts.sans}
+                      </span>
                     </div>
                   </div>
                 </div>
                 <div>
-                  <h4 className="font-medium mb-2">Current Colors ({mode} mode)</h4>
+                  <h4 className="font-medium mb-2">
+                    Current Colors ({mode} mode)
+                  </h4>
                   <div className="space-y-1 text-sm">
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground">Primary:</span>
                       <div className="flex items-center space-x-2">
-                        <div 
+                        <div
                           className="w-4 h-4 rounded border"
-                          style={{ backgroundColor: currentTheme.colors[mode].primary }}
+                          style={{
+                            backgroundColor: currentTheme.colors[mode].primary,
+                          }}
                         />
-                        <span className="font-mono text-xs">{currentTheme.colors[mode].primary}</span>
+                        <span className="font-mono text-xs">
+                          {currentTheme.colors[mode].primary}
+                        </span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground">Accent:</span>
                       <div className="flex items-center space-x-2">
-                        <div 
+                        <div
                           className="w-4 h-4 rounded border"
-                          style={{ backgroundColor: currentTheme.colors[mode].accent }}
+                          style={{
+                            backgroundColor: currentTheme.colors[mode].accent,
+                          }}
                         />
-                        <span className="font-mono text-xs">{currentTheme.colors[mode].accent}</span>
+                        <span className="font-mono text-xs">
+                          {currentTheme.colors[mode].accent}
+                        </span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground">Background:</span>
                       <div className="flex items-center space-x-2">
-                        <div 
+                        <div
                           className="w-4 h-4 rounded border"
-                          style={{ backgroundColor: currentTheme.colors[mode].background }}
+                          style={{
+                            backgroundColor:
+                              currentTheme.colors[mode].background,
+                          }}
                         />
-                        <span className="font-mono text-xs">{currentTheme.colors[mode].background}</span>
+                        <span className="font-mono text-xs">
+                          {currentTheme.colors[mode].background}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -221,4 +252,4 @@ const ThemeDemo: NextPage = () => {
   );
 };
 
-export default ThemeDemo; 
+export default ThemeDemo;

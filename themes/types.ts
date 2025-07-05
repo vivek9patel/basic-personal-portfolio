@@ -58,4 +58,4 @@ export interface ThemeConfig {
   };
   trackingNormal: string;
   spacing: string;
-} 
+}

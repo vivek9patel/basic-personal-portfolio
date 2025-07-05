@@ -82,13 +82,17 @@ export const fireTheme: ThemeConfig = {
   shadows: {
     shadow2xs: '0 1px 2px 0 rgb(220 38 38 / 0.1)',
     shadowXs: '0 1px 2px 0 rgb(220 38 38 / 0.1)',
-    shadowSm: '0 1px 3px 0 rgb(220 38 38 / 0.12), 0 1px 2px -1px rgb(220 38 38 / 0.12)',
-    shadow: '0 4px 6px -1px rgb(220 38 38 / 0.12), 0 2px 4px -2px rgb(220 38 38 / 0.12)',
-    shadowMd: '0 10px 15px -3px rgb(220 38 38 / 0.12), 0 4px 6px -4px rgb(220 38 38 / 0.12)',
-    shadowLg: '0 20px 25px -5px rgb(220 38 38 / 0.12), 0 8px 10px -6px rgb(220 38 38 / 0.12)',
+    shadowSm:
+      '0 1px 3px 0 rgb(220 38 38 / 0.12), 0 1px 2px -1px rgb(220 38 38 / 0.12)',
+    shadow:
+      '0 4px 6px -1px rgb(220 38 38 / 0.12), 0 2px 4px -2px rgb(220 38 38 / 0.12)',
+    shadowMd:
+      '0 10px 15px -3px rgb(220 38 38 / 0.12), 0 4px 6px -4px rgb(220 38 38 / 0.12)',
+    shadowLg:
+      '0 20px 25px -5px rgb(220 38 38 / 0.12), 0 8px 10px -6px rgb(220 38 38 / 0.12)',
     shadowXl: '0 25px 50px -12px rgb(220 38 38 / 0.3)',
     shadow2xl: '0 25px 50px -12px rgb(220 38 38 / 0.4)',
   },
   trackingNormal: '0em',
   spacing: '0.25rem',
-}; 
+};
