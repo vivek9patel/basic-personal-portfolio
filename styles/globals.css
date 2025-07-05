@@ -45,7 +45,7 @@
   }
 
   /* Smooth transitions for theme changes - excluding cursor and transform properties */
-  *:not(.custom-cursor) {
+  * {
     transition-property:
       color, background-color, border-color, text-decoration-color, fill, stroke;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -55,17 +55,6 @@
 
 * {
   cursor: none;
-}
-
-.custom-cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  -webkit-transition-timing-function: ease-out;
-  transition-timing-function: ease-out;
-  will-change: width, height, transform, border;
-  z-index: 999;
-  pointer-events: none;
 }
 
 button {
