@@ -29,42 +29,10 @@ const nextConfig = {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-dialog', '@radix-ui/react-label'],
   },
   
-  // Webpack optimizations
+  // Webpack optimizations (simplified for Vercel compatibility)
   webpack: (config, { dev, isServer }) => {
-    // Optimize for production
-    if (!dev && !isServer) {
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        cacheGroups: {
-          default: {
-            minChunks: 2,
-            priority: -20,
-            reuseExistingChunk: true,
-          },
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            priority: -10,
-            reuseExistingChunk: true,
-          },
-          react: {
-            test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-            name: 'react',
-            priority: 10,
-            reuseExistingChunk: true,
-          },
-          lucide: {
-            test: /[\\/]node_modules[\\/]lucide-react[\\/]/,
-            name: 'lucide',
-            priority: 5,
-            reuseExistingChunk: true,
-          },
-        },
-      };
-    }
-    
-    // Bundle analyzer for development
-    if (process.env.ANALYZE === 'true') {
+    // Only run bundle analyzer in development
+    if (dev && process.env.ANALYZE === 'true') {
       config.plugins.push(
         new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)({
           analyzerMode: 'static',
@@ -107,9 +75,6 @@ const nextConfig = {
   
   // Performance monitoring
   analyticsId: process.env.NEXT_PUBLIC_ANALYTICS_ID,
-  
-  // Output optimization
-  output: 'standalone',
   
   // Reduce bundle size
   modularizeImports: {
