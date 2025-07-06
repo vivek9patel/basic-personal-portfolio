@@ -276,28 +276,6 @@ export const FloatingThemeSelector: React.FC<FloatingThemeSelectorProps> = ({
           {currentTheme?.displayName || 'Default'}
         </Badge>
       </div>
-
-      {/* Custom CSS for popup animation */}
-      <style jsx>{`
-        @keyframes popupBounce {
-          0% {
-            transform: scale(0) rotate(-180deg);
-            opacity: 0;
-          }
-          50% {
-            transform: scale(1.1) rotate(-10deg);
-            opacity: 0.8;
-          }
-          75% {
-            transform: scale(0.95) rotate(5deg);
-            opacity: 0.9;
-          }
-          100% {
-            transform: scale(1) rotate(0deg);
-            opacity: 1;
-          }
-        }
-      `}</style>
     </TooltipProvider>
   );
 };
