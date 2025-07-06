@@ -1,6 +1,4 @@
 import Avatar from './Avatar';
-import tarsImage from '../images/tars.svg';
-import deleteImage from '../images/delete.svg';
 import { useRouter } from 'next/router';
 import ReactGA from 'react-ga4';
 import { Button } from './ui/button';
@@ -70,7 +68,7 @@ export default function AskTarsButton({
                   data-cursor="clear-tars-history-button"
                   className="w-6 h-6 flex items-center justify-center"
                   style={{
-                    maskImage: `url(${deleteImage.src})`,
+                    maskImage: `url(/images/delete.svg)`,
                     maskRepeat: 'no-repeat',
                     maskPosition: 'center',
                     maskSize: 'contain',
@@ -121,7 +119,7 @@ export default function AskTarsButton({
                 data-cursor="ask-tars-button"
                 className="w-full h-full flex items-center justify-center"
                 style={{
-                  maskImage: `url(${tarsImage.src})`,
+                  maskImage: `url(/images/tars.svg)`,
                   maskRepeat: 'no-repeat',
                   maskPosition: 'center',
                   maskSize: 'contain',

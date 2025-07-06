@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { fetchLikes, incrementLikesTo, formatNumber } from '../helpers/helpers';
-import heartImage from '../images/heart.svg';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import ReactGA from 'react-ga4';
 import { Button } from './ui/button';
@@ -185,7 +184,7 @@ export default function LikeCounter() {
                 >
                   <img
                     data-cursor="like-counter-button"
-                    src={heartImage.src}
+                    src="/images/heart.svg"
                     className="w-full h-full z-30 rounded-full"
                     alt="Heart"
                   />
