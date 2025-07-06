@@ -1,7 +1,7 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import MetaTags from '../components/meta/MetaTags';
 import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/next';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 class MyDocument extends Document {
   render() {
