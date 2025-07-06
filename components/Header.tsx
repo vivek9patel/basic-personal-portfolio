@@ -56,7 +56,7 @@ const Header = ({ currentLink = '', loading = false }) => {
 
   const NavLinks = ({ mobile = false, onLinkClick = () => {} }) => (
     <>
-      <Link href="/">
+      <Link href="/" passHref>
         <Button
           variant="link"
           onClick={onLinkClick}
@@ -67,7 +67,7 @@ const Header = ({ currentLink = '', loading = false }) => {
           Home
         </Button>
       </Link>
-      <Link href="/projects">
+      <Link href="/projects" passHref>
         <Button
           variant="link"
           onClick={onLinkClick}
@@ -80,7 +80,7 @@ const Header = ({ currentLink = '', loading = false }) => {
           Projects
         </Button>
       </Link>
-      <Link href="/resume">
+      <Link href="/resume" passHref>
         <Button
           variant="link"
           onClick={onLinkClick}
@@ -92,7 +92,7 @@ const Header = ({ currentLink = '', loading = false }) => {
         </Button>
       </Link>
       {mobile && (
-        <Link href="/tars">
+        <Link href="/tars" passHref>
           <Button
             variant="link"
             onClick={onLinkClick}
