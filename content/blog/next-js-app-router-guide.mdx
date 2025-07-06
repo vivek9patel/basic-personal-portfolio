@@ -1,0 +1,214 @@
+---
+title: "Next.js App Router: A Complete Guide"
+description: "Learn how to use Next.js App Router for modern web applications with improved performance and developer experience"
+publishedAt: "2024-01-10"
+tags: ["next.js", "app-router", "react", "web-development"]
+---
+
+# Next.js App Router: A Complete Guide
+
+The App Router is a new paradigm in Next.js that brings enhanced performance, better developer experience, and powerful new features. This guide will walk you through everything you need to know.
+
+## What is the App Router?
+
+The App Router is built on top of React Server Components and introduces a new file-based routing system that co-locates layouts, pages, and components in a single directory structure.
+
+### Key Benefits
+
+- **Server Components by default**: Better performance with less JavaScript shipped to the client
+- **Streaming and Suspense**: Built-in loading states and progressive enhancement
+- **Improved SEO**: Better meta tag management and server-side rendering
+- **Nested Layouts**: Shared layouts that persist across route changes
+
+## Getting Started
+
+To create a new Next.js project with App Router:
+
+```bash
+npx create-next-app@latest my-app --app
+cd my-app
+npm run dev
+```
+
+## File Structure
+
+The App Router uses a special `app` directory where each folder represents a route segment:
+
+```
+app/
+├── layout.tsx          # Root layout
+├── page.tsx            # Home page
+├── about/
+│   └── page.tsx        # About page
+└── blog/
+    ├── page.tsx        # Blog listing
+    └── [slug]/
+        └── page.tsx    # Individual blog post
+```
+
+## Server Components vs Client Components
+
+### Server Components (Default)
+
+```typescript
+// This runs on the server
+export default async function BlogPost() {
+  const posts = await fetchPosts();
+  
+  return (
+    <div>
+      {posts.map(post => (
+        <article key={post.id}>
+          <h2>{post.title}</h2>
+          <p>{post.excerpt}</p>
+        </article>
+      ))}
+    </div>
+  );
+}
+```
+
+### Client Components
+
+```typescript
+'use client';
+
+import { useState } from 'react';
+
+export default function Counter() {
+  const [count, setCount] = useState(0);
+  
+  return (
+    <button onClick={() => setCount(count + 1)}>
+      Count: {count}
+    </button>
+  );
+}
+```
+
+## Layouts and Templates
+
+### Root Layout
+
+Every app needs a root layout:
+
+```typescript
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body>
+        <nav>Navigation</nav>
+        {children}
+        <footer>Footer</footer>
+      </body>
+    </html>
+  );
+}
+```
+
+### Nested Layouts
+
+Create layouts for specific route segments:
+
+```typescript
+// app/blog/layout.tsx
+export default function BlogLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="blog-container">
+      <aside>Blog sidebar</aside>
+      <main>{children}</main>
+    </div>
+  );
+}
+```
+
+## Data Fetching
+
+### Server-side Fetching
+
+```typescript
+async function getBlogPosts() {
+  const res = await fetch('https://api.example.com/posts');
+  return res.json();
+}
+
+export default async function BlogPage() {
+  const posts = await getBlogPosts();
+  
+  return (
+    <div>
+      {posts.map(post => (
+        <article key={post.id}>{post.title}</article>
+      ))}
+    </div>
+  );
+}
+```
+
+### Static Generation
+
+```typescript
+export async function generateStaticParams() {
+  const posts = await getBlogPosts();
+  
+  return posts.map(post => ({
+    slug: post.slug,
+  }));
+}
+```
+
+## Metadata and SEO
+
+### Static Metadata
+
+```typescript
+export const metadata = {
+  title: 'My Blog',
+  description: 'A blog about web development',
+};
+```
+
+### Dynamic Metadata
+
+```typescript
+export async function generateMetadata({ params }) {
+  const post = await getPost(params.slug);
+  
+  return {
+    title: post.title,
+    description: post.excerpt,
+  };
+}
+```
+
+## Best Practices
+
+1. **Use Server Components by default** - Only use Client Components when you need interactivity
+2. **Fetch data close to where it's used** - This improves performance and maintainability
+3. **Leverage streaming** - Use loading.tsx files for better user experience
+4. **Optimize images** - Use Next.js Image component for better performance
+5. **Implement proper error boundaries** - Use error.tsx files for graceful error handling
+
+## Migration from Pages Router
+
+If you're migrating from the Pages Router:
+
+1. Create an `app` directory alongside your `pages` directory
+2. Move your pages one by one
+3. Update your layouts and components
+4. Update your data fetching methods
+5. Test thoroughly before removing the `pages` directory
+
+## Conclusion
+
+The App Router represents a significant step forward for Next.js applications. With its focus on performance, developer experience, and modern React patterns, it's the recommended approach for new Next.js applications.
+
+The combination of Server Components, improved routing, and better data fetching makes building modern web applications more efficient and enjoyable than ever before.

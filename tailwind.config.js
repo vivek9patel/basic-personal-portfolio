@@ -7,6 +7,7 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
     "./app/**/*.{js,ts,jsx,tsx}",
     "./src/**/*.{js,ts,jsx,tsx}",
+    "./content/**/*.{md,mdx}",
   ],
   // Safelist for dynamic classes that might be purged
   safelist: [

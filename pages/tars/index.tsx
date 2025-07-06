@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useEffect, useRef, useState } from 'react';
 import ReactGA from 'react-ga4';
 import Avatar from '../../components/Avatar';
-import Markdown from 'markdown-to-jsx';
+// Removed markdown-to-jsx dependency
 import { RefreshCw, Send } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -386,20 +386,11 @@ function TarsMessage({
             </div>
           ) : (
             <div className="text-sm custom-markdown text-foreground">
-              <Markdown
-                options={{
-                  overrides: {
-                    a: {
-                      props: {
-                        target: '_blank',
-                        rel: 'noopener noreferrer',
-                      },
-                    },
-                  },
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: message.replace(/\n/g, '<br/>'),
                 }}
-              >
-                {message}
-              </Markdown>
+              />
             </div>
           )}
         </div>

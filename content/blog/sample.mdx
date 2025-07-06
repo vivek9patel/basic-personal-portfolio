@@ -1,0 +1,101 @@
+---
+title: "Sample Blog Post"
+description: "A comprehensive sample blog post showcasing MDX features with React components"
+publishedAt: "2024-01-15"
+tags: ["sample", "mdx", "blog", "next.js"]
+---
+
+# Sample Blog Post
+
+This is a sample blog post demonstrating the new MDX setup with Next.js 15 and App Router.
+
+## Features
+
+- **Modern MDX**: Using the latest @next/mdx with App Router
+- **Syntax Highlighting**: Powered by rehype-pretty-code and Shiki
+- **React Components**: Full support for React components in MDX
+- **Theming**: Respects your dark/light theme switching
+
+## Code Examples
+
+Here's a JavaScript code block with syntax highlighting:
+
+```javascript
+function greet(name) {
+  console.log(`Hello, ${name}!`);
+  return `Welcome to the blog, ${name}`;
+}
+
+const message = greet("Developer");
+```
+
+And here's a TypeScript example:
+
+```typescript
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+const createUser = (userData: Omit<User, 'id'>): User => {
+  return {
+    id: Math.random(),
+    ...userData,
+  };
+};
+```
+
+## Lists and Formatting
+
+- **Bold text** and *italic text*
+- `Inline code` snippets
+- [Links](https://nextjs.org) work perfectly
+- ~~Strikethrough~~ text
+
+### Ordered Lists
+
+1. First item
+2. Second item
+3. Third item
+
+## Blockquotes
+
+> This is a blockquote that demonstrates how content flows within the themed environment.
+> 
+> It supports multiple lines and maintains proper spacing.
+
+## Tables
+
+| Feature | Old Setup | New Setup |
+|---------|-----------|-----------|
+| MDX Version | next-mdx-remote | @next/mdx |
+| Router | Pages Router | App Router |
+| Syntax Highlighting | rehype-highlight | rehype-pretty-code + Shiki |
+| Performance | Good | Excellent |
+
+## Images
+
+You can use Next.js Image component directly in MDX:
+
+```jsx
+import Image from 'next/image'
+
+<Image
+  src="/sample-image.jpg"
+  alt="Sample image"
+  width={800}
+  height={400}
+  className="rounded-lg"
+/>
+```
+
+## Conclusion
+
+This new setup provides a much better developer experience with:
+- Faster build times
+- Better performance
+- Modern tooling
+- Seamless theming integration
+
+Ready to start writing your own blog posts!

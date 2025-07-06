@@ -1,13 +1,16 @@
-/** @type {import('next').NextConfig} */
+const createMDX = require('@next/mdx');
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
+/** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Configure `pageExtensions` to include MDX files
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+  
   reactStrictMode: true,
   
   // Performance optimizations
-  swcMinify: true,
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
@@ -27,6 +30,7 @@ const nextConfig = {
   // Bundle optimization
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-dialog', '@radix-ui/react-label'],
+    mdxRs: true,
   },
   
   // Webpack optimizations (simplified for Vercel compatibility)
@@ -73,9 +77,6 @@ const nextConfig = {
     ];
   },
   
-  // Performance monitoring
-  analyticsId: process.env.NEXT_PUBLIC_ANALYTICS_ID,
-  
   // Reduce bundle size
   modularizeImports: {
     'lucide-react': {
@@ -84,4 +85,24 @@ const nextConfig = {
   },
 };
 
-module.exports = withBundleAnalyzer(nextConfig);
+const withMDX = createMDX({
+  // Add markdown plugins here, as desired
+  options: {
+    remarkPlugins: [
+      require('remark-gfm'),
+    ],
+    rehypePlugins: [
+      [require('rehype-pretty-code'), {
+        theme: {
+          dark: 'github-dark',
+          light: 'github-light',
+        },
+        keepBackground: false,
+        defaultLang: 'plaintext',
+      }],
+    ],
+  },
+});
+
+// Merge MDX config with Next.js config
+module.exports = withBundleAnalyzer(withMDX(nextConfig));
