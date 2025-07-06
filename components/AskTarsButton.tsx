@@ -51,7 +51,7 @@ export default function AskTarsButton({
   if (currentLink === 'tars') {
     return (
       <TooltipProvider>
-        <div className="select-none z-30 absolute hidden md:flex flex-col items-center -bottom-52 right-[54px]">
+        <div className="hidden md:flex flex-col items-center">
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -96,7 +96,7 @@ export default function AskTarsButton({
 
   return (
     <TooltipProvider>
-      <div className="select-none z-30 absolute flex flex-col items-center -bottom-[220px] right-2 md:right-[48px]">
+      <div className="flex flex-col items-center">
         <Tooltip>
           <TooltipTrigger asChild>
             <Button

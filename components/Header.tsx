@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import LikeCounter from './LikeCounter';
 import ReactGA from 'react-ga4';
-import AskTarsButton from './AskTarsButton';
 import { useTheme } from 'next-themes';
 import { Button } from './ui/button';
-import { Menu, X, Github, Linkedin, MessageCircle } from 'lucide-react';
-import { ThemeSelector } from './ThemeSelector';
+import {
+  Menu,
+  X,
+  Github,
+  Linkedin,
+  MessageCircle,
+  Sun,
+  Moon,
+} from 'lucide-react';
 
 const Header = ({ currentLink = '', loading = false }) => {
   const { theme, setTheme } = useTheme();
@@ -14,6 +19,12 @@ const Header = ({ currentLink = '', loading = false }) => {
 
   const toggleThemeMode = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
+    ReactGA.event({
+      category: 'Theme',
+      action: 'Header Mode Toggle',
+      label: `${theme} to ${theme === 'dark' ? 'light' : 'dark'}`,
+      value: 1,
+    });
   };
 
   const toggleMobileMenu = () => {
@@ -147,8 +158,6 @@ const Header = ({ currentLink = '', loading = false }) => {
       <div
         className={`sticky bg-background z-50 top-0 left-0 transition-none transform `}
       >
-        <LikeCounter />
-        <AskTarsButton currentLink={currentLink} />
         <div className="flex justify-center header-nav-container">
           <div className="w-full px-3 sm:px-6 md:px-8 lg:px-10 sm:w-[600px] md:w-[700px] lg:w-[800px] xl:w-[1000px] 2xl:w-[1200px] py-4 flex justify-between items-center relative header-nav-content">
             {/* Logo/Brand - Responsive sizing */}
@@ -168,11 +177,20 @@ const Header = ({ currentLink = '', loading = false }) => {
               </span>
             </Button>
 
-            {/* Mobile Controls - Theme selector and Menu button */}
+            {/* Mobile Controls - Mode toggle and Menu button */}
             <div className="sm:hidden flex items-center gap-2 flex-shrink-0">
-              <div className="theme-dropdown-container">
-                <ThemeSelector compact />
-              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleThemeMode}
+                aria-label="Toggle theme mode"
+              >
+                {theme === 'dark' ? (
+                  <Sun className="h-4 w-4" />
+                ) : (
+                  <Moon className="h-4 w-4" />
+                )}
+              </Button>
               <Button
                 variant="ghost"
                 size="icon"
@@ -189,9 +207,19 @@ const Header = ({ currentLink = '', loading = false }) => {
               <div className="flex items-center gap-1 md:gap-2 lg:gap-3 overflow-x-auto scrollbar-hide flex-shrink min-w-0">
                 <NavLinks />
               </div>
-              <div className="theme-dropdown-container ml-2">
-                <ThemeSelector compact />
-              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleThemeMode}
+                className="ml-2"
+                aria-label="Toggle theme mode"
+              >
+                {theme === 'dark' ? (
+                  <Sun className="h-4 w-4" />
+                ) : (
+                  <Moon className="h-4 w-4" />
+                )}
+              </Button>
             </div>
           </div>
         </div>
@@ -236,6 +264,27 @@ const Header = ({ currentLink = '', loading = false }) => {
 
           <div className="flex flex-col space-y-1">
             <NavLinks mobile={true} onLinkClick={closeMobileMenu} />
+
+            {/* Theme Mode Toggle in Mobile Menu */}
+            <div className="border-t border-border pt-4 mt-4">
+              <Button
+                variant="ghost"
+                onClick={toggleThemeMode}
+                className="justify-start w-full text-lg h-12"
+              >
+                {theme === 'dark' ? (
+                  <>
+                    <Sun className="mr-2 h-4 w-4" />
+                    Light Mode
+                  </>
+                ) : (
+                  <>
+                    <Moon className="mr-2 h-4 w-4" />
+                    Dark Mode
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </div>
       </div>

@@ -9,6 +9,7 @@ import { SessionProvider } from 'next-auth/react';
 import Cursor from '../components/Cursor';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { Toaster } from '@/components/ui/sonner';
+import FloatingButtonGroup from '../components/FloatingButtonGroup';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = useState(false);
@@ -53,6 +54,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               </div>
             </div>
             {currentLink !== 'tars' && <Footer />}
+            <FloatingButtonGroup currentLink={currentLink} />
           </Context>
         </SessionProvider>
         <Toaster />

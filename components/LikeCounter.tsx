@@ -150,7 +150,7 @@ export default function LikeCounter() {
   if (likeCount && status === 'authenticated') {
     return (
       <TooltipProvider>
-        <div className="select-none z-30 absolute -bottom-32 right-4 md:right-14 flex flex-col items-center">
+        <div className="flex flex-col items-center">
           <Tooltip open={emojiVisible}>
             <TooltipTrigger asChild>
               <Button
