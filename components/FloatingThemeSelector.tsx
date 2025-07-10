@@ -58,12 +58,12 @@ const themeOptions: ThemeOption[] = [
     icon: Mountain,
     description: 'Grounded and stable',
   },
-  {
-    name: 'air',
-    displayName: 'Air',
-    icon: Wind,
-    description: 'Light and airy',
-  },
+  // {
+  //   name: 'air',
+  //   displayName: 'Air',
+  //   icon: Wind,
+  //   description: 'Light and airy',
+  // },
 ];
 
 export interface FloatingThemeSelectorProps {

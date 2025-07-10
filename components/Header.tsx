@@ -56,7 +56,7 @@ const Header = ({ currentLink = '', loading = false }) => {
 
   const NavLinks = ({ mobile = false, onLinkClick = () => {} }) => (
     <>
-      <Link href="/" passHref>
+      <Link href="/" passHref legacyBehavior>
         <Button
           variant="link"
           onClick={onLinkClick}
@@ -67,7 +67,7 @@ const Header = ({ currentLink = '', loading = false }) => {
           Home
         </Button>
       </Link>
-      <Link href="/projects" passHref>
+      <Link href="/projects" passHref legacyBehavior>
         <Button
           variant="link"
           onClick={onLinkClick}
@@ -80,7 +80,7 @@ const Header = ({ currentLink = '', loading = false }) => {
           Projects
         </Button>
       </Link>
-      <Link href="/resume" passHref>
+      <Link href="/resume" passHref legacyBehavior>
         <Button
           variant="link"
           onClick={onLinkClick}
@@ -92,7 +92,7 @@ const Header = ({ currentLink = '', loading = false }) => {
         </Button>
       </Link>
       {mobile && (
-        <Link href="/tars" passHref>
+        <Link href="/tars" passHref legacyBehavior>
           <Button
             variant="link"
             onClick={onLinkClick}

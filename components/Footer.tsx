@@ -1,6 +1,8 @@
 import { Anchor } from './CustomHtml';
 import ReactGA from 'react-ga4';
 
+import type { JSX } from 'react';
+
 function Footer(): JSX.Element {
   return (
     <>

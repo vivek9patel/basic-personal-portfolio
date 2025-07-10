@@ -7,7 +7,6 @@ const nextConfig = {
   reactStrictMode: true,
   
   // Performance optimizations
-  swcMinify: true,
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
@@ -28,21 +27,13 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-dialog', '@radix-ui/react-label'],
   },
-  
-  // Webpack optimizations (simplified for Vercel compatibility)
-  webpack: (config, { dev, isServer }) => {
-    // Only run bundle analyzer in development
-    if (dev && process.env.ANALYZE === 'true') {
-      config.plugins.push(
-        new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)({
-          analyzerMode: 'static',
-          openAnalyzer: false,
-          reportFilename: '../bundle-analyzer-report.html',
-        })
-      );
-    }
-    
-    return config;
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
+      },
+    },
   },
   
   // Headers for performance
@@ -73,15 +64,7 @@ const nextConfig = {
     ];
   },
   
-  // Performance monitoring
-  analyticsId: process.env.NEXT_PUBLIC_ANALYTICS_ID,
-  
-  // Reduce bundle size
-  modularizeImports: {
-    'lucide-react': {
-      transform: 'lucide-react/dist/esm/icons/{{member}}',
-    },
-  },
+
 };
 
 module.exports = withBundleAnalyzer(nextConfig);
