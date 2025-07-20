@@ -13,12 +13,12 @@ import ReactGA from 'react-ga4';
 import {
   Palette,
   Flame,
-  Waves,
   TreePine,
   Mountain,
-  Wind,
   Sparkles,
+  Bot,
 } from 'lucide-react';
+import { AIThemeGenerator } from './AIThemeGenerator';
 
 interface ThemeOption {
   name: string;
@@ -41,12 +41,6 @@ const themeOptions: ThemeOption[] = [
     description: 'Warm and energetic',
   },
   {
-    name: 'ocean',
-    displayName: 'Ocean',
-    icon: Waves,
-    description: 'Cool and calming',
-  },
-  {
     name: 'forest',
     displayName: 'Forest',
     icon: TreePine,
@@ -58,12 +52,6 @@ const themeOptions: ThemeOption[] = [
     icon: Mountain,
     description: 'Grounded and stable',
   },
-  // {
-  //   name: 'air',
-  //   displayName: 'Air',
-  //   icon: Wind,
-  //   description: 'Light and airy',
-  // },
 ];
 
 export interface FloatingThemeSelectorProps {
@@ -77,6 +65,8 @@ export const FloatingThemeSelector: React.FC<FloatingThemeSelectorProps> = ({
 
   const [isOpen, setIsOpen] = useState(false);
   const [animatedButtons, setAnimatedButtons] = useState<number[]>([]);
+  const [isAIModalOpen, setIsAIModalOpen] = useState(false);
+  const [isAIServiceAvailable, setIsAIServiceAvailable] = useState(false);
 
   const handleThemeSelect = (themeName: string) => {
     ReactGA.event({
@@ -87,6 +77,18 @@ export const FloatingThemeSelector: React.FC<FloatingThemeSelectorProps> = ({
     });
 
     setTheme(themeName);
+    setIsOpen(false);
+  };
+
+  const handleAIButtonClick = () => {
+    ReactGA.event({
+      category: 'Theme',
+      action: 'Open AI Theme Generator',
+      label: 'Floating Button',
+      value: 1,
+    });
+
+    setIsAIModalOpen(true);
     setIsOpen(false);
   };
 
@@ -104,23 +106,25 @@ export const FloatingThemeSelector: React.FC<FloatingThemeSelectorProps> = ({
       // Reset animated buttons when opening
       setAnimatedButtons([]);
 
-      // Animate buttons one by one
-      themeOptions.forEach((_, index) => {
+      // Animate buttons one by one (theme options + AI button if available)
+      const totalButtons = themeOptions.length + (isAIServiceAvailable ? 1 : 0);
+      for (let index = 0; index < totalButtons; index++) {
         setTimeout(() => {
           setAnimatedButtons(prev => [...prev, index]);
         }, index * 80); // Increased delay for more noticeable sequential effect
-      });
+      }
     }
   };
 
-  // Calculate position for each theme option button
-  const getThemeOptionPosition = (index: number) => {
-    const totalOptions = themeOptions.length;
+  // Calculate position for each button (theme options + AI button if available)
+  const getButtonPosition = (index: number) => {
+    const totalButtons = themeOptions.length + (isAIServiceAvailable ? 1 : 0);
     const radius =
       typeof window !== 'undefined' && window.innerWidth < 768 ? 100 : 100; // Increased radius for more spacing
     const startAngle = 120; // Start angle (in degrees)
     const endAngle = 240; // End angle (in degrees)
-    const angleStep = (endAngle - startAngle) / (totalOptions - 1);
+    const angleStep =
+      totalButtons > 1 ? (endAngle - startAngle) / (totalButtons - 1) : 0;
     const angle = startAngle + index * angleStep;
     const radian = (angle * Math.PI) / 180;
 
@@ -129,6 +133,23 @@ export const FloatingThemeSelector: React.FC<FloatingThemeSelectorProps> = ({
 
     return { x, y };
   };
+
+  // Check AI service availability on first load
+  useEffect(() => {
+    const checkAIService = async () => {
+      try {
+        const response = await fetch('/api/theme-generator/health', {
+          method: 'GET',
+        });
+
+        setIsAIServiceAvailable(response.ok);
+      } catch (error) {
+        setIsAIServiceAvailable(false);
+      }
+    };
+
+    checkAIService();
+  }, []);
 
   // Close menu when clicking outside or on scroll
   useEffect(() => {
@@ -185,7 +206,7 @@ export const FloatingThemeSelector: React.FC<FloatingThemeSelectorProps> = ({
           {/* Theme Option Buttons */}
           {isOpen &&
             themeOptions.map((theme, index) => {
-              const position = getThemeOptionPosition(index);
+              const position = getButtonPosition(index);
               const IconComponent = theme.icon;
               const isActive = currentTheme?.name === theme.name;
               const isAnimated = animatedButtons.includes(index);
@@ -236,6 +257,49 @@ export const FloatingThemeSelector: React.FC<FloatingThemeSelectorProps> = ({
               );
             })}
 
+          {/* AI Theme Generator Button - Only show if service is available */}
+          {isOpen && isAIServiceAvailable && (
+            <div
+              className="absolute"
+              style={{
+                left: `${getButtonPosition(themeOptions.length).x}px`,
+                top: `${getButtonPosition(themeOptions.length).y}px`,
+              }}
+            >
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    onClick={handleAIButtonClick}
+                    variant="outline"
+                    size="icon"
+                    className={cn(
+                      'w-9 h-9 rounded-full transition-all duration-150 transform',
+                      'hover:scale-110 shadow-md bg-gradient-to-r from-purple-500 to-blue-500 text-white border-0',
+                      'will-change-transform',
+                      animatedButtons.includes(themeOptions.length)
+                        ? 'scale-100 opacity-100 animate-in zoom-in-50 slide-in-from-bottom-2'
+                        : 'scale-0 opacity-0'
+                    )}
+                    style={{
+                      transformOrigin: 'center',
+                      animation: animatedButtons.includes(themeOptions.length)
+                        ? 'popupBounce 0.5s ease-out forwards'
+                        : undefined,
+                    }}
+                  >
+                    <Bot className="w-4 h-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="left">
+                  <p className="font-medium">AI Theme Generator</p>
+                  <p className="text-xs text-foreground">
+                    Create custom themes with AI
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+          )}
+
           {/* Main Theme Button */}
           <Tooltip>
             <TooltipTrigger asChild>
@@ -276,6 +340,12 @@ export const FloatingThemeSelector: React.FC<FloatingThemeSelectorProps> = ({
           {currentTheme?.displayName || 'Default'}
         </Badge>
       </div>
+
+      {/* AI Theme Generator Modal */}
+      <AIThemeGenerator
+        isOpen={isAIModalOpen}
+        onClose={() => setIsAIModalOpen(false)}
+      />
     </TooltipProvider>
   );
 };
