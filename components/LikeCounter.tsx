@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { fetchLikes, incrementLikesTo, formatNumber } from '@/helpers/helpers';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { getSession, signIn, useSession } from 'next-auth/react';
 import ReactGA from 'react-ga4';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,67 +11,112 @@ import {
 } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 
+const VISITOR_CREDENTIALS = {
+  username: 'visitor',
+  password: 'visitor',
+};
+
+async function ensureSession(): Promise<boolean> {
+  if (await getSession()) {
+    return true;
+  }
+
+  const result = await signIn('credentials', {
+    ...VISITOR_CREDENTIALS,
+    redirect: false,
+  });
+
+  if (!result?.ok) {
+    return false;
+  }
+
+  return !!(await getSession());
+}
+
 export default function LikeCounter() {
   const { status } = useSession();
   const [likeCount, setLikeCount] = useState(0);
   const [likeIncrements, setLikeIncrements] = useState(0);
   const [oldLikeIncrements, setOldLikeIncrements] = useState(0);
   const [isReady, setIsReady] = useState(false);
-  const [updateIncrementTimeout, setUpdateIncrementTimeout] =
-    useState<ReturnType<typeof setTimeout> | null>(null);
-  const [authInterval, setAuthInterval] = useState<ReturnType<
-    typeof setInterval
-  > | null>(null);
-  const [showEmojiTimeout, setShowEmojiTimeout] = useState<ReturnType<
-    typeof setTimeout
-  > | null>(null);
   const [emojiVisible, setEmojiVisible] = useState(false);
+  const updateIncrementTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
+  const showEmojiTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
+  const likeIncrementsRef = useRef(likeIncrements);
+  const oldLikeIncrementsRef = useRef(oldLikeIncrements);
 
   useEffect(() => {
-    startAuthInterval();
-    getLikes();
-    window.addEventListener('beforeunload', () => {
-      signOut();
-    });
+    likeIncrementsRef.current = likeIncrements;
+  }, [likeIncrements]);
+
+  useEffect(() => {
+    oldLikeIncrementsRef.current = oldLikeIncrements;
+  }, [oldLikeIncrements]);
+
+  const persistIncrements = async (delta: number) => {
+    if (delta <= 0) {
+      return false;
+    }
+
+    const authed = await ensureSession();
+    if (!authed) {
+      return false;
+    }
+
+    let res = await incrementLikesTo(delta);
+
+    if (res.status === 401) {
+      const reauthed = await ensureSession();
+      if (!reauthed) {
+        return false;
+      }
+      res = await incrementLikesTo(delta);
+    }
+
+    if (res.status === 200) {
+      setOldLikeIncrements(likeIncrementsRef.current);
+      return true;
+    }
+
+    return false;
+  };
+
+  useEffect(() => {
+    const init = async () => {
+      await ensureSession();
+      getLikes();
+    };
+
+    init();
+
+    return () => {
+      if (updateIncrementTimeoutRef.current) {
+        clearTimeout(updateIncrementTimeoutRef.current);
+      }
+      if (showEmojiTimeoutRef.current) {
+        clearTimeout(showEmojiTimeoutRef.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
-    if (updateIncrementTimeout) clearTimeout(updateIncrementTimeout);
-    if (likeIncrements - oldLikeIncrements === 0) {
+    if (updateIncrementTimeoutRef.current) {
+      clearTimeout(updateIncrementTimeoutRef.current);
+    }
+
+    const delta = likeIncrements - oldLikeIncrements;
+    if (delta === 0) {
       return;
     }
-    updateLikesInDB();
-  }, [likeIncrements]);
 
-  const updateLikesInDB = () => {
-    setUpdateIncrementTimeout(
-      setTimeout(() => {
-        incrementLikesTo(likeIncrements - oldLikeIncrements).then(res => {
-          if (res.status === 401) {
-            startAuthInterval();
-            return;
-          }
-          if (res.status === 200) {
-            setOldLikeIncrements(likeIncrements);
-          }
-        });
-      }, 3000)
-    );
-  };
-
-  useEffect(() => {
-    if (status === 'authenticated' && authInterval) {
-      clearInterval(authInterval);
-    }
-  }, [status]);
-
-  const startAuthInterval = () => {
-    setAuthInterval(
-      setInterval(() => {
-        signIn('credentials', { redirect: false });
-      }, 3000)
-    );
-  };
+    updateIncrementTimeoutRef.current = setTimeout(() => {
+      persistIncrements(delta);
+    }, 3000);
+  }, [likeIncrements, oldLikeIncrements]);
 
   const getIncrementsFromLocalStorage = () => {
     let increments = parseInt(
@@ -116,17 +161,20 @@ export default function LikeCounter() {
   };
 
   const toggleEmoji = () => {
-    if (showEmojiTimeout) clearTimeout(showEmojiTimeout);
+    if (showEmojiTimeoutRef.current) {
+      clearTimeout(showEmojiTimeoutRef.current);
+    }
     setEmojiVisible(true);
-    setShowEmojiTimeout(
-      setTimeout(() => {
-        setEmojiVisible(false);
-      }, 2000)
-    );
+    showEmojiTimeoutRef.current = setTimeout(() => {
+      setEmojiVisible(false);
+    }, 2000);
   };
 
-  const updateLikes = () => {
-    if (status !== 'authenticated') return;
+  const updateLikes = async () => {
+    const authed = await ensureSession();
+    if (!authed) {
+      return;
+    }
 
     toggleEmoji();
     if (likeIncrements >= 9) {
@@ -179,16 +227,16 @@ export default function LikeCounter() {
 
   return (
     <TooltipProvider>
-      <div className="flex items-center gap-3">
-        <Tooltip open={emojiVisible}>
-          <TooltipTrigger asChild>
+      <Tooltip open={emojiVisible ? true : undefined}>
+        <TooltipTrigger asChild>
+          <div className="flex items-center gap-3" data-cursor={true}>
             <Button
               onClick={updateLikes}
               id="like-counter-button"
               data-cursor={true}
               size="icon"
               variant="ghost"
-              disabled={status !== 'authenticated'}
+              disabled={status === 'loading'}
               className={cn(
                 'relative h-9 w-9 rounded-full bg-background border border-border',
                 'overflow-hidden transition-all duration-75 active:scale-95',
@@ -216,23 +264,31 @@ export default function LikeCounter() {
                 />
               </div>
             </Button>
-          </TooltipTrigger>
-          <TooltipContent
-            side="top"
-            className="border-0 bg-transparent text-lg shadow-none"
-          >
-            {getEmojiBasedOnIncrements()}
-          </TooltipContent>
-        </Tooltip>
-        <span
-          className={cn(
-            'text-sm tabular-nums',
-            likeIncrements >= 9 ? 'text-primary font-medium' : 'text-foreground'
-          )}
+            <span
+              className={cn(
+                'text-sm tabular-nums',
+                likeIncrements >= 9
+                  ? 'text-primary font-medium'
+                  : 'text-foreground'
+              )}
+            >
+              {formatNumber(likeCount)}
+            </span>
+          </div>
+        </TooltipTrigger>
+        <TooltipContent
+          side="top"
+          className={
+            emojiVisible
+              ? 'border-0 bg-transparent text-lg shadow-none'
+              : 'max-w-xs text-center'
+          }
         >
-          {formatNumber(likeCount)}
-        </span>
-      </div>
+          {emojiVisible
+            ? getEmojiBasedOnIncrements()
+            : 'Like this if you enjoyed the site. It means a lot.'}
+        </TooltipContent>
+      </Tooltip>
     </TooltipProvider>
   );
 }

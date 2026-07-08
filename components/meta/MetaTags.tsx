@@ -33,7 +33,7 @@ export default function MetaTags() {
       <meta name="title" content="Vivek Patel" />
       <meta
         name="description"
-        content="Vivek's portfolio — open-source projects, experience, and software engineering work."
+        content="Vivek's portfolio: open-source projects, experience, and software engineering work."
       />
       <meta name="author" content="Vivek Patel (vivek9patel)" />
       <meta
@@ -50,7 +50,7 @@ export default function MetaTags() {
       <meta property="og:title" content="Vivek Patel" />
       <meta
         property="og:description"
-        content="Vivek's portfolio — open-source projects, experience, and software engineering work."
+        content="Vivek's portfolio: open-source projects, experience, and software engineering work."
       />
       <meta property="og:image" content="/meta/meta-social-image.png" />
       <meta name="og:locale" content="en_IN" />
@@ -63,7 +63,7 @@ export default function MetaTags() {
       <meta property="twitter:title" content="Vivek Patel" />
       <meta
         property="twitter:description"
-        content="Vivek's portfolio — open-source projects, experience, and software engineering work."
+        content="Vivek's portfolio: open-source projects, experience, and software engineering work."
       />
       <meta property="twitter:image" content="/meta/meta-social-image.png" />
     </>

@@ -21,8 +21,7 @@ export default function ExperienceSection() {
               <h3 className="text-base font-semibold">
                 <CompanyName name={entry.company} />
                 <span className="font-normal text-muted-foreground">
-                  {' '}
-                  — {entry.role}
+                  , {entry.role}
                 </span>
               </h3>
                 <ul className="list-disc pl-5 space-y-1.5 text-sm text-muted-foreground">

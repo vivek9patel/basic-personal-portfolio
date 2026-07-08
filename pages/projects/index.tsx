@@ -81,7 +81,7 @@ const Projects: NextPage = () => {
             Open-Source &amp; Side Projects
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
-            Everything I&apos;ve shipped — web apps, extensions, and tools.
+            Everything I&apos;ve shipped: web apps, extensions, and tools.
           </p>
         </section>
 

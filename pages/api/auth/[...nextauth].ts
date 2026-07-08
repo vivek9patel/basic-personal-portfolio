@@ -10,11 +10,31 @@ export const authOptions = {
         password: { label: 'TempPassword', type: 'password' },
       },
       // @ts-ignore
-      async authorize(credentials, req) {
-        return { id: 1, name: 'Visitor', email: 'visitor@vivek9patel.com' };
+      async authorize() {
+        return { id: '1', name: 'Visitor', email: 'visitor@vivek9patel.com' };
       },
     }),
   ],
+  session: {
+    strategy: 'jwt' as const,
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+  callbacks: {
+    // @ts-ignore
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    // @ts-ignore
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+      }
+      return session;
+    },
+  },
 };
 
 export default NextAuth(authOptions);
