@@ -14,11 +14,13 @@ function BannerGraphic({
   viewBox = '0 0 1440 160',
   className,
   mirror = false,
+  preserveAspectRatio = 'xMidYMid meet',
 }: {
   layout: BannerLayout;
   viewBox?: string;
   className?: string;
   mirror?: boolean;
+  preserveAspectRatio?: string;
 }) {
   const [, , width] = viewBox.split(' ').map(Number);
 
@@ -26,7 +28,7 @@ function BannerGraphic({
     <svg
       viewBox={viewBox}
       className={cn('w-full h-full', className)}
-      preserveAspectRatio="xMidYMid meet"
+      preserveAspectRatio={preserveAspectRatio}
     >
       <g
         transform={mirror ? `scale(-1, 1) translate(-${width}, 0)` : undefined}
@@ -95,9 +97,9 @@ export default function Banner({
   return (
     <div
       aria-hidden="true"
-      className="relative left-1/2 w-screen -translate-x-1/2 h-32 md:h-40 select-none"
+      className="relative left-1/2 w-screen -translate-x-1/2 h-44 sm:h-40 md:h-48 select-none overflow-hidden"
     >
-      <BannerGraphic layout={topLayout} />
+      <BannerGraphic layout={topLayout} preserveAspectRatio="xMidYMid slice" />
     </div>
   );
 }
