@@ -7,7 +7,7 @@ const linkedInUrl =
 
 export default function FooterSection() {
   return (
-    <footer className="border-t border-border pt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-sm text-muted-foreground">
+    <footer className="border-t border-border pt-8 flex flex-col items-center gap-4 text-center text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:text-left">
       <span className="leading-relaxed">
         ❤️ Thanks for stopping by. Drop by to say hi{' '}
         <a

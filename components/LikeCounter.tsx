@@ -219,17 +219,17 @@ export default function LikeCounter() {
   if (!isReady) {
     return (
       <div
-        className="h-9 w-20 animate-pulse rounded-full bg-muted"
+        className="h-10 w-20 animate-pulse rounded-full bg-muted"
         aria-hidden
       />
     );
   }
 
   return (
-    <TooltipProvider>
-      <Tooltip open={emojiVisible ? true : undefined}>
-        <TooltipTrigger asChild>
-          <div className="flex items-center gap-3" data-cursor={true}>
+    <div className="flex items-center gap-3" data-cursor={true}>
+      <TooltipProvider>
+        <Tooltip open={emojiVisible ? true : undefined}>
+          <TooltipTrigger asChild>
             <Button
               onClick={updateLikes}
               id="like-counter-button"
@@ -238,57 +238,61 @@ export default function LikeCounter() {
               variant="ghost"
               disabled={status === 'loading'}
               className={cn(
-                'relative h-9 w-9 rounded-full bg-background border border-border',
-                'overflow-hidden transition-all duration-75 active:scale-95',
+                'group relative h-10 w-10 rounded-full bg-background shadow-sm',
+                'overflow-hidden transition-transform duration-75 active:scale-95 hover:bg-background',
                 status !== 'authenticated' && 'opacity-60'
               )}
               aria-label="Like this site"
             >
               <div
+                aria-hidden
                 className={cn(
-                  'absolute bottom-0 left-0 right-0 z-10 transition-all duration-300',
-                  likeIncrements === 9 ? 'bg-primary' : 'bg-primary/80'
+                  'pointer-events-none absolute inset-0 z-10 origin-bottom rounded-full',
+                  'transition-transform duration-300 ease-out',
+                  likeIncrements === 9
+                    ? 'border-2 border-amber-500 bg-amber-400'
+                    : 'bg-primary'
                 )}
                 style={{
-                  height: `${
-                    ((likeIncrements === 0 ? 0 : likeIncrements + 1) / 10) * 100
-                  }%`,
+                  transform: `scaleY(${
+                    likeIncrements === 0 ? 0 : (likeIncrements + 1) / 10
+                  })`,
                 }}
               />
-              <div className="relative z-20 flex h-8 w-8 items-center justify-center rounded-full bg-muted/30">
+              <div className="relative z-20 flex h-9 w-9 items-center justify-center rounded-full bg-slate-300/20">
                 <img
                   data-cursor="like-counter-button"
                   src="/images/heart.svg"
-                  className="h-5 w-5"
+                  className="h-full w-full"
                   alt=""
                 />
               </div>
             </Button>
-            <span
-              className={cn(
-                'text-sm tabular-nums',
-                likeIncrements >= 9
-                  ? 'text-primary font-medium'
-                  : 'text-foreground'
-              )}
-            >
-              {formatNumber(likeCount)}
-            </span>
-          </div>
-        </TooltipTrigger>
-        <TooltipContent
-          side="top"
-          className={
-            emojiVisible
-              ? 'border-0 bg-transparent text-lg shadow-none'
-              : 'max-w-xs text-center'
-          }
-        >
-          {emojiVisible
-            ? getEmojiBasedOnIncrements()
-            : 'Like this if you enjoyed the site. It means a lot.'}
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+          </TooltipTrigger>
+          <TooltipContent
+            side="top"
+            align="center"
+            sideOffset={8}
+            className={
+              emojiVisible
+                ? 'flex h-8 w-8 items-center justify-center border-0 bg-transparent p-0 text-2xl leading-none shadow-none'
+                : 'max-w-xs text-center'
+            }
+          >
+            {emojiVisible
+              ? getEmojiBasedOnIncrements()
+              : 'Like this if you enjoyed the site. It means a lot.'}
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      <span
+        className={cn(
+          'text-sm tabular-nums',
+          likeIncrements >= 9 ? 'font-medium text-amber-500' : 'text-foreground'
+        )}
+      >
+        {formatNumber(likeCount)}
+      </span>
+    </div>
   );
 }
