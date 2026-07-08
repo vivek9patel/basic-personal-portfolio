@@ -11,7 +11,11 @@
     "lint:fix": "next lint --fix",
     "analyze": "ANALYZE=true next build",
     "analyze:server": "BUNDLE_ANALYZE=server next build",
-    "analyze:browser": "BUNDLE_ANALYZE=browser next build"
+    "analyze:browser": "BUNDLE_ANALYZE=browser next build",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
@@ -58,6 +62,8 @@
     "eslint-plugin-prettier": "^5.5.1",
     "fs": "^0.0.1-security",
     "gray-matter": "^4.0.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.8",
     "next-mdx-remote": "^3.0.8",
     "path": "^0.12.7",
     "postcss": "^8.4.5",
