@@ -1,0 +1,3 @@
+{
+  "installCommand": "HUSKY=0 yarn install"
+}
