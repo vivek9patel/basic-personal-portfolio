@@ -24,22 +24,22 @@ export default function ExperienceSection() {
                   , {entry.role}
                 </span>
               </h3>
-                <ul className="list-disc pl-5 space-y-1.5 text-sm text-muted-foreground">
-                  {entry.highlights.map((line, i) => (
-                    <li key={i}>{line}</li>
+              <ul className="list-disc pl-5 space-y-1.5 text-sm text-muted-foreground">
+                {entry.highlights.map((line, i) => (
+                  <li key={i}>{line}</li>
+                ))}
+              </ul>
+              {entry.stack && (
+                <div className="flex flex-wrap gap-1.5">
+                  {entry.stack.map(tech => (
+                    <Badge key={tech} variant="outline">
+                      {tech}
+                    </Badge>
                   ))}
-                </ul>
-                {entry.stack && (
-                  <div className="flex flex-wrap gap-1.5">
-                    {entry.stack.map(tech => (
-                      <Badge key={tech} variant="outline">
-                        {tech}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
+          </div>
         ))}
       </div>
     </section>

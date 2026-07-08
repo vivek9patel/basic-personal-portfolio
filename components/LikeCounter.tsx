@@ -40,9 +40,9 @@ export default function LikeCounter() {
   const [oldLikeIncrements, setOldLikeIncrements] = useState(0);
   const [isReady, setIsReady] = useState(false);
   const [emojiVisible, setEmojiVisible] = useState(false);
-  const updateIncrementTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
-    null
-  );
+  const updateIncrementTimeoutRef = useRef<ReturnType<
+    typeof setTimeout
+  > | null>(null);
   const showEmojiTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
     null
   );
