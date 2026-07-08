@@ -1,25 +1,36 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { get } from '@vercel/edge-config';
-import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from './auth/[...nextauth]';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions);
   if (!session) {
     return res.status(401).json({
       message: 'Unauthorized',
     });
   }
-  const currentLikes = (await get('portfolio-likes')) as number;
-  const likeIncrements = parseInt(req.query.increment as string);
+  const rawLikes = await get('portfolio-likes');
+  const currentLikes =
+    typeof rawLikes === 'number'
+      ? rawLikes
+      : parseInt(String(rawLikes ?? '0'), 10);
+  const likeIncrements = parseInt(req.query.increment as string, 10);
 
-  if (likeIncrements < 0 || likeIncrements > 9) {
-    return res.status(200);
+  if (
+    likeIncrements < 0 ||
+    likeIncrements > 9 ||
+    Number.isNaN(likeIncrements)
+  ) {
+    return res.status(400).json({
+      message: 'Invalid increment',
+    });
   }
 
-  if (!currentLikes || !likeIncrements) {
+  if (Number.isNaN(currentLikes)) {
     return res.status(400).json({
       message: 'Error fetching or updating likes',
     });

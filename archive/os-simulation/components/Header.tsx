@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import ReactGA from 'react-ga4';
 import { useTheme } from 'next-themes';
-import { Button } from './ui/button';
+import { Button } from '@/components/ui/button';
 import {
   Menu,
   X,

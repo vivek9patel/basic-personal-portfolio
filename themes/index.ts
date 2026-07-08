@@ -10,6 +10,8 @@ export {
   getThemeMetadata,
   getAvailableThemeNames,
   cleanupInvalidThemePreference,
+  DEFAULT_THEME_NAME,
+  FALLBACK_THEME_NAME,
 } from './loader';
 
 // For backwards compatibility, export a synchronous function that returns a promise

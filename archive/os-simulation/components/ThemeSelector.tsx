@@ -1,27 +1,27 @@
 import React, { useState } from 'react';
-import { useThemeManager } from '../hooks/useThemeManager';
-import { Button } from './ui/button';
+import { useThemeManager } from '@/hooks/useThemeManager';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from './ui/card';
-import { Badge } from './ui/badge';
+} from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from './ui/select';
+} from '@/components/ui/select';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from './ui/tooltip';
+} from '@/components/ui/tooltip';
 import { Palette, Sun, Moon, Eye, X, RotateCcw } from 'lucide-react';
 import ReactGA from 'react-ga4';
 

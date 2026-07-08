@@ -7,6 +7,8 @@ import {
   getThemeMetadata,
   getAvailableThemeNames,
   cleanupInvalidThemePreference,
+  DEFAULT_THEME_NAME,
+  FALLBACK_THEME_NAME,
 } from '../themes';
 import {
   applyTheme,
@@ -84,7 +86,7 @@ export const useThemeManager = (): UseThemeManagerReturn => {
 
         // Check for saved preference FIRST before loading any theme
         const savedPreference = loadThemePreference();
-        let themeToLoad = 'default';
+        let themeToLoad = DEFAULT_THEME_NAME;
         let modeToUse = mode;
 
         if (savedPreference) {
@@ -92,12 +94,16 @@ export const useThemeManager = (): UseThemeManagerReturn => {
           modeToUse = savedPreference.mode;
         }
 
-        // Load the target theme (either saved or default)
+        // Load the target theme (either saved or app default)
         let targetTheme = await getThemeByName(themeToLoad);
 
         if (!targetTheme) {
-          // If saved theme doesn't exist, fall back to default
-          targetTheme = await getThemeByName('default');
+          // If saved theme doesn't exist, fall back to app default
+          targetTheme = await getThemeByName(DEFAULT_THEME_NAME);
+
+          if (!targetTheme) {
+            targetTheme = await getThemeByName(FALLBACK_THEME_NAME);
+          }
 
           if (!targetTheme) {
             // If default doesn't exist, try to get any available theme
@@ -295,17 +301,19 @@ export const useThemeManager = (): UseThemeManagerReturn => {
         ReactGA.event({
           category: 'Theme',
           action: 'Theme Fallback',
-          label: `${themeName} -> default`,
+          label: `${themeName} -> ${DEFAULT_THEME_NAME}`,
           value: 1,
         });
 
-        // Fallback to default theme if requested theme doesn't exist
-        console.warn(`Theme '${themeName}' not found, falling back to default`);
-        const defaultTheme = await getThemeByName('default');
-        if (defaultTheme) {
-          setCurrentTheme(defaultTheme);
-          applyThemeWithTransition(defaultTheme, mode);
-          saveThemeWithCache(defaultTheme, mode);
+        // Fallback to app default if requested theme doesn't exist
+        console.warn(
+          `Theme '${themeName}' not found, falling back to ${DEFAULT_THEME_NAME}`
+        );
+        const fallbackTheme = await getThemeByName(DEFAULT_THEME_NAME);
+        if (fallbackTheme) {
+          setCurrentTheme(fallbackTheme);
+          applyThemeWithTransition(fallbackTheme, mode);
+          saveThemeWithCache(fallbackTheme, mode);
         }
       }
     },
@@ -347,9 +355,10 @@ export const useThemeManager = (): UseThemeManagerReturn => {
 
   // Reset to default theme
   const resetToDefault = useCallback(async () => {
-    const defaultTheme =
-      availableThemes.find(t => t.name === 'default') || availableThemes[0];
-    if (defaultTheme) {
+    const fallbackTheme =
+      availableThemes.find(t => t.name === DEFAULT_THEME_NAME) ||
+      availableThemes[0];
+    if (fallbackTheme) {
       // Track theme reset
       ReactGA.event({
         category: 'Theme',
@@ -358,9 +367,9 @@ export const useThemeManager = (): UseThemeManagerReturn => {
         value: 1,
       });
 
-      setCurrentTheme(defaultTheme);
-      applyThemeWithTransition(defaultTheme, mode);
-      saveThemeWithCache(defaultTheme, mode);
+      setCurrentTheme(fallbackTheme);
+      applyThemeWithTransition(fallbackTheme, mode);
+      saveThemeWithCache(fallbackTheme, mode);
     }
   }, [mode, availableThemes, currentTheme]);
 

@@ -1,5 +1,27 @@
 [
   {
+    "title": "Jellyfin Sync",
+    "tagline": "An OpenClaw skill that downloads media with yt-dlp into your library, checks folders before writing, and tracks download progress on demand.",
+    "year": 2026,
+    "badges": ["Shell", "yt-dlp", "OpenClaw"],
+    "github_url": "https://github.com/vivek9patel/jellyfin_sync",
+    "demo_url": "",
+    "stars": 0,
+    "priority": 1,
+    "category": "OpenClaw Skill"
+  },
+  {
+    "title": "shadcnai",
+    "tagline": "A CLI tool for generating beautiful shadcn/ui themes using natural language descriptions.",
+    "year": 2025,
+    "badges": ["Typescript", "CLI", "shadcn/ui", "AI SDK"],
+    "github_url": "https://github.com/vivek9patel/shadcnai",
+    "demo_url": "https://shadcnai.com/docs/",
+    "stars": 0,
+    "priority": 4,
+    "category": "CLI Tool"
+  },
+  {
     "title": "Personal Portfolio",
     "tagline": "A personal portfolio site to showcase my projects, skills, and experience.",
     "year": 2023,

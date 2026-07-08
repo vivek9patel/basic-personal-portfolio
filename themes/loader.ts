@@ -1,5 +1,8 @@
 import { ThemeConfig } from './types';
 
+export const DEFAULT_THEME_NAME = 'ocean';
+export const FALLBACK_THEME_NAME = 'default';
+
 // Registry of available themes with lazy loading
 const THEME_REGISTRY = {
   default: () => import('./data/default').then(m => m.defaultTheme),
@@ -24,10 +27,10 @@ export async function loadTheme(name: string): Promise<ThemeConfig | null> {
       Object.keys(THEME_REGISTRY)
     );
 
-    // Fallback to default theme if the requested theme doesn't exist
-    if (name !== 'default') {
-      console.log(`Falling back to default theme`);
-      return loadTheme('default');
+    // Fallback to the app default theme if the requested theme doesn't exist
+    if (name !== DEFAULT_THEME_NAME && name !== FALLBACK_THEME_NAME) {
+      console.log(`Falling back to ${DEFAULT_THEME_NAME} theme`);
+      return loadTheme(DEFAULT_THEME_NAME);
     }
 
     return null;
@@ -39,13 +42,21 @@ export async function loadTheme(name: string): Promise<ThemeConfig | null> {
   } catch (error) {
     console.error(`Error loading theme '${name}':`, error);
 
-    // Fallback to default theme on error
-    if (name !== 'default') {
-      console.log(`Error loading '${name}', falling back to default theme`);
-      return loadTheme('default');
+    if (name === FALLBACK_THEME_NAME) {
+      return null;
     }
 
-    return null;
+    if (name === DEFAULT_THEME_NAME) {
+      console.log(
+        `Error loading '${name}', falling back to ${FALLBACK_THEME_NAME} theme`
+      );
+      return loadTheme(FALLBACK_THEME_NAME);
+    }
+
+    console.log(
+      `Error loading '${name}', falling back to ${DEFAULT_THEME_NAME} theme`
+    );
+    return loadTheme(DEFAULT_THEME_NAME);
   }
 }
 
@@ -101,7 +112,7 @@ export async function getAvailableThemes(): Promise<ThemeConfig[]> {
 
 // Theme display names mapping
 const THEME_DISPLAY_NAMES: Record<string, string> = {
-  default: 'Default',
+  default: 'Vivid',
   ocean: 'Ocean',
   forest: 'Forest',
   earth: 'Earth',
@@ -157,7 +168,7 @@ export function cleanupInvalidThemePreference(): void {
         !availableNames.includes(preference.themeName)
       ) {
         console.log(
-          `Invalid theme preference '${preference.themeName}' found. Clearing preference to fallback to default.`
+          `Invalid theme preference '${preference.themeName}' found. Clearing preference to fallback to ${DEFAULT_THEME_NAME}.`
         );
         localStorage.removeItem('theme-preference');
       }

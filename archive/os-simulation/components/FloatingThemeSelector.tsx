@@ -30,9 +30,9 @@ interface ThemeOption {
 const themeOptions: ThemeOption[] = [
   {
     name: 'default',
-    displayName: 'Vivid',
+    displayName: 'Default',
     icon: Sparkles,
-    description: 'Bold, high-contrast theme',
+    description: 'Classic theme',
   },
   {
     name: 'fire',
@@ -206,11 +206,21 @@ export const FloatingThemeSelector: React.FC<FloatingThemeSelectorProps> = ({
                         variant={isActive ? 'default' : 'outline'}
                         size="icon"
                         className={cn(
-                          'w-9 h-9 rounded-full transition-colors',
-                          isAnimated ? 'opacity-100' : 'opacity-0',
+                          'w-9 h-9 rounded-full transition-all duration-150 transform',
+                          'hover:scale-110 shadow-md',
+                          'will-change-transform',
+                          isAnimated
+                            ? 'scale-100 opacity-100 animate-in zoom-in-50 slide-in-from-bottom-2'
+                            : 'scale-0 opacity-0',
                           isActive &&
                             'ring-2 ring-primary ring-offset-2 ring-offset-background'
                         )}
+                        style={{
+                          transformOrigin: 'center',
+                          animation: isAnimated
+                            ? 'popupBounce 0.5s ease-out forwards'
+                            : undefined,
+                        }}
                       >
                         <IconComponent className="w-4 h-4" />
                       </Button>
@@ -236,10 +246,10 @@ export const FloatingThemeSelector: React.FC<FloatingThemeSelectorProps> = ({
                 size="icon"
                 data-cursor={true}
                 className={cn(
-                  'w-10 h-10 rounded-full border border-border bg-card hover:border-primary hover:bg-accent',
-                  'group transition-colors duration-300',
-                  'text-foreground',
-                  isOpen && 'rotate-180'
+                  'w-10 h-10 rounded-full border border-border bg-background hover:border-primary',
+                  'group transition-all duration-300 transform',
+                  'shadow-xs text-foreground hover:text-white',
+                  isOpen && 'rotate-180 scale-110'
                 )}
               >
                 <Palette
@@ -263,7 +273,7 @@ export const FloatingThemeSelector: React.FC<FloatingThemeSelectorProps> = ({
             isOpen && 'opacity-50'
           )}
         >
-          {currentTheme?.displayName || 'Ocean'}
+          {currentTheme?.displayName || 'Default'}
         </Badge>
       </div>
     </TooltipProvider>

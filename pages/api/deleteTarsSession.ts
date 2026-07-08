@@ -1,9 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { getTarsEndpoint } from '@/lib/tars-endpoint';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const endpoint = getTarsEndpoint();
+  if (!endpoint) {
+    return res.status(503).json({ message: 'TARS endpoint is not configured' });
+  }
+
   const myHeaders = new Headers();
   myHeaders.append('Content-Type', 'application/json');
 
@@ -18,10 +24,7 @@ export default async function handler(
     body: raw,
   };
 
-  const result = await fetch(
-    `${process.env.NEXT_PUBLIC_TARS_ENDPOINT}/delete-session`,
-    requestOptions
-  );
+  const result = await fetch(`${endpoint}/delete-session`, requestOptions);
   console.log('tars session delete request ', result.status);
   return res.status(result.status);
 }

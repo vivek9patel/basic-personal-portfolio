@@ -1,6 +1,6 @@
 import React from 'react';
 import { NextPage } from 'next';
-import { ThemeSelector } from '../components/ThemeSelector';
+import { ThemeSelector } from '../archive/os-simulation/components/ThemeSelector';
 import { useThemeManager } from '../hooks/useThemeManager';
 import { Button } from '../components/ui/button';
 import {

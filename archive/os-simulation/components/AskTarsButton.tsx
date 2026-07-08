@@ -1,14 +1,14 @@
-import Avatar from './Avatar';
+import Avatar from '@/components/Avatar';
 import { useRouter } from 'next/router';
 import ReactGA from 'react-ga4';
-import { Button } from './ui/button';
-import { Badge } from './ui/badge';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from './ui/tooltip';
+} from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 
 export default function AskTarsButton({

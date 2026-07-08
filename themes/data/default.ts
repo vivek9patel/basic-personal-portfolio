@@ -2,7 +2,7 @@ import { ThemeConfig } from '../types';
 
 export const defaultTheme: ThemeConfig = {
   name: 'default',
-  displayName: 'Default',
+  displayName: 'Vivid',
   colors: {
     light: {
       background: '#ffffff',

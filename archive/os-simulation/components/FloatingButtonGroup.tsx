@@ -1,6 +1,6 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
-import LikeCounter from './LikeCounter';
+import LikeCounter from '@/components/LikeCounter';
 import AskTarsButton from './AskTarsButton';
 import FloatingThemeSelectorLazy from './FloatingThemeSelectorLazy';
 

@@ -1,7 +1,6 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-// Dummy credentials/authorization
 export const authOptions = {
   providers: [
     CredentialsProvider({

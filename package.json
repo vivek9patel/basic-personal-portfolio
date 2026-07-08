@@ -14,7 +14,6 @@
     "analyze:browser": "BUNDLE_ANALYZE=browser next build"
   },
   "dependencies": {
-    "@emailjs/browser": "^3.11.0",
     "@hookform/resolvers": "^5.1.1",
     "@radix-ui/react-dialog": "1.0.5",
     "@radix-ui/react-label": "2.0.2",

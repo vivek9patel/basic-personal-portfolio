@@ -1,42 +1,5 @@
 import { useEffect, useState } from 'react';
 
-const TEXT_HOVER_PADDING = 6;
-
-function isTextLikeElement(
-  element: Element,
-  computedStyle: CSSStyleDeclaration
-) {
-  const display = computedStyle.display;
-  return (
-    display === 'inline' ||
-    display === 'inline-block' ||
-    element.tagName === 'A' ||
-    element.tagName === 'SPAN' ||
-    element.tagName === 'EM'
-  );
-}
-
-function getHoveredCursorBounds(element: Element) {
-  const computedStyle = window.getComputedStyle(element);
-  const boundingRect = element.getBoundingClientRect();
-  let borderRadius = computedStyle.borderRadius || '100%';
-  if (borderRadius === '0px') {
-    borderRadius = '4px';
-  }
-
-  const padding = isTextLikeElement(element, computedStyle)
-    ? TEXT_HOVER_PADDING
-    : 0;
-
-  return {
-    x: boundingRect.x - padding,
-    y: boundingRect.y - padding,
-    width: boundingRect.width + padding * 2 + 'px',
-    height: boundingRect.height + padding * 2 + 'px',
-    borderRadius,
-  };
-}
-
 export default function Cursor() {
   const [cursor, setCursor] = useState({
     x: 0,
@@ -86,12 +49,16 @@ export default function Cursor() {
       }
 
       if (!hoveredElement) return;
-      const bounds = getHoveredCursorBounds(hoveredElement);
-      width = bounds.width;
-      height = bounds.height;
-      borderRadius = bounds.borderRadius;
-      x = bounds.x;
-      y = bounds.y;
+      const computedStyle = window.getComputedStyle(hoveredElement);
+      const boundingRect = hoveredElement.getBoundingClientRect();
+      width = boundingRect.width + 'px';
+      height = boundingRect.height + 'px';
+      borderRadius = computedStyle.borderRadius || '100%';
+      if (borderRadius === '0px') {
+        borderRadius = '4px';
+      }
+      x = boundingRect.x;
+      y = boundingRect.y;
       hoveredOver = true;
     }
     setCursor({
@@ -130,13 +97,18 @@ export default function Cursor() {
       'data-cursor-focusable'
     );
     if (dataFocusableCursor && hoveredElement) {
-      const bounds = getHoveredCursorBounds(hoveredElement);
+      const computedStyle = window.getComputedStyle(hoveredElement);
+      const boundingRect = hoveredElement.getBoundingClientRect();
+      let borderRadius = computedStyle.borderRadius || '100%';
+      if (borderRadius === '0px') {
+        borderRadius = '4px';
+      }
       setCursor({
-        x: bounds.x,
-        y: bounds.y,
-        width: bounds.width,
-        height: bounds.height,
-        borderRadius: bounds.borderRadius,
+        x: boundingRect.x,
+        y: boundingRect.y,
+        width: boundingRect.width + 'px',
+        height: boundingRect.height + 'px',
+        borderRadius,
         hoveredOver: true,
         hideDot: true,
         scrolling: false,
