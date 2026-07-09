@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getTarsEndpoint } from '@/lib/tars-endpoint';
+import { isChatErrorResponse } from '@/lib/tars-types';
 
 export default async function handler(
   req: NextApiRequest,
@@ -21,13 +22,18 @@ export default async function handler(
       body: JSON.stringify(req.body),
     });
 
+    const data = await response.json().catch(() => null);
+
     if (!response.ok) {
+      if (isChatErrorResponse(data)) {
+        return res.status(response.status).json(data);
+      }
+
       return res
         .status(response.status)
         .json({ message: 'TARS request failed' });
     }
 
-    const data = await response.json();
     return res.status(200).json(data);
   } catch {
     return res.status(503).json({ message: 'TARS service unavailable' });

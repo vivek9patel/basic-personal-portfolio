@@ -18,6 +18,7 @@ import {
   type TarsInputMethod,
   type TarsLocation,
 } from '@/lib/tars-analytics';
+import { type ChatApiResult, isChatErrorResponse } from '@/lib/tars-types';
 
 import v9Icon from '@/images/v9.png';
 import tarsIcon from '@/images/tars.svg';
@@ -29,6 +30,7 @@ type History = {
   from: 'user' | 'tars';
   message: string;
   timestamp?: number;
+  isError?: boolean;
 };
 
 const RATE_LIMIT_MS = 3000;
@@ -50,6 +52,7 @@ export default function TarsChatPanel({
   const [selectedQuestions, setSelectedQuestions] = useState<string[]>([]);
   const [lastRequestTime, setLastRequestTime] = useState<number>(0);
   const [cooldownRemaining, setCooldownRemaining] = useState<number>(0);
+  const [cooldownDurationMs, setCooldownDurationMs] = useState(RATE_LIMIT_MS);
   const historyRef = useRef<HTMLDivElement>(null);
   const sessionTrackedRef = useRef(false);
 
@@ -72,7 +75,12 @@ export default function TarsChatPanel({
   const canMakeRequest = () => {
     const now = Date.now();
     const timeSinceLastRequest = now - lastRequestTime;
-    return timeSinceLastRequest >= RATE_LIMIT_MS;
+    return timeSinceLastRequest >= cooldownDurationMs;
+  };
+
+  const applyCooldown = (durationMs: number) => {
+    setCooldownDurationMs(durationMs);
+    setLastRequestTime(Date.now());
   };
 
   useEffect(() => {
@@ -81,7 +89,7 @@ export default function TarsChatPanel({
     const updateCooldown = () => {
       const now = Date.now();
       const timeSinceLastRequest = now - lastRequestTime;
-      const remaining = Math.max(0, RATE_LIMIT_MS - timeSinceLastRequest);
+      const remaining = Math.max(0, cooldownDurationMs - timeSinceLastRequest);
       setCooldownRemaining(remaining);
 
       if (remaining > 0) {
@@ -90,7 +98,7 @@ export default function TarsChatPanel({
     };
 
     updateCooldown();
-  }, [lastRequestTime]);
+  }, [lastRequestTime, cooldownDurationMs]);
 
   useEffect(() => {
     const handleClearHistory = () => {
@@ -156,35 +164,51 @@ export default function TarsChatPanel({
     localStorage.setItem(LOCAL_HISTORY_KEY, JSON.stringify(history));
   }, [history]);
 
-  const fetchResponse = async (newQuery: string) => {
-    return await fetch('/api/tars/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        query: newQuery,
-        session_id: sessionId,
-      }),
-    })
-      .then(response => {
-        if (response.status !== 200) return '';
-        return response.json();
-      })
-      .then(response => {
-        return response.response;
-      })
-      .catch(error => {
-        console.error(error);
-        return '';
+  const fetchResponse = async (newQuery: string): Promise<ChatApiResult> => {
+    try {
+      const response = await fetch('/api/tars/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          query: newQuery,
+          session_id: sessionId,
+        }),
       });
+
+      const data = await response.json().catch(() => null);
+
+      if (response.ok && data?.response) {
+        return { ok: true, response: data.response };
+      }
+
+      if (isChatErrorResponse(data)) {
+        return {
+          ok: false,
+          error: data.error,
+          code: data.code,
+          retryAfter: data.retry_after,
+        };
+      }
+
+      return { ok: false, fallback: true };
+    } catch (error) {
+      console.error(error);
+      return { ok: false, fallback: true };
+    }
   };
 
-  const pushQueryToHistory = (from: 'user' | 'tars', newQuery: string) => {
+  const pushQueryToHistory = (
+    from: 'user' | 'tars',
+    newQuery: string,
+    isError = false
+  ) => {
     setHistory(oldHistory => [
       ...oldHistory,
       {
         from,
         message: newQuery,
         timestamp: Date.now(),
+        isError,
       },
     ]);
   };
@@ -206,7 +230,7 @@ export default function TarsChatPanel({
 
     const messageIndex = getUserMessageCount() + 1;
 
-    setLastRequestTime(Date.now());
+    applyCooldown(RATE_LIMIT_MS);
     pushQueryToHistory('user', newQuery);
     setQueryProcessing(true);
 
@@ -218,12 +242,35 @@ export default function TarsChatPanel({
     });
 
     const requestStartedAt = Date.now();
-    const response: string = await fetchResponse(newQuery);
+    const result = await fetchResponse(newQuery);
     const latencyMs = Date.now() - requestStartedAt;
-    const success = Boolean(response);
-    const responseText = success
-      ? response
-      : 'Sorry, I am not feeling well today, please come back later.';
+
+    let responseText: string;
+    let success: boolean;
+    let isError = false;
+
+    if (result.ok) {
+      responseText = result.response;
+      success = true;
+    } else if ('error' in result) {
+      responseText = result.error;
+      success = false;
+      isError = true;
+
+      if (
+        result.code === 'RATE_LIMITED' ||
+        result.code === 'TEMPORARILY_BLOCKED'
+      ) {
+        trackTarsRateLimited(location);
+        if (result.retryAfter) {
+          applyCooldown(result.retryAfter * 1000);
+        }
+      }
+    } else {
+      responseText =
+        'Sorry, I am not feeling well today, please come back later.';
+      success = false;
+    }
 
     trackTarsResponseReceived({
       location,
@@ -234,7 +281,7 @@ export default function TarsChatPanel({
     });
 
     setQueryProcessing(false);
-    pushQueryToHistory('tars', responseText);
+    pushQueryToHistory('tars', responseText, isError);
     setSelectedQuestions(getRandomQuestions());
   };
 
@@ -281,7 +328,11 @@ export default function TarsChatPanel({
                 message.from === 'user' ? (
                   <UserMessage key={index} message={message.message} />
                 ) : (
-                  <TarsMessage key={index} message={message.message} />
+                  <TarsMessage
+                    key={index}
+                    message={message.message}
+                    isError={message.isError}
+                  />
                 )
               )}
               {queryProcessing && (
@@ -380,17 +431,27 @@ function UserMessage({ message }: { message: string }) {
 function TarsMessage({
   message,
   isTyping = false,
+  isError = false,
 }: {
   message: string;
   isTyping?: boolean;
+  isError?: boolean;
 }) {
   return (
     <div className="flex justify-start">
       <div className="flex items-start gap-3 max-w-full sm:max-w-xs md:max-w-sm">
         <Avatar title="tars" url={tarsIcon.src} width="w-8" height="h-8" />
-        <div className="bg-muted rounded-lg px-4 py-2">
+        <div
+          className={`rounded-lg px-4 py-2 ${
+            isError
+              ? 'bg-destructive/10 border border-destructive/20'
+              : 'bg-muted'
+          }`}
+        >
           {isTyping ? (
             <p className="text-sm text-muted-foreground">Thinking...</p>
+          ) : isError ? (
+            <p className="text-sm text-destructive">{message}</p>
           ) : (
             <div className="text-sm custom-markdown text-foreground">
               <Markdown
