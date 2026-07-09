@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const TEXT_HOVER_PADDING = 6;
 
@@ -37,153 +37,189 @@ function getHoveredCursorBounds(element: Element) {
   };
 }
 
+type HoverState = {
+  width: string;
+  height: string;
+  borderRadius: string;
+  hoveredOver: boolean;
+  hideDot: boolean;
+  scrolling: boolean;
+};
+
+const DEFAULT_HOVER_STATE: HoverState = {
+  width: '32px',
+  height: '32px',
+  borderRadius: '100%',
+  hoveredOver: false,
+  hideDot: false,
+  scrolling: false,
+};
+
 export default function Cursor() {
-  const [cursor, setCursor] = useState({
-    x: 0,
-    y: 0,
-    width: '32px',
-    height: '32px',
-    borderRadius: '100%',
-    hoveredOver: false,
-    hideDot: false,
-    scrolling: false,
-  });
+  const ringRef = useRef<HTMLDivElement>(null);
+  const dotRef = useRef<HTMLDivElement>(null);
+  const positionRef = useRef({ x: 0, y: 0 });
+  const rafRef = useRef<number | null>(null);
+  const hoverStateRef = useRef<HoverState>(DEFAULT_HOVER_STATE);
 
-  useEffect(() => {
-    window.addEventListener('mousemove', moveCursor);
-    window.addEventListener('scroll', cursorScroll);
-    window.addEventListener('click', checkCursor);
-    return () => {
-      window.removeEventListener('mousemove', moveCursor);
-      window.removeEventListener('scroll', cursorScroll);
-      window.removeEventListener('click', checkCursor);
-    };
-  }, []);
+  const [hoverState, setHoverState] = useState<HoverState>(DEFAULT_HOVER_STATE);
 
-  const moveCursor = (e: MouseEvent) => {
-    let width = '32px',
-      height = '32px',
-      borderRadius = '100%',
-      x = e.clientX - 16,
-      y = e.clientY - 16,
-      hoveredOver = false;
-
-    let hoveredElement: Element | null | undefined = document.elementFromPoint(
-      e.clientX,
-      e.clientY
-    );
-    let dataCursor = hoveredElement?.getAttribute('data-cursor');
-    if (dataCursor) {
-      // If the element has data-cursor but it's not "true", look for a parent with data-cursor="true"
-      // Otherwise, use the current element if it has any data-cursor value
-      if (dataCursor !== 'true') {
-        const parentWithTrueCursor =
-          hoveredElement?.closest(`[data-cursor="true"]`);
-        if (parentWithTrueCursor) {
-          hoveredElement = parentWithTrueCursor;
-        }
-        // If no parent with data-cursor="true" exists, still use the current element
-      }
-
-      if (!hoveredElement) return;
-      const bounds = getHoveredCursorBounds(hoveredElement);
-      width = bounds.width;
-      height = bounds.height;
-      borderRadius = bounds.borderRadius;
-      x = bounds.x;
-      y = bounds.y;
-      hoveredOver = true;
+  const applyPosition = (x: number, y: number) => {
+    if (dotRef.current) {
+      dotRef.current.style.transform = `translate3d(${x + 14}px, ${y + 14}px, 0)`;
     }
-    setCursor({
-      x,
-      y,
-      width,
-      height,
-      borderRadius,
-      hoveredOver,
-      hideDot: false,
-      scrolling: false,
+    if (ringRef.current) {
+      ringRef.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    }
+  };
+
+  const schedulePositionUpdate = (x: number, y: number) => {
+    positionRef.current = { x, y };
+    if (rafRef.current !== null) return;
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = null;
+      const { x, y } = positionRef.current;
+      applyPosition(x, y);
     });
   };
 
-  const cursorScroll = () => {
-    if (cursor.hoveredOver) return;
-    // setCursor({
-    //   x: 0,
-    //   y: 60,
-    //   width: window.innerWidth + "px",
-    //   height: 4 + "px",
-    //   borderRadius: "0",
-    //   hoveredOver: false,
-    //   scrolling: true,
-    //   hideDot: false,
-    // });
-    resetCursor();
+  const updateHoverState = (next: HoverState) => {
+    hoverStateRef.current = next;
+    setHoverState(next);
   };
 
-  const checkCursor = (e: MouseEvent) => {
-    let hoveredElement: Element | null | undefined = document.elementFromPoint(
-      e.clientX,
-      e.clientY
-    );
-    let dataFocusableCursor = hoveredElement?.getAttribute(
-      'data-cursor-focusable'
-    );
-    if (dataFocusableCursor && hoveredElement) {
-      const bounds = getHoveredCursorBounds(hoveredElement);
-      setCursor({
-        x: bounds.x,
-        y: bounds.y,
-        width: bounds.width,
-        height: bounds.height,
-        borderRadius: bounds.borderRadius,
-        hoveredOver: true,
-        hideDot: true,
-        scrolling: false,
-      });
-    } else resetCursor();
-  };
+  useEffect(() => {
+    const moveCursor = (e: MouseEvent) => {
+      let width = '32px',
+        height = '32px',
+        borderRadius = '100%',
+        x = e.clientX - 16,
+        y = e.clientY - 16,
+        hoveredOver = false;
 
-  const resetCursor = () => {
-    setCursor(prev => {
-      return {
-        ...prev,
+      let hoveredElement: Element | null | undefined =
+        document.elementFromPoint(e.clientX, e.clientY);
+      const dataCursor = hoveredElement?.getAttribute('data-cursor');
+      if (dataCursor) {
+        if (dataCursor !== 'true') {
+          const parentWithTrueCursor =
+            hoveredElement?.closest(`[data-cursor="true"]`);
+          if (parentWithTrueCursor) {
+            hoveredElement = parentWithTrueCursor;
+          }
+        }
+
+        if (!hoveredElement) return;
+        const bounds = getHoveredCursorBounds(hoveredElement);
+        width = bounds.width;
+        height = bounds.height;
+        borderRadius = bounds.borderRadius;
+        x = bounds.x;
+        y = bounds.y;
+        hoveredOver = true;
+      }
+
+      schedulePositionUpdate(x, y);
+
+      const prev = hoverStateRef.current;
+      if (
+        prev.width !== width ||
+        prev.height !== height ||
+        prev.borderRadius !== borderRadius ||
+        prev.hoveredOver !== hoveredOver ||
+        prev.hideDot ||
+        prev.scrolling
+      ) {
+        updateHoverState({
+          width,
+          height,
+          borderRadius,
+          hoveredOver,
+          hideDot: false,
+          scrolling: false,
+        });
+      }
+    };
+
+    const resetCursor = () => {
+      updateHoverState({
+        ...hoverStateRef.current,
         width: '32px',
         height: '32px',
         borderRadius: '100%',
         hoveredOver: false,
-      };
-    });
-  };
+      });
+    };
+
+    const cursorScroll = () => {
+      if (hoverStateRef.current.hoveredOver) return;
+      resetCursor();
+    };
+
+    const checkCursor = (e: MouseEvent) => {
+      let hoveredElement: Element | null | undefined =
+        document.elementFromPoint(e.clientX, e.clientY);
+      const dataFocusableCursor = hoveredElement?.getAttribute(
+        'data-cursor-focusable'
+      );
+      if (dataFocusableCursor && hoveredElement) {
+        const bounds = getHoveredCursorBounds(hoveredElement);
+        schedulePositionUpdate(bounds.x, bounds.y);
+        updateHoverState({
+          width: bounds.width,
+          height: bounds.height,
+          borderRadius: bounds.borderRadius,
+          hoveredOver: true,
+          hideDot: true,
+          scrolling: false,
+        });
+      } else {
+        resetCursor();
+      }
+    };
+
+    window.addEventListener('mousemove', moveCursor, { passive: true });
+    window.addEventListener('scroll', cursorScroll, { passive: true });
+    window.addEventListener('click', checkCursor);
+
+    return () => {
+      window.removeEventListener('mousemove', moveCursor);
+      window.removeEventListener('scroll', cursorScroll);
+      window.removeEventListener('click', checkCursor);
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
+  }, []);
 
   return (
     <>
       <div
+        ref={ringRef}
         className={`top-0 left-0 fixed will-change-transform z-[999] pointer-events-none border-2 border-border hidden lg:flex 
         ${
-          cursor.hoveredOver || cursor.scrolling
+          hoverState.hoveredOver || hoverState.scrolling
             ? 'duration-300 border-primary'
             : 'duration-150'
         }
         `}
         style={{
-          transform: `translate3d(${cursor.x}px, ${cursor.y}px, 0)`,
-          width: cursor.width,
-          height: cursor.height,
-          borderRadius: cursor.borderRadius,
+          width: hoverState.width,
+          height: hoverState.height,
+          borderRadius: hoverState.borderRadius,
           transitionProperty:
             'width, height, border-radius, border-color, transform',
           transitionTimingFunction: 'ease-out',
         }}
       />
-      {!(cursor.hoveredOver || cursor.hideDot || cursor.scrolling) && (
-        <div
-          className="fixed w-1 h-1 rounded-full bg-primary z-[999] pointer-events-none hidden md:flex "
-          style={{
-            transform: `translate3d(${cursor.x + 14}px, ${cursor.y + 14}px, 0)`,
-          }}
-        />
-      )}
+      <div
+        ref={dotRef}
+        className={`fixed w-1 h-1 rounded-full bg-primary z-[999] pointer-events-none hidden md:flex will-change-transform ${
+          hoverState.hoveredOver || hoverState.hideDot || hoverState.scrolling
+            ? 'opacity-0'
+            : 'opacity-100'
+        }`}
+      />
     </>
   );
 }
