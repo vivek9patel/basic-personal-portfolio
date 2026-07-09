@@ -1,0 +1,255 @@
+---
+title: "Building a MDX-Based Blog with Next.js in 2026"
+description: "A practical walkthrough of shipping a file-based MDX blog on the Pages Router: content pipeline, syntax highlighting, table of contents, and the tradeoffs worth knowing before you commit."
+publishedAt: "2026-07-09"
+tags: ["nextjs", "mdx", "typescript"]
+draft: false
+---
+
+## Introduction
+
+I wanted a writing section on my portfolio without bolting on a CMS, a database, or a comment system I would never maintain. The goal was simple: markdown files in the repo, compiled at build time, rendered with good typography and syntax highlighting.
+
+This post walks through how I set that up on Next.js (Pages Router) in 2026. If you are weighing Contentlayer, a headless CMS, or rolling your own pipeline, I hope this saves you a few wrong turns.
+
+## Why file-based MDX
+
+The case for keeping posts as `.mdx` files next to your application code is straightforward.
+
+You get version control for free. Every edit is a diff. You can review posts in pull requests the same way you review code. There is no separate deploy step for content, no API keys for a CMS, and no runtime dependency on a third-party service staying online.
+
+MDX specifically is worth it when you want more than plain markdown. A `<Callout>` component, a custom image wrapper, or an embedded demo can live inside a post without inventing a shortcode parser.
+
+<Callout type="note">
+Info blocks like this one are just React components registered in your MDX component map. Authors write `<Callout type="note">...</Callout>` directly in the `.mdx` file. No admin UI required.
+</Callout>
+
+The main downside is that non-technical collaborators cannot publish without touching git. For a personal site, that is usually fine.
+
+## Why not Contentlayer
+
+Contentlayer was the default recommendation for typed content in Next.js for a while. It still powers a lot of good blogs. I chose not to use it here for two reasons.
+
+First, maintenance. The project has had stretches where issues piled up and releases slowed down. Betting your content pipeline on a tool with a small maintainer surface area is a real risk, especially on an older Pages Router setup.
+
+Second, fit. Contentlayer's sweet spot skews toward the App Router and newer Next.js conventions. This portfolio runs on Pages Router with `getStaticProps` and `getStaticPaths`. A lighter stack of well-supported libraries maps more directly onto that model without fighting the framework.
+
+You can get the same outcome (typed frontmatter, compiled MDX, static generation) with `gray-matter`, `next-mdx-remote`, and a handful of remark/rehype plugins. Less magic, fewer moving parts.
+
+## The content pipeline
+
+Posts live in `content/blog/`. Each file's slug comes from the filename: `my-post.mdx` becomes `/blog/my-post`.
+
+Every post starts with YAML frontmatter:
+
+```yaml
+---
+title: "Your post title"
+description: "One sentence for meta tags and the index."
+publishedAt: "2026-07-09"
+tags: ["nextjs", "typescript"]
+draft: false
+coverImage: "/images/blog/my-post/cover.png"  # optional
+---
+```
+
+The processing flow at build time looks like this:
+
+1. Read the file from disk with `fs`
+2. Parse frontmatter and body with `gray-matter`
+3. Compute reading time from the raw markdown body
+4. Serialize the MDX body with `next-mdx-remote/serialize` and your plugin chain
+5. Return a typed `Post` object to `getStaticProps`
+
+Here is a simplified version of the serialize step:
+
+```ts
+import { serialize } from 'next-mdx-remote/serialize';
+import remarkGfm from 'remark-gfm';
+import rehypeSlug from 'rehype-slug';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypePrettyCode from 'rehype-pretty-code';
+
+export async function serializeMdx(content: string) {
+  return serialize(content, {
+    mdxOptions: {
+      remarkPlugins: [remarkGfm],
+      rehypePlugins: [
+        rehypeSlug,
+        [
+          rehypeAutolinkHeadings,
+          { behavior: 'append', properties: { className: ['anchor'] } },
+        ],
+        [
+          rehypePrettyCode,
+          {
+            theme: { light: 'github-light', dark: 'github-dark' },
+            defaultColor: false,
+            keepBackground: false,
+          },
+        ],
+      ],
+    },
+  });
+}
+```
+
+<Callout type="tip">
+Compile MDX in `getStaticProps`, not in the browser. `next-mdx-remote` gives you a serialized result you pass to `<MDXRemote />` on the client. The heavy parsing work stays at build time.
+</Callout>
+
+### Plugin choices, briefly
+
+| Plugin | What it does |
+| ------ | ------------ |
+| `remark-gfm` | Tables, strikethrough, task lists |
+| `rehype-slug` | Adds `id` attributes to headings (required for TOC anchors) |
+| `rehype-autolink-headings` | Clickable `#` links on headings |
+| `rehype-pretty-code` | Shiki-based syntax highlighting |
+
+That is the whole chain. I deliberately skipped line numbers, copy buttons, and filename tabs on code blocks. They look polished in docs sites, but on a personal blog they add visual noise.
+
+## Rendering a post
+
+The individual post page loads one post by slug, fetches a list of all posts for related-content ranking, and renders the serialized MDX:
+
+```tsx
+import { MDXRemote } from 'next-mdx-remote';
+import { mdxComponents } from '@/components/mdx/mdx-components';
+
+export default function BlogPostPage({ post, relatedPosts }) {
+  return (
+    <article>
+      <h1>{post.title}</h1>
+      <div className="prose prose-neutral dark:prose-invert max-w-none">
+        <MDXRemote {...post.content} components={mdxComponents} />
+      </div>
+    </article>
+  );
+}
+
+export async function getStaticProps({ params }) {
+  const post = await getPostBySlug(params.slug);
+  if (!post) return { notFound: true };
+
+  const allPosts = await getAllPosts();
+  const relatedPosts = getRelatedPosts(post, allPosts, 3);
+
+  return { props: { post, relatedPosts } };
+}
+```
+
+The `mdxComponents` map is where you wire custom shortcodes. Ours registers `Callout`, a `Media` wrapper for images and video, and minimal `pre`/`code` overrides so Shiki tokens render inside a flat bordered container.
+
+For body typography, `@tailwindcss/typography` (`prose` classes) handles the long tail of markdown elements (blockquotes, lists, tables) without hand-styling each one. If it is not already in your project, add it. Trying to replicate `prose` by hand is a week of edge cases you do not need.
+
+## Table of contents without storing headings in frontmatter
+
+I wanted a scroll-tracking sidebar like the one on [dhravya.dev/writing](https://dhravya.dev/writing), but I did not want authors to maintain a separate TOC field in every post.
+
+The approach: let `rehype-slug` assign IDs at compile time, then query the rendered DOM on the client.
+
+```tsx
+useEffect(() => {
+  const headings = content.querySelectorAll('h2[id], h3[id]');
+  const observer = new IntersectionObserver(
+    entries => {
+      const visible = entries
+        .filter(e => e.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+      if (visible.length > 0) setActiveId(visible[0].target.id);
+    },
+    { rootMargin: '-80px 0px -70% 0px', threshold: 0 }
+  );
+  headings.forEach(h => observer.observe(h));
+  return () => observer.disconnect();
+}, []);
+```
+
+The sidebar is hidden below the `lg` breakpoint. On mobile, readers scroll normally. No hamburger menu for a TOC nobody asked for.
+
+## Draft posts that actually 404
+
+A `draft: true` flag in frontmatter is only useful if drafts cannot leak into production. I have seen setups where drafts are hidden from the index but still reachable by URL. That is worse than showing them, because you do not know they are public.
+
+The rule here is strict:
+
+- `getAllPosts()` excludes drafts when `NODE_ENV === 'production'`, regardless of options passed
+- `getStaticPaths` only generates paths for published posts
+- `getPostBySlug` returns `null` for drafts, and the page returns `notFound: true`
+
+A mistyped `draft: false` ships. A correct `draft: true` 404s in production. That is the behavior you want.
+
+<Callout type="warning">
+Next.js will throw at build time if you return `undefined` in `getStaticProps` props. Optional frontmatter fields like `coverImage` should be omitted from the object entirely, not set to `undefined`. I hit this on the first build.
+</Callout>
+
+## Related posts without embeddings
+
+Related content does not need vector search or an LLM. Tag overlap works fine at this scale.
+
+Score each candidate post by how many tags it shares with the current post. Break ties by `publishedAt` descending. Exclude the current post. Return the top three.
+
+```ts
+export function getRelatedPosts(current, allPosts, limit = 3) {
+  return allPosts
+    .filter(post => post.slug !== current.slug)
+    .map(post => ({
+      post,
+      overlap: post.tags.filter(tag => current.tags.includes(tag)).length,
+    }))
+    .filter(({ overlap }) => overlap > 0)
+    .sort((a, b) => {
+      if (b.overlap !== a.overlap) return b.overlap - a.overlap;
+      return new Date(b.post.publishedAt) - new Date(a.post.publishedAt);
+    })
+    .slice(0, limit)
+    .map(({ post }) => post);
+}
+```
+
+Simple, predictable, easy to debug when a post shows up in the wrong related list.
+
+## Syntax highlighting that respects dark mode
+
+Shiki themes are compiled at build time, so you cannot swap them with a React state toggle the way you swap a CSS variable.
+
+`rehype-pretty-code` supports dual themes. It emits separate markup for light and dark, tagged with `data-theme`. You hide the inactive theme with a few lines of CSS tied to your existing `html.dark` class from `next-themes`:
+
+```css
+html:not(.dark) [data-theme='dark'],
+html.dark [data-theme='light'] {
+  display: none;
+}
+```
+
+No extra JavaScript. The highlight colors follow whatever mode the reader already picked for the site.
+
+## A few things I skipped on purpose
+
+Not every blog needs every feature. These were explicit non-goals:
+
+- **RSS.** Useful, but nobody asked for it. Add it when you have readers who want it.
+- **Comments.** Moderation is a job. A static blog should stay static.
+- **A CMS.** The whole point was to avoid one.
+- **Paid TTS.** The "listen to this post" button uses `window.speechSynthesis`. Zero cost, zero API keys, sounds robotic. Good enough for accessibility experiments, not a podcast replacement.
+
+Scope discipline keeps the thing shippable.
+
+## Server code vs client code
+
+One build error worth mentioning: if a client component imports from a module that uses `fs`, webpack will try to bundle `fs` for the browser and fail.
+
+The fix is to split utilities. Keep `getAllPosts`, `getPostBySlug`, and the serialize logic in a server-only `lib/mdx.ts`. Put `formatPostDate`, `groupPostsByYear`, and `getRelatedPosts` in a separate `lib/blog-utils.ts` with no Node imports. Page components import from the right file depending on whether they run on the server or the client.
+
+<Callout type="note">
+`getStaticProps` always runs on the server, but the page component itself is bundled for the client. Top-level imports in that file matter.
+</Callout>
+
+## Wrap-up
+
+A file-based MDX blog on Next.js in 2026 does not require a framework inside the framework. `gray-matter` for frontmatter, `next-mdx-remote` for compilation, four rehype/remark plugins for the authoring experience, and `getStaticProps` to tie it together.
+
+The result is a blog that deploys with the rest of the site, costs nothing to host beyond the existing Vercel bill, and lets you write in the same editor you already use for code.
+
+If you are starting from scratch, get one post rendering end to end before you add TOC, related posts, or OG image generation. The pipeline is the hard part. Everything else is incremental.

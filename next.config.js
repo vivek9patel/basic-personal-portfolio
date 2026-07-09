@@ -23,6 +23,21 @@ const nextConfig = {
   
   // Compression
   compress: true,
+
+  async redirects() {
+    return [
+      {
+        source: '/blogs',
+        destination: '/blog',
+        permanent: true,
+      },
+      {
+        source: '/blogs/:slug',
+        destination: '/blog/:slug',
+        permanent: true,
+      },
+    ];
+  },
   
   // Bundle optimization
   experimental: {

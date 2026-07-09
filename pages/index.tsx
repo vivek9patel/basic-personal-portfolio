@@ -7,6 +7,9 @@ import ProjectsSection from '@/components/sections/projects';
 import ExperienceSection from '@/components/sections/experience';
 import TestimonialsSection from '@/components/sections/testimonials';
 import FooterSection from '@/components/sections/footer';
+import { SeoHead } from '@/components/meta/seo-head';
+import { SITE_DESCRIPTION } from '@/lib/site-config';
+import { buildPersonJsonLd, buildWebSiteJsonLd } from '@/lib/seo';
 
 const TRACKING_ID = process.env.NEXT_PUBLIC_TRACKING_ID;
 if (TRACKING_ID) ReactGA.initialize(TRACKING_ID);
@@ -17,18 +20,26 @@ const Home: NextPage = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen">
-      <div className="fixed right-6 top-6 z-50">
-        <ThemeControls />
+    <>
+      <SeoHead
+        title="Vivek Patel"
+        description={SITE_DESCRIPTION}
+        path="/"
+        jsonLd={[buildWebSiteJsonLd(), buildPersonJsonLd()]}
+      />
+      <div className="relative min-h-screen">
+        <div className="fixed right-6 top-6 z-50">
+          <ThemeControls />
+        </div>
+        <main className="relative z-10 max-w-4xl mx-auto px-6 pt-10 pb-12 md:pt-16 md:pb-24 space-y-20">
+          <HeroSection />
+          <ProjectsSection />
+          <ExperienceSection />
+          <TestimonialsSection />
+          <FooterSection />
+        </main>
       </div>
-      <main className="relative z-10 max-w-4xl mx-auto px-6 pt-10 pb-12 md:pt-16 md:pb-24 space-y-20">
-        <HeroSection />
-        <ProjectsSection />
-        <ExperienceSection />
-        <TestimonialsSection />
-        <FooterSection />
-      </main>
-    </div>
+    </>
   );
 };
 
