@@ -1,7 +1,5 @@
 import type { GetStaticProps, NextPage } from 'next';
 import Link from 'next/link';
-import { useEffect } from 'react';
-import ReactGA from 'react-ga4';
 import ThemeControls from '@/components/theme-controls';
 import { PostCard } from '@/components/blog/post-card';
 import { SeoHead } from '@/components/meta/seo-head';
@@ -17,10 +15,6 @@ interface BlogIndexProps {
 
 const BlogIndex: NextPage<BlogIndexProps> = ({ posts }) => {
   const postsByYear = groupPostsByYear(posts);
-
-  useEffect(() => {
-    ReactGA.send({ hitType: 'pageview', page: '/blog', title: 'Writing' });
-  }, []);
 
   return (
     <>
@@ -62,7 +56,7 @@ const BlogIndex: NextPage<BlogIndexProps> = ({ posts }) => {
                 </h2>
                 <div className="space-y-4">
                   {yearPosts.map(post => (
-                    <PostCard key={post.slug} post={post} />
+                    <PostCard key={post.slug} post={post} source="blog_index" />
                   ))}
                 </div>
               </div>

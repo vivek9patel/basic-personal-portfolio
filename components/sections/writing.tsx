@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { PostCard } from '@/components/blog/post-card';
+import { trackEvent } from '@/lib/analytics';
+import { useSectionView } from '@/hooks/useSectionView';
 import type { PostSummary } from '@/interfaces/post.interface';
 
 interface WritingSectionProps {
@@ -7,10 +9,12 @@ interface WritingSectionProps {
 }
 
 export default function WritingSection({ posts }: WritingSectionProps) {
+  const sectionRef = useSectionView<HTMLElement>('writing');
+
   if (posts.length === 0) return null;
 
   return (
-    <section className="space-y-6">
+    <section ref={sectionRef} className="space-y-6">
       <div className="flex items-center justify-between gap-4">
         <h2 className="text-2xl font-semibold tracking-tight text-foreground">
           Writing
@@ -19,6 +23,12 @@ export default function WritingSection({ posts }: WritingSectionProps) {
           <a
             className="text-sm font-medium text-primary hover:underline shrink-0"
             data-cursor={true}
+            onClick={() =>
+              trackEvent('blog_nav_click', {
+                destination: '/blog',
+                source: 'home_writing',
+              })
+            }
           >
             All blogs
           </a>
@@ -26,7 +36,7 @@ export default function WritingSection({ posts }: WritingSectionProps) {
       </div>
       <div className="space-y-4">
         {posts.map(post => (
-          <PostCard key={post.slug} post={post} />
+          <PostCard key={post.slug} post={post} source="home_writing" />
         ))}
       </div>
     </section>

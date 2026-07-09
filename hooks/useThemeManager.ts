@@ -18,7 +18,9 @@ import {
   applyInstantThemeFromCache,
   saveThemeWithCache,
 } from '../lib/theme-utils';
-import ReactGA from 'react-ga4';
+import { trackEvent } from '@/lib/analytics';
+
+export type ThemeChangeSource = 'controls' | 'floating' | 'system';
 
 export interface UseThemeManagerReturn {
   // Current theme configuration
@@ -34,7 +36,7 @@ export interface UseThemeManagerReturn {
   mode: 'light' | 'dark';
 
   // Theme management functions
-  setTheme: (themeName: string) => Promise<void>;
+  setTheme: (themeName: string, source?: ThemeChangeSource) => Promise<void>;
   toggleMode: () => void;
   applyThemeConfig: (theme: ThemeConfig, mode?: 'light' | 'dark') => void;
 
@@ -282,27 +284,24 @@ export const useThemeManager = (): UseThemeManagerReturn => {
 
   // Set theme by name
   const setTheme = useCallback(
-    async (themeName: string) => {
+    async (themeName: string, source: ThemeChangeSource = 'system') => {
       const theme = await getThemeByName(themeName);
       if (theme) {
-        // Track successful theme change
-        ReactGA.event({
-          category: 'Theme',
-          action: 'Theme Applied',
-          label: themeName,
-          value: 1,
+        trackEvent('theme_change', {
+          theme_name: themeName,
+          source,
+          result: 'applied',
         });
 
         setCurrentTheme(theme);
         applyThemeWithTransition(theme, mode);
         saveThemeWithCache(theme, mode);
       } else {
-        // Track theme fallback
-        ReactGA.event({
-          category: 'Theme',
-          action: 'Theme Fallback',
-          label: `${themeName} -> ${DEFAULT_THEME_NAME}`,
-          value: 1,
+        trackEvent('theme_change', {
+          theme_name: themeName,
+          source,
+          result: 'fallback',
+          fallback_theme: DEFAULT_THEME_NAME,
         });
 
         // Fallback to app default if requested theme doesn't exist
@@ -325,12 +324,9 @@ export const useThemeManager = (): UseThemeManagerReturn => {
     if (!currentTheme) return;
     const newMode = mode === 'light' ? 'dark' : 'light';
 
-    // Track mode toggle
-    ReactGA.event({
-      category: 'Theme',
-      action: 'Mode Toggle',
-      label: `${mode} to ${newMode}`,
-      value: 1,
+    trackEvent('theme_mode_toggle', {
+      from: mode,
+      to: newMode,
     });
 
     setNextTheme(newMode);
@@ -359,12 +355,8 @@ export const useThemeManager = (): UseThemeManagerReturn => {
       availableThemes.find(t => t.name === DEFAULT_THEME_NAME) ||
       availableThemes[0];
     if (fallbackTheme) {
-      // Track theme reset
-      ReactGA.event({
-        category: 'Theme',
-        action: 'Reset to Default',
-        label: currentTheme?.name || 'unknown',
-        value: 1,
+      trackEvent('theme_reset', {
+        from_theme: currentTheme?.name || 'unknown',
       });
 
       setCurrentTheme(fallbackTheme);
@@ -380,12 +372,9 @@ export const useThemeManager = (): UseThemeManagerReturn => {
 
       const targetMode = themeMode || mode;
 
-      // Track theme preview
-      ReactGA.event({
-        category: 'Theme',
-        action: 'Theme Preview',
-        label: `${theme.name} (${targetMode})`,
-        value: 1,
+      trackEvent('theme_preview', {
+        theme_name: theme.name,
+        mode: targetMode,
       });
 
       // Save current state if not already previewing
@@ -411,12 +400,9 @@ export const useThemeManager = (): UseThemeManagerReturn => {
   // Cancel preview and restore original theme
   const cancelPreview = useCallback(() => {
     if (previewState.isPreviewActive && previewState.originalTheme) {
-      // Track preview cancellation
-      ReactGA.event({
-        category: 'Theme',
-        action: 'Cancel Preview',
-        label: `${previewState.originalTheme.name} (${previewState.originalMode})`,
-        value: 1,
+      trackEvent('theme_preview_cancel', {
+        theme_name: previewState.originalTheme.name,
+        mode: previewState.originalMode,
       });
 
       // Restore original theme and mode

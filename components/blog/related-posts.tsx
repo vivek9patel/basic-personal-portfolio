@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { PostSummary } from '@/interfaces/post.interface';
+import { trackBlogPostClick } from '@/lib/analytics';
 
 interface RelatedPostsProps {
   posts: PostSummary[];
@@ -18,6 +19,9 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
               <a
                 className="text-sm text-foreground hover:underline"
                 data-cursor={true}
+                onClick={() =>
+                  trackBlogPostClick(post.slug, post.title, 'related')
+                }
               >
                 → {post.title}
               </a>

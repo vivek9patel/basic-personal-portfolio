@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { MessageCircle } from 'lucide-react';
-import ReactGA from 'react-ga4';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -10,6 +9,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import TarsChatPanel from '@/components/tars/TarsChatPanel';
+import { trackTarsOpen } from '@/lib/tars-analytics';
 
 export default function TarsWidget() {
   const [open, setOpen] = useState(false);
@@ -22,12 +22,7 @@ export default function TarsWidget() {
           size="icon"
           className="fixed bottom-6 right-6 z-40 border border-border bg-card hover:bg-accent active:scale-95"
           aria-label="Open Tars chat"
-          onClick={() => {
-            ReactGA.event({
-              category: 'Button.Click',
-              action: 'Open Tars Widget',
-            });
-          }}
+          onClick={() => trackTarsOpen('widget')}
         >
           <MessageCircle className="h-4 w-4" />
         </Button>
@@ -39,7 +34,7 @@ export default function TarsWidget() {
         <SheetHeader className="sr-only">
           <SheetTitle>TARS</SheetTitle>
         </SheetHeader>
-        <TarsChatPanel className="flex-1" />
+        <TarsChatPanel className="flex-1" location="widget" />
       </SheetContent>
     </Sheet>
   );

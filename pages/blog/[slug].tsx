@@ -1,7 +1,5 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Link from 'next/link';
-import { useEffect } from 'react';
-import ReactGA from 'react-ga4';
 import { MDXRemote } from 'next-mdx-remote';
 import ThemeControls from '@/components/theme-controls';
 import { PostToc } from '@/components/blog/post-toc';
@@ -15,6 +13,7 @@ import { getAllPosts, getPostBySlug, getPostSlugs } from '@/lib/mdx';
 import { getRelatedPosts } from '@/lib/blog-utils';
 import { ogImageUrl, SITE_AUTHOR } from '@/lib/site-config';
 import { buildBlogPostingJsonLd, buildBreadcrumbJsonLd } from '@/lib/seo';
+import { useBlogScrollDepth } from '@/hooks/useBlogScrollDepth';
 import type { Post, PostSummary } from '@/interfaces/post.interface';
 
 interface BlogPostPageProps {
@@ -25,13 +24,7 @@ interface BlogPostPageProps {
 const BlogPostPage: NextPage<BlogPostPageProps> = ({ post, relatedPosts }) => {
   const postPath = `/blog/${post.slug}`;
 
-  useEffect(() => {
-    ReactGA.send({
-      hitType: 'pageview',
-      page: postPath,
-      title: post.title,
-    });
-  }, [postPath, post.title]);
+  useBlogScrollDepth(post.slug);
 
   return (
     <>
@@ -98,12 +91,12 @@ const BlogPostPage: NextPage<BlogPostPageProps> = ({ post, relatedPosts }) => {
                     readingTimeMinutes={post.readingTimeMinutes}
                     showReadSuffix
                   />
-                  <ListenToPost text={post.plainText} />
+                  <ListenToPost text={post.plainText} slug={post.slug} />
                 </div>
                 {post.tags.length > 0 && (
                   <div className="flex flex-wrap gap-1.5">
                     {post.tags.map(tag => (
-                      <TagPill key={tag} tag={tag} />
+                      <TagPill key={tag} tag={tag} source="post_header" />
                     ))}
                   </div>
                 )}

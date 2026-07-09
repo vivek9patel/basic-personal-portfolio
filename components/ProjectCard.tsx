@@ -9,7 +9,7 @@ import {
   CardContent,
   CardFooter,
 } from '@/components/ui/card';
-import ReactGA from 'react-ga4';
+import { trackProjectClick } from '@/lib/analytics';
 import { Badge } from './ui/badge';
 
 export type ProjectCardProps = {
@@ -79,11 +79,7 @@ export default function ProjectCard(props: ProjectCardProps) {
           <Button
             variant="outline"
             onClick={() => {
-              ReactGA.event({
-                category: 'Button.Click',
-                action: 'Project Github URL',
-                label: props.github_url,
-              });
+              trackProjectClick(cardId, 'github', 'projects_page');
               window.open(props.github_url, '_blank');
             }}
             className="mx-1 flex-1 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
@@ -117,11 +113,7 @@ export default function ProjectCard(props: ProjectCardProps) {
           <Button
             variant="outline"
             onClick={() => {
-              ReactGA.event({
-                category: 'Button.Click',
-                action: 'Project Demo URL',
-                label: props.demo_url,
-              });
+              trackProjectClick(cardId, 'demo', 'projects_page');
               window.open(props.demo_url, '_blank');
             }}
             className="mx-1 flex-1"

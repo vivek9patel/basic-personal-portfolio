@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import ReactGA from 'react-ga4';
 import Avatar from '@/components/Avatar';
 import Markdown from 'markdown-to-jsx';
 import { RefreshCw, Send } from 'lucide-react';
@@ -8,6 +7,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { v4 as uuidv4 } from 'uuid';
+import {
+  TARS_SAMPLE_QUESTIONS,
+  trackTarsHistoryCleared,
+  trackTarsMessageSent,
+  trackTarsRateLimited,
+  trackTarsResponseReceived,
+  trackTarsSampleQuestionsRefresh,
+  trackTarsSessionStart,
+  type TarsInputMethod,
+  type TarsLocation,
+} from '@/lib/tars-analytics';
 
 import v9Icon from '@/images/v9.png';
 import tarsIcon from '@/images/tars.svg';
@@ -21,30 +31,17 @@ type History = {
   timestamp?: number;
 };
 
-const SAMPLE_QUESTIONS = [
-  'Can you share a recommendation from someone who has worked with Vivek?',
-  "What is Vivek's education background?",
-  'What are some examples of problems Vivek has solved in past roles?',
-  'Can you list some projects and frameworks Vivek has worked on?',
-  "What's Vivek's biggest professional achievement?",
-  'How does Vivek approach problem-solving in his projects?',
-  'What programming languages and technologies is Vivek most passionate about?',
-  "Can you tell me about Vivek's leadership style and team collaboration?",
-  'What unique skills or expertise does Vivek bring to a team?',
-  'How does Vivek stay updated with the latest technology trends?',
-  "What's the most challenging project Vivek has worked on?",
-  "Can you describe Vivek's work philosophy and values?",
-  'What industries or domains has Vivek gained experience in?',
-  'How does Vivek balance technical excellence with business requirements?',
-];
-
 const RATE_LIMIT_MS = 3000;
 
 interface TarsChatPanelProps {
   className?: string;
+  location?: TarsLocation;
 }
 
-export default function TarsChatPanel({ className = '' }: TarsChatPanelProps) {
+export default function TarsChatPanel({
+  className = '',
+  location = 'widget',
+}: TarsChatPanelProps) {
   const [isServerUp, setIsServerUp] = useState(false);
   const [queryProcessing, setQueryProcessing] = useState(false);
   const [query, setQuery] = useState('');
@@ -54,13 +51,20 @@ export default function TarsChatPanel({ className = '' }: TarsChatPanelProps) {
   const [lastRequestTime, setLastRequestTime] = useState<number>(0);
   const [cooldownRemaining, setCooldownRemaining] = useState<number>(0);
   const historyRef = useRef<HTMLDivElement>(null);
+  const sessionTrackedRef = useRef(false);
 
   const getRandomQuestions = () => {
-    const shuffled = [...SAMPLE_QUESTIONS].sort(() => 0.5 - Math.random());
+    const shuffled = [...TARS_SAMPLE_QUESTIONS].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, 3);
   };
 
+  const getUserMessageCount = (messages: History[] = history) =>
+    messages.filter(message => message.from === 'user').length;
+
   const clearChatHistory = () => {
+    if (history.length > 0) {
+      trackTarsHistoryCleared(location);
+    }
     setHistory([]);
     setSelectedQuestions(getRandomQuestions());
   };
@@ -116,15 +120,31 @@ export default function TarsChatPanel({ className = '' }: TarsChatPanelProps) {
             localStorage.getItem(LOCAL_SESSION_KEY) || uuidv4();
           localStorage.setItem(LOCAL_SESSION_KEY, oldSessionId);
           setSessionId(oldSessionId);
+
+          if (!sessionTrackedRef.current) {
+            trackTarsSessionStart(
+              location,
+              online,
+              getUserMessageCount(oldHistory)
+            );
+            sessionTrackedRef.current = true;
+          }
+        } else if (!sessionTrackedRef.current) {
+          trackTarsSessionStart(location, false, 0);
+          sessionTrackedRef.current = true;
         }
       })
       .catch(error => {
         console.error(error);
         setIsServerUp(false);
+        if (!sessionTrackedRef.current) {
+          trackTarsSessionStart(location, false, 0);
+          sessionTrackedRef.current = true;
+        }
       });
 
     setSelectedQuestions(getRandomQuestions());
-  }, []);
+  }, [location]);
 
   useEffect(() => {
     if (historyRef.current) {
@@ -169,10 +189,14 @@ export default function TarsChatPanel({ className = '' }: TarsChatPanelProps) {
     ]);
   };
 
-  const submitQuery = async (newQuery: string) => {
+  const submitQuery = async (
+    newQuery: string,
+    inputMethod: TarsInputMethod = 'typed_send_button'
+  ) => {
     if (queryProcessing || !isServerUp) return;
 
     if (!canMakeRequest()) {
+      trackTarsRateLimited(location);
       const remainingSeconds = Math.ceil(cooldownRemaining / 1000);
       toast.warning(
         `Please wait ${remainingSeconds} second${remainingSeconds > 1 ? 's' : ''} before sending another message`
@@ -180,35 +204,55 @@ export default function TarsChatPanel({ className = '' }: TarsChatPanelProps) {
       return;
     }
 
+    const messageIndex = getUserMessageCount() + 1;
+
     setLastRequestTime(Date.now());
     pushQueryToHistory('user', newQuery);
     setQueryProcessing(true);
-    ReactGA.event({
-      category: 'Button.Click',
-      action: 'Tars Query submit',
-      label: newQuery,
+
+    trackTarsMessageSent({
+      location,
+      inputMethod,
+      message: newQuery,
+      messageIndex,
     });
+
+    const requestStartedAt = Date.now();
     const response: string = await fetchResponse(newQuery);
+    const latencyMs = Date.now() - requestStartedAt;
+    const success = Boolean(response);
+    const responseText = success
+      ? response
+      : 'Sorry, I am not feeling well today, please come back later.';
+
+    trackTarsResponseReceived({
+      location,
+      success,
+      responseLength: responseText.length,
+      latencyMs,
+      messageIndex,
+    });
+
     setQueryProcessing(false);
-    pushQueryToHistory(
-      'tars',
-      !response
-        ? 'Sorry, I am not feeling well today, please come back later.'
-        : response
-    );
+    pushQueryToHistory('tars', responseText);
     setSelectedQuestions(getRandomQuestions());
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && query !== '') {
-      submitQuery(query);
+      submitQuery(query, 'typed_enter_key');
       setQuery('');
     }
   };
 
   const handleAskBtnSubmit = () => {
-    submitQuery(query);
+    submitQuery(query, 'typed_send_button');
     setQuery('');
+  };
+
+  const handleRefreshSampleQuestions = () => {
+    trackTarsSampleQuestionsRefresh(location);
+    setSelectedQuestions(getRandomQuestions());
   };
 
   return (
@@ -279,7 +323,7 @@ export default function TarsChatPanel({ className = '' }: TarsChatPanelProps) {
               ))}
             </div>
             <Button
-              onClick={() => setSelectedQuestions(getRandomQuestions())}
+              onClick={handleRefreshSampleQuestions}
               variant="ghost"
               size="sm"
               className="h-6 w-6 p-0"
@@ -376,13 +420,13 @@ function SampleQuery({
   callBackFun,
 }: {
   question: string;
-  callBackFun: (question: string) => void;
+  callBackFun: (question: string, inputMethod: TarsInputMethod) => void;
 }) {
   return (
     <Badge
       variant="outline"
       className="cursor-pointer text-xs py-1 px-2 whitespace-nowrap hover:bg-accent"
-      onClick={() => callBackFun(question)}
+      onClick={() => callBackFun(question, 'sample_question')}
     >
       {question}
     </Badge>

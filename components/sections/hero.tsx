@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import CompanyName from '@/components/CompanyName';
 import { SOCIAL_LINKS } from '@/data/social-links';
 import { HERO } from '@/data/hero';
+import { trackOutboundClick } from '@/lib/analytics';
+import { useSectionView } from '@/hooks/useSectionView';
 
 const GitHubStats = dynamic(() => import('@/components/GitHubStats'), {
   ssr: false,
@@ -21,8 +23,10 @@ function SocialIcon({
 }
 
 export default function HeroSection() {
+  const sectionRef = useSectionView<HTMLElement>('hero');
+
   return (
-    <section className="space-y-6">
+    <section ref={sectionRef} className="space-y-6">
       <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">
         Hey, I&apos;m Vivek.
       </h1>
@@ -43,6 +47,7 @@ export default function HeroSection() {
               href={link.href}
               className="text-sm text-muted-foreground hover:text-foreground hover:underline"
               data-cursor={true}
+              onClick={() => trackOutboundClick('email', 'hero')}
             >
               {link.label}
             </a>
@@ -54,6 +59,12 @@ export default function HeroSection() {
                 target="_blank"
                 rel="noreferrer"
                 data-cursor={true}
+                onClick={() =>
+                  trackOutboundClick(
+                    link.icon === 'github' ? 'github' : 'linkedin',
+                    'hero'
+                  )
+                }
               >
                 <SocialIcon name={link.icon} className="mr-2 h-4 w-4" />
                 {link.label}

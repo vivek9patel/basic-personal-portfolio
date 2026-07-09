@@ -9,6 +9,8 @@ import {
 import { TESTIMONIALS } from '@/data/testimonials';
 import { Testimonial } from '@/interfaces/testimonial.interface';
 import { cn } from '@/lib/utils';
+import { trackEvent } from '@/lib/analytics';
+import { useSectionView } from '@/hooks/useSectionView';
 
 const LONG_QUOTE_THRESHOLD = 220;
 
@@ -128,6 +130,7 @@ function TestimonialDialog({
 }
 
 export default function TestimonialsSection() {
+  const sectionRef = useSectionView<HTMLElement>('testimonials');
   const [activeTestimonial, setActiveTestimonial] =
     useState<Testimonial | null>(null);
 
@@ -138,7 +141,7 @@ export default function TestimonialsSection() {
   const sorted = [...TESTIMONIALS].sort((a, b) => a.priority - b.priority);
 
   return (
-    <section className="space-y-6">
+    <section ref={sectionRef} className="space-y-6">
       <h2 className="text-2xl font-semibold tracking-tight text-foreground">
         What Colleagues Have to Say
       </h2>
@@ -151,7 +154,13 @@ export default function TestimonialsSection() {
             >
               <TestimonialCard
                 testimonial={t}
-                onReadMore={() => setActiveTestimonial(t)}
+                onReadMore={() => {
+                  trackEvent('testimonial_expand', {
+                    author: t.author,
+                    testimonial_id: t.id,
+                  });
+                  setActiveTestimonial(t);
+                }}
               />
             </div>
           ))}

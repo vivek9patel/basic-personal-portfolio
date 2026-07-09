@@ -1,5 +1,4 @@
 import { Package, Puzzle, Shield, Star, ExternalLink } from 'lucide-react';
-import ReactGA from 'react-ga4';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,6 +9,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Project } from '@/interfaces/project.interface';
+import { trackProjectClick, type ProjectLocation } from '@/lib/analytics';
 
 function MetricIcon({
   name,
@@ -30,7 +30,13 @@ function MetricIcon({
   }
 }
 
-export default function HomeProjectCard({ project }: { project: Project }) {
+export default function HomeProjectCard({
+  project,
+  location = 'home',
+}: {
+  project: Project;
+  location?: ProjectLocation;
+}) {
   const cardId = project.id;
 
   return (
@@ -62,11 +68,7 @@ export default function HomeProjectCard({ project }: { project: Project }) {
               className="flex-1"
               data-cursor={true}
               onClick={() => {
-                ReactGA.event({
-                  category: 'Button.Click',
-                  action: 'Project Github URL',
-                  label: project.githubUrl,
-                });
+                trackProjectClick(project.id, 'github', location);
                 window.open(project.githubUrl, '_blank');
               }}
             >
@@ -83,11 +85,7 @@ export default function HomeProjectCard({ project }: { project: Project }) {
               className="flex-1"
               data-cursor={true}
               onClick={() => {
-                ReactGA.event({
-                  category: 'Button.Click',
-                  action: 'Project Demo URL',
-                  label: project.demoUrl,
-                });
+                trackProjectClick(project.id, 'demo', location);
                 window.open(project.demoUrl, '_blank');
               }}
             >

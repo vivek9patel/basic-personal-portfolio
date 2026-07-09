@@ -1,7 +1,6 @@
 import { useThemeManager } from '@/hooks/useThemeManager';
 import { DEFAULT_THEME_NAME } from '@/themes';
 import { Moon, Sun, Palette } from 'lucide-react';
-import ReactGA from 'react-ga4';
 import { Button } from '@/components/ui/button';
 import {
   Select,
@@ -16,13 +15,7 @@ export default function ThemeControls() {
     useThemeManager();
 
   const handleThemeSelect = (themeName: string) => {
-    ReactGA.event({
-      category: 'Theme',
-      action: 'Theme Change',
-      label: themeName,
-      value: 1,
-    });
-    setTheme(themeName);
+    setTheme(themeName, 'controls');
   };
 
   if (isLoading) {

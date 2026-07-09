@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import { useContext, useEffect, useState } from 'react';
-import ReactGA from 'react-ga4';
+import { trackEvent } from '@/lib/analytics';
 import ThemeControls from '@/components/theme-controls';
 import HomeProjectCard from '@/components/HomeProjectCard';
 import { SeoHead } from '@/components/meta/seo-head';
@@ -31,8 +31,6 @@ const Projects: NextPage = () => {
   const [filterBy, setFilterBy] = useState<TypeFilterBy>('priority');
 
   useEffect(() => {
-    ReactGA.send({ hitType: 'pageview', page: '/projects', title: 'Projects' });
-
     fetchProjectsStar().then(updatedProjectsListWithStars => {
       setProjectList([...updatedProjectsListWithStars]);
     });
@@ -99,11 +97,7 @@ const Projects: NextPage = () => {
               </Label>
               <Select
                 onValueChange={value => {
-                  ReactGA.event({
-                    category: 'Button.Click',
-                    action: 'Sort Projects',
-                    label: value,
-                  });
+                  trackEvent('projects_sort_change', { sort_by: value });
                   setFilterBy(value as TypeFilterBy);
                 }}
                 value={filterBy}
@@ -140,6 +134,7 @@ const Projects: NextPage = () => {
               <HomeProjectCard
                 key={`${project.title}-${i}`}
                 project={projectCardToGridProject(project)}
+                location="projects_page"
               />
             ))}
           </div>

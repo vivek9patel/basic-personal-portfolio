@@ -1,5 +1,6 @@
 import LikeCounter from '@/components/LikeCounter';
 import { SOCIAL_LINKS } from '@/data/social-links';
+import { trackOutboundClick } from '@/lib/analytics';
 
 const linkedInUrl =
   SOCIAL_LINKS.find(link => link.id === 'linkedin')?.href ??
@@ -16,6 +17,7 @@ export default function FooterSection() {
           rel="noopener noreferrer"
           className="text-foreground underline"
           data-cursor={true}
+          onClick={() => trackOutboundClick('linkedin', 'footer')}
         >
           here
         </a>

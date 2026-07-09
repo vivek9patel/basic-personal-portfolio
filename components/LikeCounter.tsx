@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { fetchLikes, incrementLikesTo, formatNumber } from '@/helpers/helpers';
 import { getSession, signIn, useSession } from 'next-auth/react';
-import ReactGA from 'react-ga4';
+import { trackEvent } from '@/lib/analytics';
 import { Button } from '@/components/ui/button';
 import {
   Tooltip,
@@ -183,10 +183,7 @@ export default function LikeCounter() {
     }
     changeLikeIncrements(likeIncrements + 1);
     setLikeCount(likeCount + 1);
-    ReactGA.event({
-      category: 'Button.Click',
-      action: 'Like Counter',
-    });
+    trackEvent('like_click');
   };
 
   const getEmojiBasedOnIncrements = () => {

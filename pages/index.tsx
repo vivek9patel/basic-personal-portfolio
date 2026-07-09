@@ -1,6 +1,4 @@
 import type { GetStaticProps, NextPage } from 'next';
-import { useEffect } from 'react';
-import ReactGA from 'react-ga4';
 import ThemeControls from '@/components/theme-controls';
 import HeroSection from '@/components/sections/hero';
 import ProjectsSection from '@/components/sections/projects';
@@ -13,18 +11,11 @@ import { SITE_DESCRIPTION } from '@/lib/site-config';
 import { buildPersonJsonLd, buildWebSiteJsonLd } from '@/lib/seo';
 import type { PostSummary } from '@/interfaces/post.interface';
 
-const TRACKING_ID = process.env.NEXT_PUBLIC_TRACKING_ID;
-if (TRACKING_ID) ReactGA.initialize(TRACKING_ID);
-
 interface HomeProps {
   latestPosts: PostSummary[];
 }
 
 const Home: NextPage<HomeProps> = ({ latestPosts }) => {
-  useEffect(() => {
-    ReactGA.send({ hitType: 'pageview', page: '/', title: 'Home' });
-  }, []);
-
   return (
     <>
       <SeoHead

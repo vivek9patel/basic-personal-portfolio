@@ -9,7 +9,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
-import ReactGA from 'react-ga4';
+import { trackEvent } from '@/lib/analytics';
 import {
   Palette,
   Flame,
@@ -79,23 +79,15 @@ export const FloatingThemeSelector: React.FC<FloatingThemeSelectorProps> = ({
   const [animatedButtons, setAnimatedButtons] = useState<number[]>([]);
 
   const handleThemeSelect = (themeName: string) => {
-    ReactGA.event({
-      category: 'Theme',
-      action: 'Floating Theme Change',
-      label: themeName,
-      value: 1,
-    });
-
-    setTheme(themeName);
+    setTheme(themeName, 'floating');
     setIsOpen(false);
   };
 
   const toggleThemeOptions = () => {
-    ReactGA.event({
-      category: 'Theme',
-      action: isOpen ? 'Close Floating Theme Menu' : 'Open Floating Theme Menu',
-      label: currentTheme?.name || 'unknown',
-      value: 1,
+    trackEvent('theme_menu_toggle', {
+      action: isOpen ? 'close' : 'open',
+      source: 'floating',
+      current_theme: currentTheme?.name || 'unknown',
     });
 
     setIsOpen(!isOpen);

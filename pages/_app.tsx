@@ -1,5 +1,6 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Context from '../context';
 import { SessionProvider } from 'next-auth/react';
@@ -8,10 +9,26 @@ import { Toaster } from '@/components/ui/sonner';
 import TarsWidget from '@/components/TarsWidget';
 import Cursor from '@/components/Cursor';
 import Banner from '@/components/sections/banner';
+import { initAnalytics, trackPageview } from '@/lib/analytics';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const isHome = router.pathname === '/';
+
+  useEffect(() => {
+    initAnalytics();
+    trackPageview(router.asPath);
+
+    const handleRouteChange = (url: string) => {
+      trackPageview(url);
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events]);
 
   return (
     <ThemeProvider attribute="class" defaultTheme="light">

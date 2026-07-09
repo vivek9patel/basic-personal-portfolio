@@ -1,7 +1,5 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Link from 'next/link';
-import { useEffect } from 'react';
-import ReactGA from 'react-ga4';
 import ThemeControls from '@/components/theme-controls';
 import { PostCard } from '@/components/blog/post-card';
 import { SeoHead } from '@/components/meta/seo-head';
@@ -19,14 +17,6 @@ const TagPage: NextPage<TagPageProps> = ({ tag, posts }) => {
   const postsByYear = groupPostsByYear(posts);
   const tagPath = `/blog/tags/${encodeURIComponent(tag)}`;
   const description = `All writing by Vivek Patel tagged with "${tag}".`;
-
-  useEffect(() => {
-    ReactGA.send({
-      hitType: 'pageview',
-      page: tagPath,
-      title: `Posts tagged "${tag}"`,
-    });
-  }, [tag, tagPath]);
 
   return (
     <>
@@ -71,7 +61,7 @@ const TagPage: NextPage<TagPageProps> = ({ tag, posts }) => {
                 </h2>
                 <div className="space-y-4">
                   {yearPosts.map(post => (
-                    <PostCard key={post.slug} post={post} />
+                    <PostCard key={post.slug} post={post} source="tag_page" />
                   ))}
                 </div>
               </div>

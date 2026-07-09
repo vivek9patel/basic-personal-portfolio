@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Play, Pause } from 'lucide-react';
+import { trackEvent } from '@/lib/analytics';
 
 interface ListenToPostProps {
   text: string;
+  slug: string;
 }
 
-export function ListenToPost({ text }: ListenToPostProps) {
+export function ListenToPost({ text, slug }: ListenToPostProps) {
   const [speaking, setSpeaking] = useState(false);
   const [supported, setSupported] = useState(false);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
@@ -27,6 +29,7 @@ export function ListenToPost({ text }: ListenToPostProps) {
     if (speaking) {
       window.speechSynthesis.cancel();
       setSpeaking(false);
+      trackEvent('blog_listen_toggle', { slug, action: 'stop' });
       return;
     }
 
@@ -36,6 +39,7 @@ export function ListenToPost({ text }: ListenToPostProps) {
     utteranceRef.current = utterance;
     window.speechSynthesis.speak(utterance);
     setSpeaking(true);
+    trackEvent('blog_listen_toggle', { slug, action: 'start' });
   };
 
   if (!supported) return null;
