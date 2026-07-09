@@ -1,20 +1,26 @@
-import type { NextPage } from 'next';
+import type { GetStaticProps, NextPage } from 'next';
 import { useEffect } from 'react';
 import ReactGA from 'react-ga4';
 import ThemeControls from '@/components/theme-controls';
 import HeroSection from '@/components/sections/hero';
 import ProjectsSection from '@/components/sections/projects';
 import ExperienceSection from '@/components/sections/experience';
+import WritingSection from '@/components/sections/writing';
 import TestimonialsSection from '@/components/sections/testimonials';
 import FooterSection from '@/components/sections/footer';
 import { SeoHead } from '@/components/meta/seo-head';
 import { SITE_DESCRIPTION } from '@/lib/site-config';
 import { buildPersonJsonLd, buildWebSiteJsonLd } from '@/lib/seo';
+import type { PostSummary } from '@/interfaces/post.interface';
 
 const TRACKING_ID = process.env.NEXT_PUBLIC_TRACKING_ID;
 if (TRACKING_ID) ReactGA.initialize(TRACKING_ID);
 
-const Home: NextPage = () => {
+interface HomeProps {
+  latestPosts: PostSummary[];
+}
+
+const Home: NextPage<HomeProps> = ({ latestPosts }) => {
   useEffect(() => {
     ReactGA.send({ hitType: 'pageview', page: '/', title: 'Home' });
   }, []);
@@ -35,12 +41,24 @@ const Home: NextPage = () => {
           <HeroSection />
           <ProjectsSection />
           <ExperienceSection />
+          <WritingSection posts={latestPosts} />
           <TestimonialsSection />
           <FooterSection />
         </main>
       </div>
     </>
   );
+};
+
+export const getStaticProps: GetStaticProps<HomeProps> = async () => {
+  const { getAllPosts } = await import('@/lib/mdx');
+  const posts = await getAllPosts();
+
+  return {
+    props: {
+      latestPosts: posts.slice(0, 3),
+    },
+  };
 };
 
 export default Home;
