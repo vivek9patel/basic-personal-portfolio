@@ -1,17 +1,31 @@
+type CalloutType = 'note' | 'info' | 'tip' | 'warning';
+
 interface CalloutProps {
-  type?: 'note' | 'tip' | 'warning';
+  type?: CalloutType;
   children: React.ReactNode;
 }
 
+const typeClass: Record<CalloutType, string> = {
+  note: 'callout-note',
+  info: 'callout-info',
+  tip: 'callout-tip',
+  warning: 'callout-warning',
+};
+
+const labels: Record<CalloutType, string> = {
+  note: 'Note',
+  info: 'Info',
+  tip: 'Tip',
+  warning: 'Warning',
+};
+
 export function Callout({ type = 'note', children }: CalloutProps) {
-  const label = { note: 'Note', tip: 'Tip', warning: 'Warning' }[type];
+  const resolvedType = type ?? 'note';
 
   return (
-    <div className="border border-border rounded-lg p-4 bg-muted space-y-1">
-      <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-        {label}
-      </p>
-      <div className="text-sm text-foreground leading-relaxed">{children}</div>
+    <div className={`callout ${typeClass[resolvedType]}`}>
+      <p className="callout-label">{labels[resolvedType]}</p>
+      <div className="callout-body">{children}</div>
     </div>
   );
 }
