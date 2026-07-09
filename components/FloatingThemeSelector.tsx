@@ -86,7 +86,7 @@ export const FloatingThemeSelector: React.FC<FloatingThemeSelectorProps> = ({
   const toggleThemeOptions = () => {
     trackEvent('theme_menu_toggle', {
       action: isOpen ? 'close' : 'open',
-      source: 'floating',
+      theme_source: 'floating',
       current_theme: currentTheme?.name || 'unknown',
     });
 

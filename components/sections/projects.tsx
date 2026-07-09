@@ -23,7 +23,7 @@ export default function ProjectsSection() {
             onClick={() =>
               trackEvent('projects_nav_click', {
                 destination: '/projects',
-                source: 'home',
+                click_source: 'home',
               })
             }
           >

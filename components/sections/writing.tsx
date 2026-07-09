@@ -26,7 +26,7 @@ export default function WritingSection({ posts }: WritingSectionProps) {
             onClick={() =>
               trackEvent('blog_nav_click', {
                 destination: '/blog',
-                source: 'home_writing',
+                click_source: 'home_writing',
               })
             }
           >

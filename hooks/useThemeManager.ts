@@ -289,7 +289,7 @@ export const useThemeManager = (): UseThemeManagerReturn => {
       if (theme) {
         trackEvent('theme_change', {
           theme_name: themeName,
-          source,
+          theme_source: source,
           result: 'applied',
         });
 
@@ -299,7 +299,7 @@ export const useThemeManager = (): UseThemeManagerReturn => {
       } else {
         trackEvent('theme_change', {
           theme_name: themeName,
-          source,
+          theme_source: source,
           result: 'fallback',
           fallback_theme: DEFAULT_THEME_NAME,
         });

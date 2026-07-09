@@ -105,11 +105,15 @@ export function trackBlogPostClick(
   title: string,
   source: BlogPostSource
 ): void {
-  trackEvent('blog_post_click', { slug, post_title: title, source });
+  trackEvent('blog_post_click', {
+    slug,
+    post_title: title,
+    click_source: source,
+  });
 }
 
 export type BlogTagSource = 'post_header' | 'post_card';
 
 export function trackBlogTagClick(tag: string, source: BlogTagSource): void {
-  trackEvent('blog_tag_click', { tag, source });
+  trackEvent('blog_tag_click', { tag, click_source: source });
 }
