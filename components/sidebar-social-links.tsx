@@ -52,7 +52,6 @@ export function SidebarSocialLinks({ className }: { className?: string }) {
           rel="noreferrer"
           aria-label={link.label}
           className="inline-flex size-9 items-center justify-center rounded-md text-foreground transition-colors hover:bg-muted hover:text-foreground"
-          data-cursor={true}
           onClick={() =>
             trackOutboundClick(
               link.icon === 'github'

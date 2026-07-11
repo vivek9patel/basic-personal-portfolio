@@ -7,17 +7,20 @@ import ProjectsSection from '@/components/sections/projects';
 import ExperienceSection from '@/components/sections/experience';
 import WritingSection from '@/components/sections/writing';
 import TestimonialsSection from '@/components/sections/testimonials';
+import SocialWallSection from '@/components/sections/social-wall';
 import FooterSection from '@/components/sections/footer';
 import { SeoHead } from '@/components/meta/seo-head';
 import { SITE_DESCRIPTION } from '@/lib/site-config';
 import { buildPersonJsonLd, buildWebSiteJsonLd } from '@/lib/seo';
 import type { PostSummary } from '@/interfaces/post.interface';
+import type { SocialWallItem } from '@/interfaces/social-wall.interface';
 
 interface HomeProps {
   latestPosts: PostSummary[];
+  socialWallItems: SocialWallItem[];
 }
 
-const Home: NextPage<HomeProps> = ({ latestPosts }) => {
+const Home: NextPage<HomeProps> = ({ latestPosts, socialWallItems }) => {
   return (
     <>
       <SeoHead
@@ -40,6 +43,7 @@ const Home: NextPage<HomeProps> = ({ latestPosts }) => {
                 <ExperienceSection />
                 <WritingSection posts={latestPosts} />
                 <TestimonialsSection />
+                <SocialWallSection items={socialWallItems} />
                 <FooterSection />
               </main>
             </AnimatedSection>
@@ -53,12 +57,18 @@ const Home: NextPage<HomeProps> = ({ latestPosts }) => {
 
 export const getStaticProps: GetStaticProps<HomeProps> = async () => {
   const { getAllPosts } = await import('@/lib/mdx');
+  const { SOCIAL_WALL_SOURCES } = await import('@/data/social-wall-sources');
+  const { fetchSocialWallItems } =
+    await import('@/lib/social-wall/fetch-social-wall-items');
   const posts = await getAllPosts();
+  const socialWallItems = await fetchSocialWallItems(SOCIAL_WALL_SOURCES);
 
   return {
     props: {
       latestPosts: posts.slice(0, 3),
+      socialWallItems,
     },
+    revalidate: 3600,
   };
 };
 

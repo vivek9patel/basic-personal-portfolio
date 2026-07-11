@@ -9,6 +9,7 @@ export const HOME_SECTIONS = [
   { id: 'experience', label: 'Experience' },
   { id: 'writing', label: 'Writing' },
   { id: 'testimonials', label: 'Testimonials' },
+  { id: 'socialwall', label: '#socialwall' },
 ] as const;
 
 export default function HomeSidebar() {
@@ -80,7 +81,6 @@ export default function HomeSidebar() {
                     ? 'font-medium text-foreground'
                     : 'text-muted-foreground hover:text-foreground'
                 )}
-                data-cursor={true}
               >
                 <span
                   className={cn(
