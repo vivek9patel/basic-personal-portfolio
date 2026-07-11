@@ -2,7 +2,8 @@ import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Link from 'next/link';
 import { MDXRemote } from 'next-mdx-remote';
 import ThemeControls from '@/components/theme-controls';
-import { PostToc } from '@/components/blog/post-toc';
+import { AnimatedSection } from '@/components/animated-section';
+import { BlogPostSidebar } from '@/components/blog/blog-post-sidebar';
 import { PostMeta } from '@/components/blog/post-meta';
 import { TagPill } from '@/components/blog/tag-pill';
 import { RelatedPosts } from '@/components/blog/related-posts';
@@ -52,7 +53,7 @@ const BlogPostPage: NextPage<BlogPostPageProps> = ({ post, relatedPosts }) => {
         <div className="fixed right-6 top-6 z-50">
           <ThemeControls />
         </div>
-        <main className="relative z-10 max-w-4xl mx-auto px-6 py-12 md:py-24">
+        <div className="relative z-10 mx-auto max-w-6xl px-6 py-12 md:py-24">
           <Link href="/blog" passHref>
             <a
               className="inline-block mb-8 text-sm text-muted-foreground hover:text-foreground hover:underline"
@@ -62,57 +63,57 @@ const BlogPostPage: NextPage<BlogPostPageProps> = ({ post, relatedPosts }) => {
             </a>
           </Link>
 
-          <article className="lg:grid lg:grid-cols-[200px_1fr] lg:gap-12">
-            <aside className="hidden lg:block">
-              <div className="sticky top-24">
-                <PostToc />
-              </div>
-            </aside>
+          <div className="lg:grid lg:grid-cols-[1fr_minmax(0,56rem)_1fr] lg:gap-x-16 xl:gap-x-20">
+            <BlogPostSidebar />
 
-            <div className="space-y-8 max-w-2xl">
-              <header className="space-y-4">
-                <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
-                  {post.title}
-                </h1>
-                <p className="text-sm text-muted-foreground">
-                  By{' '}
-                  <a
-                    href={SITE_AUTHOR.url}
-                    className="text-foreground hover:underline"
-                    rel="author"
-                    data-cursor={true}
-                  >
-                    {SITE_AUTHOR.name}
-                  </a>
-                </p>
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <PostMeta
-                    publishedAt={post.publishedAt}
-                    readingTimeMinutes={post.readingTimeMinutes}
-                    showReadSuffix
-                  />
-                  <ListenToPost text={post.plainText} slug={post.slug} />
-                </div>
-                {post.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5">
-                    {post.tags.map(tag => (
-                      <TagPill key={tag} tag={tag} source="post_header" />
-                    ))}
+            <AnimatedSection className="mx-auto w-full max-w-2xl lg:mx-0 lg:max-w-none">
+              <article className="space-y-8">
+                <header className="space-y-4">
+                  <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+                    {post.title}
+                  </h1>
+                  <p className="text-sm text-muted-foreground">
+                    By{' '}
+                    <a
+                      href={SITE_AUTHOR.url}
+                      className="text-foreground hover:underline"
+                      rel="author"
+                      data-cursor={true}
+                    >
+                      {SITE_AUTHOR.name}
+                    </a>
+                  </p>
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <PostMeta
+                      publishedAt={post.publishedAt}
+                      readingTimeMinutes={post.readingTimeMinutes}
+                      showReadSuffix
+                    />
+                    <ListenToPost text={post.plainText} slug={post.slug} />
                   </div>
-                )}
-              </header>
+                  {post.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5">
+                      {post.tags.map(tag => (
+                        <TagPill key={tag} tag={tag} source="post_header" />
+                      ))}
+                    </div>
+                  )}
+                </header>
 
-              <div
-                id="post-content"
-                className="prose prose-neutral dark:prose-invert max-w-none prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-a:text-primary"
-              >
-                <MDXRemote {...post.content} components={mdxComponents} />
-              </div>
+                <div
+                  id="post-content"
+                  className="prose prose-neutral dark:prose-invert max-w-none prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-a:text-primary"
+                >
+                  <MDXRemote {...post.content} components={mdxComponents} />
+                </div>
 
-              <RelatedPosts posts={relatedPosts} />
-            </div>
-          </article>
-        </main>
+                <RelatedPosts posts={relatedPosts} />
+              </article>
+            </AnimatedSection>
+
+            <div className="hidden lg:block" aria-hidden />
+          </div>
+        </div>
       </div>
     </>
   );

@@ -60,7 +60,7 @@ class MyDocument extends Document {
           {/* Resource hints for better performance */}
           <link rel="prefetch" href="/projects" />
         </Head>
-        <body className="transition-colors duration-300 custom-scroll-bar-x">
+        <body className="transition-colors duration-300">
           <Main />
           <NextScript />
           <Analytics />

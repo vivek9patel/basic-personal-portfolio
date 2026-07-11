@@ -72,8 +72,8 @@ export function trackEvent(name: string, params?: AnalyticsParams): void {
   }
 }
 
-export type OutboundLinkType = 'github' | 'linkedin' | 'email';
-export type OutboundLocation = 'hero' | 'footer' | 'testimonial';
+export type OutboundLinkType = 'github' | 'linkedin' | 'email' | 'twitter';
+export type OutboundLocation = 'hero' | 'footer' | 'testimonial' | 'sidebar';
 
 export function trackOutboundClick(
   linkType: OutboundLinkType,

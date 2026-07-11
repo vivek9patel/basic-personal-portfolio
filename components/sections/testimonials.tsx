@@ -141,11 +141,15 @@ export default function TestimonialsSection() {
   const sorted = [...TESTIMONIALS].sort((a, b) => a.priority - b.priority);
 
   return (
-    <section ref={sectionRef} className="space-y-6">
+    <section
+      id="testimonials"
+      ref={sectionRef}
+      className="space-y-6 scroll-mt-24"
+    >
       <h2 className="text-2xl font-semibold tracking-tight text-foreground">
         What Colleagues Have to Say
       </h2>
-      <div className="relative -mx-6 px-6">
+      <div className="relative overflow-x-clip">
         <div className="flex items-start gap-4 overflow-x-auto pb-4 snap-x snap-mandatory custom-scroll-bar-x">
           {sorted.map(t => (
             <div

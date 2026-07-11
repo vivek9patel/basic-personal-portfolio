@@ -97,7 +97,7 @@ export default function Banner({
   return (
     <div
       aria-hidden="true"
-      className="relative left-1/2 w-screen -translate-x-1/2 h-44 sm:h-40 md:h-48 select-none overflow-hidden"
+      className="relative h-44 w-full overflow-x-clip sm:h-40 md:h-48 select-none"
     >
       <BannerGraphic layout={topLayout} preserveAspectRatio="xMidYMid slice" />
     </div>

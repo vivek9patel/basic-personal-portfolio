@@ -11,7 +11,7 @@ export default function ProjectsSection() {
     .slice(0, 4);
 
   return (
-    <section ref={sectionRef} className="space-y-6">
+    <section id="projects" ref={sectionRef} className="space-y-6 scroll-mt-24">
       <div className="flex items-center justify-between gap-4">
         <h2 className="text-2xl font-semibold tracking-tight text-foreground">
           Open-Source &amp; Side Projects

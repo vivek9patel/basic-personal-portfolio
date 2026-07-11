@@ -459,3 +459,36 @@ html.dark code[data-theme*=' '] span {
   border: none;
   padding: 0;
 }
+
+@keyframes easeFade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.ease-fade-on-load {
+  animation: easeFade 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes easeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.ease-up-on-load {
+  animation: easeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}

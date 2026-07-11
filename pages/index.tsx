@@ -1,5 +1,7 @@
 import type { GetStaticProps, NextPage } from 'next';
 import ThemeControls from '@/components/theme-controls';
+import { AnimatedSection } from '@/components/animated-section';
+import HomeSidebar from '@/components/home-sidebar';
 import HeroSection from '@/components/sections/hero';
 import ProjectsSection from '@/components/sections/projects';
 import ExperienceSection from '@/components/sections/experience';
@@ -28,14 +30,22 @@ const Home: NextPage<HomeProps> = ({ latestPosts }) => {
         <div className="fixed right-6 top-6 z-50">
           <ThemeControls />
         </div>
-        <main className="relative z-10 max-w-4xl mx-auto px-6 pt-10 pb-12 md:pt-16 md:pb-24 space-y-20">
-          <HeroSection />
-          <ProjectsSection />
-          <ExperienceSection />
-          <WritingSection posts={latestPosts} />
-          <TestimonialsSection />
-          <FooterSection />
-        </main>
+        <div className="relative z-10 mx-auto max-w-6xl px-6 pt-10 pb-12 md:pt-16 md:pb-24">
+          <div className="lg:grid lg:grid-cols-[1fr_minmax(0,56rem)_1fr] lg:gap-x-16 xl:gap-x-20">
+            <HomeSidebar />
+            <AnimatedSection className="mx-auto w-full max-w-4xl lg:mx-0 lg:max-w-none">
+              <main className="space-y-20">
+                <HeroSection />
+                <ProjectsSection />
+                <ExperienceSection />
+                <WritingSection posts={latestPosts} />
+                <TestimonialsSection />
+                <FooterSection />
+              </main>
+            </AnimatedSection>
+            <div className="hidden lg:block" aria-hidden />
+          </div>
+        </div>
       </div>
     </>
   );

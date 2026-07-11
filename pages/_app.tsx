@@ -9,6 +9,7 @@ import { Toaster } from '@/components/ui/sonner';
 import TarsWidget from '@/components/TarsWidget';
 import Cursor from '@/components/Cursor';
 import Banner from '@/components/sections/banner';
+import { AnimatedPage } from '@/components/animated-page';
 import { initAnalytics, trackPageview } from '@/lib/analytics';
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -36,7 +37,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Context>
           <Cursor />
           <Banner variant={isHome ? 'top' : 'sides'} />
-          <Component {...pageProps} />
+          <AnimatedPage>
+            <Component {...pageProps} />
+          </AnimatedPage>
           <TarsWidget />
         </Context>
       </SessionProvider>

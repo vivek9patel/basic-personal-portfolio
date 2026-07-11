@@ -44,7 +44,7 @@ export function PostToc({ contentId = 'post-content' }: PostTocProps) {
         }
       },
       {
-        rootMargin: '-80px 0px -70% 0px',
+        rootMargin: '-30% 0px -55% 0px',
         threshold: 0,
       }
     );
@@ -57,27 +57,38 @@ export function PostToc({ contentId = 'post-content' }: PostTocProps) {
   if (headings.length === 0) return null;
 
   return (
-    <nav aria-label="Table of contents" className="space-y-3">
-      <p className="text-sm font-medium text-foreground">On this page</p>
-      <ul className="space-y-2 border-t border-border pt-3">
-        {headings.map(heading => (
-          <li key={heading.id}>
-            <a
-              href={`#${heading.id}`}
+    <nav aria-label="Table of contents" className="space-y-1">
+      <p className="mb-4 text-sm font-medium text-foreground">On this page</p>
+      {headings.map(heading => {
+        const isActive = activeId === heading.id;
+        return (
+          <a
+            key={heading.id}
+            href={`#${heading.id}`}
+            className={cn(
+              'group flex items-center gap-3 py-1.5 text-sm transition-colors',
+              heading.level === 3 && 'pl-3',
+              isActive
+                ? 'font-medium text-foreground'
+                : 'text-muted-foreground hover:text-foreground'
+            )}
+            data-cursor={true}
+          >
+            <span
               className={cn(
-                'block text-sm leading-snug transition-colors',
-                heading.level === 3 && 'pl-3',
-                activeId === heading.id
-                  ? 'font-medium text-foreground'
-                  : 'text-muted-foreground hover:text-foreground'
+                'h-px shrink-0 bg-foreground transition-all duration-300',
+                isActive
+                  ? 'w-8'
+                  : 'w-4 bg-muted-foreground/50 group-hover:w-6 group-hover:bg-foreground/60'
               )}
-              data-cursor={true}
-            >
+              aria-hidden
+            />
+            <span className="min-w-0 leading-snug break-words">
               {heading.text}
-            </a>
-          </li>
-        ))}
-      </ul>
+            </span>
+          </a>
+        );
+      })}
     </nav>
   );
 }

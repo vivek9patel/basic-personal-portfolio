@@ -2,6 +2,12 @@ import { SocialLink } from '@/interfaces/social-link.interface';
 
 export const SOCIAL_LINKS: SocialLink[] = [
   {
+    id: 'twitter',
+    label: 'Twitter',
+    href: 'https://twitter.com/vivek9patel',
+    icon: 'twitter',
+  },
+  {
     id: 'github',
     label: 'GitHub',
     href: 'https://github.com/vivek9patel',

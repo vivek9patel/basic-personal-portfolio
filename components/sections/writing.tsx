@@ -14,7 +14,7 @@ export default function WritingSection({ posts }: WritingSectionProps) {
   if (posts.length === 0) return null;
 
   return (
-    <section ref={sectionRef} className="space-y-6">
+    <section id="writing" ref={sectionRef} className="space-y-6 scroll-mt-24">
       <div className="flex items-center justify-between gap-4">
         <h2 className="text-2xl font-semibold tracking-tight text-foreground">
           Writing
