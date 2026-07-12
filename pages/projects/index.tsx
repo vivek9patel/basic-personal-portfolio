@@ -74,13 +74,12 @@ const Projects: NextPage = () => {
         </div>
         <main className="relative z-10 max-w-4xl mx-auto px-6 py-12 md:py-24 space-y-8">
           <section className="space-y-3">
-            <Link href="/" passHref>
-              <a
-                className="inline-block text-sm text-muted-foreground hover:text-foreground hover:underline"
-                data-cursor={true}
-              >
-                ← Home
-              </a>
+            <Link
+              href="/"
+              className="inline-block text-sm text-muted-foreground hover:text-foreground hover:underline"
+              data-cursor={true}
+            >
+              ← Home
             </Link>
             <h1 className="text-2xl font-semibold tracking-tight text-foreground">
               Open-Source &amp; Side Projects

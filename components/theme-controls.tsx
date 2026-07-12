@@ -18,7 +18,8 @@ export default function ThemeControls() {
     setTheme(themeName, 'controls');
   };
 
-  if (isLoading) {
+  // Avoid icon/theme mismatches until next-themes has resolved on the client.
+  if (isLoading || !currentTheme) {
     return (
       <div className="h-9 w-9 rounded-full border-2 border-muted border-t-primary animate-spin" />
     );

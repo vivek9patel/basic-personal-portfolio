@@ -38,13 +38,12 @@ const TagPage: NextPage<TagPageProps> = ({ tag, posts }) => {
         <main className="relative z-10 max-w-4xl mx-auto px-6 py-12 md:py-24">
           <section className="space-y-8">
             <div className="space-y-2">
-              <Link href="/blog" passHref>
-                <a
-                  className="inline-block text-sm text-muted-foreground hover:text-foreground hover:underline"
-                  data-cursor={true}
-                >
-                  ← Writing
-                </a>
+              <Link
+                href="/blog"
+                className="inline-block text-sm text-muted-foreground hover:text-foreground hover:underline"
+                data-cursor={true}
+              >
+                ← Writing
               </Link>
               <h1 className="text-2xl font-semibold tracking-tight text-foreground">
                 Posts tagged &ldquo;{tag}&rdquo;

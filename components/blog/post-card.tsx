@@ -13,18 +13,17 @@ export function PostCard({ post, source }: PostCardProps) {
   return (
     <div className="space-y-1.5">
       <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
-        <Link href={`/blog/${post.slug}`} passHref>
-          <a
-            className="text-base font-medium text-foreground hover:underline"
-            data-cursor={true}
-            onClick={() => {
-              if (source) {
-                trackBlogPostClick(post.slug, post.title, source);
-              }
-            }}
-          >
-            {post.title}
-          </a>
+        <Link
+          href={`/blog/${post.slug}`}
+          className="text-base font-medium text-foreground hover:underline"
+          data-cursor={true}
+          onClick={() => {
+            if (source) {
+              trackBlogPostClick(post.slug, post.title, source);
+            }
+          }}
+        >
+          {post.title}
         </Link>
         <PostMeta
           publishedAt={post.publishedAt}

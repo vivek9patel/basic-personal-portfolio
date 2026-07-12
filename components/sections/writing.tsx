@@ -19,19 +19,18 @@ export default function WritingSection({ posts }: WritingSectionProps) {
         <h2 className="text-2xl font-semibold tracking-tight text-foreground">
           Writing
         </h2>
-        <Link href="/blog" passHref>
-          <a
-            className="text-sm font-medium text-primary hover:underline shrink-0"
-            data-cursor={true}
-            onClick={() =>
-              trackEvent('blog_nav_click', {
-                destination: '/blog',
-                click_source: 'home_writing',
-              })
-            }
-          >
-            All blogs
-          </a>
+        <Link
+          href="/blog"
+          className="text-sm font-medium text-primary hover:underline shrink-0"
+          data-cursor={true}
+          onClick={() =>
+            trackEvent('blog_nav_click', {
+              destination: '/blog',
+              click_source: 'home_writing',
+            })
+          }
+        >
+          All blogs
         </Link>
       </div>
       <div className="space-y-4">

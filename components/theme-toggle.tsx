@@ -3,7 +3,7 @@ import { Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function ThemeToggle() {
-  const { mode, toggleMode } = useThemeManager();
+  const { mode, toggleMode, isLoading } = useThemeManager();
 
   return (
     <Button
@@ -13,6 +13,7 @@ export default function ThemeToggle() {
       aria-label="Toggle light and dark mode"
       data-cursor={true}
       className="border border-border bg-card hover:bg-accent"
+      disabled={isLoading}
     >
       {mode === 'dark' ? (
         <Sun className="h-4 w-4" />

@@ -32,7 +32,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [router.events]);
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="light">
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
       <SessionProvider session={pageProps.session}>
         <Context>
           <Cursor />

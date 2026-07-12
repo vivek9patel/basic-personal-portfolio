@@ -27,9 +27,8 @@ export default function SocialWallImageTile({
       <Image
         src={item.src}
         alt={item.alt}
-        layout="fill"
-        objectFit="cover"
-        className="transition-transform duration-500 group-hover:scale-[1.03]"
+        fill
+        className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         sizes="(max-width: 640px) 50vw, 33vw"
       />
       <div

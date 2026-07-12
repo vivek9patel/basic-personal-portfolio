@@ -54,13 +54,12 @@ const BlogPostPage: NextPage<BlogPostPageProps> = ({ post, relatedPosts }) => {
           <ThemeControls />
         </div>
         <div className="relative z-10 mx-auto max-w-6xl px-6 py-12 md:py-24">
-          <Link href="/blog" passHref>
-            <a
-              className="inline-block mb-8 text-sm text-muted-foreground hover:text-foreground hover:underline"
-              data-cursor={true}
-            >
-              ← Writing
-            </a>
+          <Link
+            href="/blog"
+            className="inline-block mb-8 text-sm text-muted-foreground hover:text-foreground hover:underline"
+            data-cursor={true}
+          >
+            ← Writing
           </Link>
 
           <div className="lg:grid lg:grid-cols-[1fr_minmax(0,56rem)_1fr] lg:gap-x-16 xl:gap-x-20">

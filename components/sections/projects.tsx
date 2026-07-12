@@ -16,19 +16,18 @@ export default function ProjectsSection() {
         <h2 className="text-2xl font-semibold tracking-tight text-foreground">
           Open-Source &amp; Side Projects
         </h2>
-        <Link href="/projects" passHref>
-          <a
-            className="text-sm font-medium text-primary hover:underline shrink-0"
-            data-cursor={true}
-            onClick={() =>
-              trackEvent('projects_nav_click', {
-                destination: '/projects',
-                click_source: 'home',
-              })
-            }
-          >
-            View all
-          </a>
+        <Link
+          href="/projects"
+          className="text-sm font-medium text-primary hover:underline shrink-0"
+          data-cursor={true}
+          onClick={() =>
+            trackEvent('projects_nav_click', {
+              destination: '/projects',
+              click_source: 'home',
+            })
+          }
+        >
+          View all
         </Link>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

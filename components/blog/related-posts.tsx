@@ -15,16 +15,15 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
       <ul className="space-y-2">
         {posts.map(post => (
           <li key={post.slug}>
-            <Link href={`/blog/${post.slug}`} passHref>
-              <a
-                className="text-sm text-foreground hover:underline"
-                data-cursor={true}
-                onClick={() =>
-                  trackBlogPostClick(post.slug, post.title, 'related')
-                }
-              >
-                → {post.title}
-              </a>
+            <Link
+              href={`/blog/${post.slug}`}
+              className="text-sm text-foreground hover:underline"
+              data-cursor={true}
+              onClick={() =>
+                trackBlogPostClick(post.slug, post.title, 'related')
+              }
+            >
+              → {post.title}
             </Link>
           </li>
         ))}

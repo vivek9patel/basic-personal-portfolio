@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import {
   pickRandomBannerLayout,
@@ -82,10 +82,17 @@ export default function Banner({
 }: {
   variant?: BannerVariant;
 }) {
-  const [topLayout] = useState(() => pickRandomBannerLayout());
-  const [sideLayout] = useState(() => pickRandomSideBannerLayout());
+  // Defer random layout until after mount so SSR and hydration markup match.
+  const [topLayout, setTopLayout] = useState<BannerLayout | null>(null);
+  const [sideLayout, setSideLayout] = useState<BannerLayout | null>(null);
+
+  useEffect(() => {
+    setTopLayout(pickRandomBannerLayout());
+    setSideLayout(pickRandomSideBannerLayout());
+  }, []);
 
   if (variant === 'sides') {
+    if (!sideLayout) return null;
     return (
       <>
         <SideBanner layout={sideLayout} side="left" />
@@ -99,7 +106,12 @@ export default function Banner({
       aria-hidden="true"
       className="relative h-44 w-full overflow-x-clip sm:h-40 md:h-48 select-none"
     >
-      <BannerGraphic layout={topLayout} preserveAspectRatio="xMidYMid slice" />
+      {topLayout && (
+        <BannerGraphic
+          layout={topLayout}
+          preserveAspectRatio="xMidYMid slice"
+        />
+      )}
     </div>
   );
 }

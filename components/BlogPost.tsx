@@ -17,8 +17,8 @@ function BlogPost({ frontmatter, link }: Props): JSX.Element {
           {frontmatter.title}
         </div>
         <div className="text-primary text-lg">{date}</div>
-        <Link href={`/blogs/${link}`}>
-          <a className="text-primary text-lg">Read more</a>
+        <Link href={`/blogs/${link}`} className="text-primary text-lg">
+          Read more
         </Link>
       </div>
     </div>
