@@ -1,0 +1,241 @@
+---
+publishedAt: '2026-07-19'
+tags:
+- agents
+- python
+- telegram
+- llm
+title: 'Shipping from Telegram: The Technical Design of My Blog-Drafting Agent'
+draft: false
+coverImage: /images/blog/shipping-from-telegram-technical-design/cover.png
+description: How I built a lightweight, single-process Telegram agent that brainstorms,
+  drafts diagrams, and opens GitHub PRs for my blog without heavy frameworks.
+---
+
+---
+title: "Shipping from Telegram: The Technical Design of My Blog-Drafting Agent"
+description: "How I built a lightweight, single-process Telegram agent that brainstorms, drafts diagrams, and opens GitHub PRs for my blog without heavy frameworks."
+publishedAt: "2026-07-19"
+tags: ["agents", "python", "telegram", "llm"]
+draft: false
+---
+
+## Introduction
+
+I wanted a frictionless way to capture technical ideas when I'm away from my keyboard. Sometimes a blog post idea hits you on a walk, or while you're commuting, and by the time you sit down at your laptop, the spark is gone. I didn't want to write raw markdown on a tiny phone keyboard, nor did I want to use a heavy, over-engineered CMS. 
+
+My goal was simple: a Telegram bot that acts as a collaborative writing partner. I wanted to brainstorm an idea in plain text, send it diagrams or sketches, have it compile those into structured MDX with generated diagrams, and finally open a clean pull request on my blog's GitHub repository.
+
+This post walks through the technical design of this agent. I chose to skip the heavy agent frameworks (like LangChain or CrewAI) and built this as a single-process Python application backed by SQLite and LiteLLM. Here is how a simple Telegram message goes from a chat bubble to a production-ready GitHub PR.
+
+---
+
+## The Architecture: Simple, Single-Process Polling
+
+When designing this, I prioritized operational simplicity. I didn't want to manage webhooks, configure SSL certificates for incoming traffic, or run a heavy web server. 
+
+Instead, the entire system runs as a single, long-running Python program (`main.py`). It uses the `python-telegram-bot` library to run a polling loop, continuously asking Telegram's API, *"Any new messages for my bot?"* and processing updates synchronously inside callbacks.
+
+Here is the high-level system flow of how messages are routed and processed:
+
+![A system flow diagram showing the Telegram blog agent. It shows the main.py polling loop, the allowlist check, SQLite session loading, the state router branching into Brainstorming state or Draft Revi](/public/images/blog/shipping-from-telegram-technical-design/diagram_2.png)
+
+### 1. The Allowlist Check
+Because this bot has write access to my personal blog repository, security is paramount. The very first line of the message handler checks the incoming `message.from_user.id` against a hardcoded allowlist of Telegram user IDs. If a stranger messages the bot, the execution halts immediately. It doesn't even hit the database.
+
+### 2. SQLite Session Loading
+Once authorized, the bot loads the user's session. Rather than maintaining state in memory (which would make the bot fragile to restarts), I use a local SQLite database. 
+
+Every incoming message triggers a single `SELECT` query on the `sessions` table keyed by `chat_id`. This row stores:
+* The current state: `idle`, `brainstorming`, or `draft_review`.
+* The accumulated conversation history (serialized JSON).
+* The draft content (if any).
+* A list of pending image URLs or file paths.
+
+After the handler processes the message and gets a response from the LLM, it writes the updated state and history back to SQLite. If the server restarts mid-conversation, the bot resumes exactly where it left off.
+
+---
+
+## The Brainstorming Phase (No Tools, Just Context)
+
+The interaction begins in the `brainstorming` state. This is a low-friction phase where the LLM acts as a sounding board. 
+
+There is no complex tool-calling loop here. The mechanics are straightforward:
+1. Append the user's message to the stored conversation history.
+2. Call the LLM with this history and a system prompt that explicitly instructs: *"Understand the user's technical idea, ask clarifying questions, but do not write the draft yet."*
+3. Send the LLM's plain-text response back to the user.
+4. Save the updated history to SQLite.
+
+If I send a photo during this stage (like a whiteboard sketch or a screenshot), the bot downloads the image to a local directory and appends the file path to the `pending_images` list in the database. The LLM isn't invoked to process the image immediately; we simply collect assets for the drafting phase.
+
+Below is an example of how the agent guides the brainstorming process, asking targeted technical questions to flesh out the post before writing any code:
+
+![1. yeah straight into technical details
+2. target audience is tech savvy readers and mix of non tech savvy like recruiters
+3. focusing on efficiency of process, and reason behind using a existing agent framework and keeping architecture simple. You can make up a challange that I could have faced based on the architecture I provided you
+4. this diagram would be a system flow diagram that you could generate. You could make up any anecdotes that might ammuse readers
+5. I plan to integrate more tools such as what if agent could read from a github repo, understand the project and write a blog post explaining its system with just that github URL, and you can make up some other 2 tool ideas that would be interesting to readers.
+
+we also want to include example of how this agent responds and asks human question in brainstorm stage. I have attached image that show what kind of questions it asks in brainstorm stage that you can attach in my blog post.](/public/images/blog/shipping-from-telegram-technical-design/image_1.jpg)
+
+*Note: The screenshot above illustrates the exact kind of structured questioning the agent uses to push for technical depth before moving to the drafting stage.*
+
+---
+
+## The Drafting Phase & The Tool-Calling Loop
+
+The real magic happens when I type `/draft` or send a revision request. This transitions the session state to `draft_review` and triggers the tool-calling loop.
+
+Instead of relying on the LLM to output raw markdown that I would have to parse with fragile regular expressions, I use structured tool calling via LiteLLM. The agent is configured with exactly two tool schemas: `generate_diagram` and `finalize_draft`.
+
+### The Tool-Calling Loop Mechanics
+
+When the draft handler fires, it enters a loop:
+
+```python
+messages = load_conversation_history(chat_id)
+tools = [generate_diagram_schema, finalize_draft_schema]
+
+while True:
+    response = litellm.completion(
+        model="gpt-4o",
+        messages=messages,
+        tools=tools,
+        tool_choice="auto"
+    )
+    
+    # Check if the model wants to call a tool
+    tool_calls = response.choices[0].message.tool_calls
+    if not tool_calls:
+        # Fallback: if the model just replied with text, send it to the user
+        send_telegram_message(chat_id, response.choices[0].message.content)
+        break
+
+    for tool_call in tool_calls:
+        function_name = tool_call.function.name
+        arguments = json.loads(tool_call.function.arguments)
+        
+        if function_name == "generate_diagram":
+            # 1. Render the Mermaid syntax to an image via mermaid.ink
+            image_path = render_mermaid_to_image(arguments["mermaid_code"])
+            
+            # 2. Store the image locally and track it
+            token = register_generated_diagram(image_path) # e.g., "![A system flow diagram showing the Telegram blog agent. It shows the main.py polling loop, the allowlist check, SQLite session loading, the state router branching into Brainstorming state or Draft Revi](/public/images/blog/shipping-from-telegram-technical-design/diagram_2.png)"
+            
+            # 3. Append the tool result back to the conversation history
+            messages.append({
+                "role": "tool",
+                "tool_call_id": tool_call.id,
+                "name": "generate_diagram",
+                "content": f"Diagram generated successfully. Placed token in text: {token}"
+            })
+            
+            # The loop continues: we send the updated history (with the tool result) back to the LLM
+            
+        elif function_name == "finalize_draft":
+            # The LLM is ready to output the final post
+            save_draft_to_db(
+                chat_id=chat_id,
+                frontmatter=arguments["frontmatter"],
+                slug=arguments["slug"],
+                body=arguments["body"]
+            )
+            
+            # Break the loop and notify the user
+            send_telegram_message(chat_id, "Draft finalized! Use /publish to open a PR.")
+            return
+```
+
+This loop is incredibly powerful. If the LLM decides the post needs an architectural diagram, it calls `generate_diagram`. The code executes the tool, renders the Mermaid diagram to a PNG via the `mermaid.ink` API, saves it, and returns a success message containing a placeholder token like `![A system flow diagram showing the Telegram blog agent. It shows the main.py polling loop, the allowlist check, SQLite session loading, the state router branching into Brainstorming state or Draft Revi](/public/images/blog/shipping-from-telegram-technical-design/diagram_2.png)` back to the LLM. 
+
+The LLM sees that the diagram was generated successfully and can then proceed to call `finalize_draft`, embedding `![A system flow diagram showing the Telegram blog agent. It shows the main.py polling loop, the allowlist check, SQLite session loading, the state router branching into Brainstorming state or Draft Revi](/public/images/blog/shipping-from-telegram-technical-design/diagram_2.png)` directly into the markdown body where the diagram should render.
+
+---
+
+## Placeholder Resolution
+
+When `finalize_draft` is called, the LLM provides three structured arguments:
+1. `frontmatter`: A structured dictionary matching my blog's YAML schema (title, description, tags, etc.).
+2. `slug`: A clean, kebab-case URL slug (e.g., `shipping-from-telegram-technical-design`).
+3. `body`: The markdown content.
+
+At this point, the body contains literal placeholder strings like `![A system flow diagram showing the Telegram blog agent. It shows the main.py polling loop, the allowlist check, SQLite session loading, the state router branching into Brainstorming state or Draft Revi](/public/images/blog/shipping-from-telegram-technical-design/diagram_2.png)` or `![1. yeah straight into technical details
+2. target audience is tech savvy readers and mix of non tech savvy like recruiters
+3. focusing on efficiency of process, and reason behind using a existing agent framework and keeping architecture simple. You can make up a challange that I could have faced based on the architecture I provided you
+4. this diagram would be a system flow diagram that you could generate. You could make up any anecdotes that might ammuse readers
+5. I plan to integrate more tools such as what if agent could read from a github repo, understand the project and write a blog post explaining its system with just that github URL, and you can make up some other 2 tool ideas that would be interesting to readers.
+
+we also want to include example of how this agent responds and asks human question in brainstorm stage. I have attached image that show what kind of questions it asks in brainstorm stage that you can attach in my blog post.](/public/images/blog/shipping-from-telegram-technical-design/image_1.jpg)` (referencing the photos uploaded during brainstorming). 
+
+Before we write anything to disk, a post-processing step resolves these placeholders. Because we now know the final `slug`, we can move the generated diagrams and uploaded photos to their permanent home on disk:
+
+```python
+# Resolve placeholders to real relative paths
+resolved_body = body
+for token, temp_path in pending_assets.items():
+    extension = get_file_extension(temp_path)
+    final_filename = f"{token}{extension}"
+    dest_path = f"public/images/blog/{slug}/{final_filename}"
+    
+    # Move file to the correct directory
+    move_file(temp_path, dest_path)
+    
+    # Replace placeholder with the correct MDX Media component
+    mdx_component = f'<Media src="/images/blog/{slug}/{final_filename}" alt="Generated Asset" />'
+    resolved_body = resolved_body.replace(token, mdx_component)
+```
+
+This design keeps the LLM completely decoupled from my local file system structure. The LLM only deals with abstract tokens, while the Python code handles the file system mechanics.
+
+---
+
+## The Publish Pipeline: Pure Mechanics, No LLM
+
+Once I review the draft on Telegram and I'm happy with it, I send the `/publish` command. 
+
+It is tempting to throw LLMs at every stage of an "agent," but the publishing step is a place where LLMs do not belong. Publishing should be 100% deterministic, reliable, and fast.
+
+When `/publish` is triggered, the bot executes a linear sequence of Git and GitHub API operations:
+1. **Pull**: Fetch the latest changes from the `main` branch of my blog repository.
+2. **Branch**: Create a new git branch named `draft/<slug>`.
+3. **Write**: Create the directory `content/blog/` and write the MDX file with its frontmatter and resolved body. Write any associated images to `public/images/blog/<slug>/`.
+4. **Commit & Push**: Commit the changes and push the branch to GitHub.
+5. **Pull Request**: Open a pull request using the GitHub REST API with my personal `GITHUB_TOKEN`.
+
+The bot then replies with a direct link to the GitHub PR. I can do a quick final review on my phone and hit merge.
+
+---
+
+## The Hardest Part: Managing the Blocking Polling Loop
+
+One of the main challenges I faced with this single-process architecture was managing the synchronous nature of the Telegram polling loop. 
+
+Because the bot handles one blog request at a time per chat, any slow external API call—such as sending a complex Mermaid syntax string to `mermaid.ink` or downloading high-resolution images—would block the entire polling thread. If the `mermaid.ink` API timed out or took 15 seconds to respond, the bot would appear dead to the user. Even worse, Telegram might attempt to retry sending the message, leading to duplicate processing once the loop unblocked.
+
+To solve this, I had to introduce strict timeouts and fallback mechanisms:
+* **Asynchronous Tool Execution**: I wrapped the external HTTP requests to `mermaid.ink` in a strict 8-second timeout.
+* **Graceful Fallbacks**: If the diagram rendering service fails or times out, the tool handler doesn't crash. Instead, it catches the exception, registers the raw Mermaid code as a fallback text block, and returns a success status to the LLM saying: *"Diagram rendering timed out, but the raw Mermaid code has been saved. Proceeding with draft finalization."*
+* **Visual Feedback**: Before entering the heavy drafting loop, the bot sends a typing action or a "Drafting in progress..." message to keep the user informed.
+
+This keeps the polling loop healthy and ensures that temporary API hiccups don't corrupt the SQLite session state or crash the application.
+
+---
+
+## Future Tool Ideas
+
+While the current setup works beautifully for drafting posts from scratch, I'm planning to expand the agent's capabilities with a few more specialized tools:
+
+1. **GitHub Repository Ingestion**: A tool that accepts a GitHub repository URL, clones it, analyzes the codebase structure, and drafts a comprehensive system architecture post explaining how the project works.
+2. **Illustrative Image Generation**: Beyond technical Mermaid diagrams, a tool that interfaces with a text-to-image model (like FLUX or DALL-E 3) to generate custom, stylized cover images or conceptual illustrations based on the post's content.
+3. **Deep Research Assistant**: A tool that uses a search API (like Tavily or Perplexity) to perform deep-dive research on specific technical concepts, pulling in accurate external documentation links and verifying API schemas before writing code snippets.
+
+---
+
+## Conclusion
+
+By avoiding heavy agent frameworks and sticking to a simple stack—**Python, SQLite, LiteLLM, and Git**—I built a highly reliable, stateful writing assistant that fits entirely in a single file of code. 
+
+The tool-calling loop allows the LLM to dynamically generate diagrams and structure content, while SQLite ensures that the bot is resilient to restarts. Most importantly, keeping the publishing pipeline strictly programmatic guarantees that my git history remains clean and my deployments remain predictable.
+
+If you're building your own LLM-powered utilities, consider starting without a framework. Map out your state transitions, write clean tool schemas, and let simple database rows handle the memory. You might find you don't need much else.
+
