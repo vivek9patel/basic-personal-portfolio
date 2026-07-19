@@ -15,6 +15,7 @@ import { initAnalytics, trackPageview } from '@/lib/analytics';
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const isHome = router.pathname === '/';
+  const isAsk = router.pathname === '/ask';
 
   useEffect(() => {
     initAnalytics();
@@ -40,7 +41,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <AnimatedPage>
             <Component {...pageProps} />
           </AnimatedPage>
-          <TarsWidget />
+          {!isAsk && <TarsWidget />}
         </Context>
       </SessionProvider>
       <Toaster />

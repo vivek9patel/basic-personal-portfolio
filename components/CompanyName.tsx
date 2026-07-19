@@ -8,9 +8,11 @@ export const BRAND_COLORS: Record<string, string> = {
 export default function CompanyName({
   name,
   brandColor = BRAND_COLORS[name],
+  expandCursor = true,
 }: {
   name: string;
   brandColor?: string;
+  expandCursor?: boolean;
 }) {
   const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(name)}`;
 
@@ -20,7 +22,7 @@ export default function CompanyName({
       target="_blank"
       rel="noopener noreferrer"
       className="text-foreground transition-colors duration-200 hover:underline cursor-pointer"
-      data-cursor={true}
+      data-cursor={expandCursor || undefined}
       onMouseEnter={e => {
         if (brandColor) e.currentTarget.style.color = brandColor;
       }}

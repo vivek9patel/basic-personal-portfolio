@@ -1,10 +1,19 @@
 /** @type {import('next').NextConfig} */
+const path = require('path');
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
 const nextConfig = {
   reactStrictMode: true,
+
+  // Keep CopilotKit compiled through Next so we can intercept its CSS import.
+  transpilePackages: [
+    '@copilotkit/react-core',
+    '@copilotkit/runtime',
+    '@copilotkit/shared',
+    '@copilotkit/core',
+  ],
 
   // Performance optimizations
   compiler: {
@@ -54,6 +63,21 @@ const nextConfig = {
 
   // Webpack optimizations (simplified for Vercel compatibility)
   webpack: (config, { dev }) => {
+    // @copilotkit/react-core/v2 does `import "./index.css"`. Pages Router rejects
+    // global CSS from node_modules, so stub it inside Next's oneOf chain.
+    const copilotKitCssStub = {
+      test: /[\\/]@copilotkit[\\/]react-core[\\/]dist[\\/]v2[\\/]index\.css$/,
+      use: [path.join(__dirname, 'webpack/empty-module-loader.js')],
+    };
+    const oneOfRule = config.module.rules.find(
+      rule => rule && typeof rule === 'object' && Array.isArray(rule.oneOf)
+    );
+    if (oneOfRule) {
+      oneOfRule.oneOf.unshift(copilotKitCssStub);
+    } else {
+      config.module.rules.unshift(copilotKitCssStub);
+    }
+
     // Only run bundle analyzer in development
     if (dev && process.env.ANALYZE === 'true') {
       config.plugins.push(

@@ -21,6 +21,9 @@
     "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
+    "@copilotkit/react-core": "^1.62.3",
+    "@copilotkit/react-ui": "^1.62.3",
+    "@copilotkit/runtime": "^1.62.3",
     "@hookform/resolvers": "^5.1.1",
     "@radix-ui/react-dialog": "1.0.5",
     "@radix-ui/react-label": "2.0.2",
