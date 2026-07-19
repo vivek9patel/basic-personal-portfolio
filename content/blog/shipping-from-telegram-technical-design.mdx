@@ -193,7 +193,7 @@ The bot then replies with a direct link to the GitHub PR. I can do a quick final
 
 One of the main challenges I faced with this single-process architecture was managing the synchronous nature of the Telegram polling loop.
 
-Because the bot handles one blog request at a time per chat, any slow external API call—such as sending a complex Mermaid syntax string to `mermaid.ink` or downloading high-resolution images—would block the entire polling thread. If the `mermaid.ink` API timed out or took 15 seconds to respond, the bot would appear dead to the user. Even worse, Telegram might attempt to retry sending the message, leading to duplicate processing once the loop unblocked.
+Because the bot handles one blog request at a time per chat, any slow external API call (such as sending a complex Mermaid syntax string to `mermaid.ink` or downloading high-resolution images) would block the entire polling thread. If the `mermaid.ink` API timed out or took 15 seconds to respond, the bot would appear dead to the user. Even worse, Telegram might attempt to retry sending the message, leading to duplicate processing once the loop unblocked.
 
 To solve this, I had to introduce strict timeouts and fallback mechanisms:
 
@@ -213,7 +213,7 @@ While the current setup works beautifully for drafting posts from scratch, I'm p
 
 ## Conclusion
 
-By avoiding heavy agent frameworks and sticking to a simple stack—**Python, SQLite, LiteLLM, and Git**—I built a highly reliable, stateful writing assistant that fits entirely in a single file of code.
+By avoiding heavy agent frameworks and sticking to a simple stack (**Python, SQLite, LiteLLM, and Git**), I built a highly reliable, stateful writing assistant that fits entirely in a single file of code.
 
 The tool-calling loop allows the LLM to dynamically generate diagrams and structure content, while SQLite ensures that the bot is resilient to restarts. Most importantly, keeping the publishing pipeline strictly programmatic guarantees that my git history remains clean and my deployments remain predictable.
 
