@@ -1,0 +1,232 @@
+---
+publishedAt: '2026-06-22'
+tags:
+- selfhosting
+- networking
+- docker
+- nginx
+- linux
+description: 'A practical guide to converting old Windows PCs into Ubuntu servers,
+  configuring secure networking with Cloudflare, Nginx reverse proxies, and Docker,
+  and overcoming the ultimate bottleneck: a roommate-controlled router.'
+draft: false
+title: 'From Dusty PCs to a Secure Home Server: My Multi-Node Networking Setup'
+---
+
+## Why You Need a Home Server
+
+There is a distinct phase in every developer's journey where local development stops being satisfying. You build a hobby project, run it on `localhost:3000`, and realize that keeping your laptop lid open 24/7 just to show a friend your progress is a terrible way to live. 
+
+You could throw a credit card at AWS, Fly.io, or Render. But if you want to truly understand how systems, DNS, firewalls, and reverse proxies work from the ground up, nothing beats building your own home server. 
+
+I decided to build mine using what I had on hand: two old, dusty Windows PCs that were sitting in a closet gathering dust. I wiped Windows, installed Ubuntu Server, and set out to build a highly secure, self-hosted infrastructure. 
+
+This is the story of how I configured that network, split workloads across low-spec and high-spec hardware, secured the setup against the open internet, and managed to do it all while navigating a very specific roommate-related bottleneck.
+
+---
+
+## The Hardware: Repurposing the Relics
+
+Instead of buying a shiny new Synology NAS or a custom mini-PC, I repurposed two old machines with vastly different specs. This forced me to think carefully about workload distribution.
+
+| Machine | CPU | RAM | Primary Role | Key Services |
+| :--- | :--- | :--- | :--- | :--- |
+| **Server A** (Old Office PC) | Intel i3 (4th Gen) | 4 GB | Edge Router / Reverse Proxy | Nginx, UFW, Let's Encrypt |
+| **Server B** (Old Gaming Rig) | Intel i7 (8th Gen) | 16 GB | Heavy Compute / Storage | Docker, Django/Java APIs, PostgreSQL, Plex, Ollama |
+
+### Server A: The Gatekeeper (4GB RAM)
+With only 4GB of RAM, this machine will choke if you try to run modern databases or heavy Docker stacks. However, routing network traffic and handling TLS termination are incredibly lightweight operations. Server A sits at the edge of my home network, acting as the single entry point. It runs Nginx and handles routing for all incoming requests.
+
+### Server B: The Workhorse (16GB RAM + 20TB Storage)
+This machine does the heavy lifting. It runs a bunch of Docker containers, including databases for my hobby projects, backend APIs, and utility services. I also hooked up a 20TB external hard drive array to this machine, turning it into a massive media vault running Plex.
+
+<Callout type="warning">
+Do not run your database and your public-facing reverse proxy on the same low-spec machine. If a sudden spike in traffic hits your web server, it can easily trigger the Linux Out-Of-Memory (OOM) killer, taking down your entire database and corrupting data. Keep them isolated.
+</Callout>
+
+---
+
+## The Roommate Bottleneck
+
+Before we talk about IPs and ports, we have to talk about physical logistics. 
+
+In my apartment, the main fiber router is located in the living room, and the admin credentials belong to my roommate. I do not have direct access to the router's web portal. This means every single time I need to configure a static IP lease, forward a port, or debug a double-NAT issue, I have to bribe my roommate with coffee or patiently ask him to open his laptop.
+
+```
+[My Brain] -> (Needs port 443 forwarded) -> [Roommate] -> (Distracted by video games) -> [Router Admin UI]
+```
+
+If you are setting up a home server, **make sure you either have direct admin access to your primary router, or have an incredibly patient and kind roommate.** To minimize how often I had to bother him, I designed the network so that we only had to configure port forwarding *once*. 
+
+We forwarded exactly two ports from the ISP router to Server A:
+- **Port 80** (HTTP - for Let's Encrypt verification)
+- **Port 443** (HTTPS - for all secure web traffic)
+
+Everything else is handled downstream by my own software configuration.
+
+---
+
+## The Network Architecture
+
+The goal was simple: expose my hobby projects and media services to the internet securely, without exposing my home IP address directly to bad actors, and without allowing anyone to SSH into my machines from outside my local network.
+
+Here is how the traffic flows from a user's browser to my living room:
+
+![A network architecture diagram showing internet traffic flowing from a user's b…](/public/images/blog/repurposing-old-pcs-home-server-networking/diagram_2.png)
+
+### Step 1: The Cloudflare Shield
+I do not want script kiddies or automated bots scanning my home IP address and launching DDoS attacks on my living room. To prevent this, all my subdomains (e.g., `api.myhobbyproject.com`, `plex.mydomain.com`) are managed via **Cloudflare**.
+
+I enabled Cloudflare's orange-cloud proxy feature. When someone visits my site:
+1. Their browser resolves the domain to Cloudflare's edge IPs, not my home IP.
+2. Cloudflare filters out malicious traffic, SQL injections, and DDoS attempts.
+3. Cloudflare forwards the clean traffic to my home router's public IP.
+
+### Step 2: The Router Hand-off
+When the traffic hits my home router on port 443, the router uses a static port-forwarding rule to send that traffic directly to **Server A** (192.168.1.50) on the local network. 
+
+### Step 3: Nginx Subdomain Routing
+Server A runs Nginx. Nginx looks at the incoming HTTP host header (the subdomain) and decides where to send the traffic next. 
+
+- If the request is for `api.myhobbyproject.com`, Nginx proxies the traffic over the local network to **Server B** (192.168.1.100) on port `8000`.
+- If the request is for `plex.mydomain.com`, Nginx proxies it to **Server B** on port `32400`.
+- If the request is for a lightweight static landing page, Server A serves it directly from its own local disk.
+
+---
+
+## Configuring the Reverse Proxy
+
+Let's look at how this works in practice. Here is a simplified version of my Nginx configuration on Server A (`/etc/nginx/sites-available/reverse-proxy`):
+
+```nginx
+# Upstream definition for Server B (The Workhorse)
+upstream server_b_backend {
+    server 192.168.1.100:8000; # My Django API container
+}
+
+upstream plex_backend {
+    server 192.168.1.100:32400; # Plex Media Server
+}
+
+# Redirect all HTTP traffic to HTTPS
+server {
+    listen 80;
+    server_name api.myhobbyproject.com plex.mydomain.com;
+    return 301 https://$host$request_uri;
+}
+
+# Secure HTTPS Server Block for Hobby Project API
+server {
+    listen 443 ssl http2;
+    server_name api.myhobbyproject.com;
+
+    ssl_certificate /etc/letsencrypt/live/myhobbyproject.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/myhobbyproject.com/privkey.pem;
+
+    # Security headers
+    add_header X-Frame-Options "DENY" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "no-referrer-when-downgrade" always;
+
+    location / {
+        proxy_pass http://server_b_backend;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+On Server B, the Django API runs inside a Docker container. I don't need to expose Server B's port 8000 to the entire internet; it only needs to listen on the local network so Server A can talk to it.
+
+Here is the corresponding `docker-compose.yml` on Server B:
+
+```yaml
+version: '3.8'
+
+services:
+  web:
+    image: my-hobby-api:latest
+    restart: always
+    environment:
+      - DATABASE_URL=postgres://db_user:db_pass@db:5432/hobby_db
+    ports:
+      - "192.168.1.100:8000:8000" # Bind specifically to the local IP, not 0.0.0.0
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      - POSTGRES_DB=hobby_db
+      - POSTGRES_USER=db_user
+      - POSTGRES_PASSWORD=db_pass
+    # Note: No ports section here! The database is isolated inside the Docker network.
+```
+
+By binding the web service port to `192.168.1.100:8000` instead of `0.0.0.0:8000`, I ensure that the port is only accessible from within my local area network (LAN). Even if someone bypassed my router's firewall, they couldn't hit this port directly from the outside.
+
+---
+
+## Hardening the Castle: Security Layers
+
+When you open ports on your home router, you are inviting the entire internet into your living room. Security cannot be an afterthought. I implemented a multi-layered security model to sleep easy at night.
+
+### 1. Restricting SSH to the LAN
+I never, under any circumstances, want SSH (port 22) exposed to the public internet. If I need to manage my servers while I am away from home, I use a self-hosted VPN (like WireGuard) or Tailscale to securely tunnel into my home network first.
+
+I use Ubuntu's Uncomplicated Firewall (UFW) to enforce this. On both servers, I run:
+
+```bash
+# Block all incoming traffic by default
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+
+# Only allow SSH from my local subnet (e.g., 192.168.1.0/24)
+sudo ufw allow from 192.168.1.0/24 to any port 22 proto tcp
+
+# On Server A, allow HTTP/HTTPS from anywhere (since it's the proxy)
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+
+# Enable the firewall
+sudo ufw enable
+```
+
+### 2. Cloudflare IP Whitelisting
+To make things even more secure, you can configure Server A's firewall to *only* accept traffic on ports 80 and 443 if it originates from Cloudflare's official IP ranges. This prevents attackers from scanning your public IP directly and bypassing Cloudflare's security controls entirely.
+
+You can write a simple shell script that fetches Cloudflare's IPs and updates UFW:
+
+```bash
+#!/bin/bash
+# Fetch Cloudflare's current IPv4 list
+for ip in $(curl -s https://www.cloudflare.com/ips-v4); do
+    sudo ufw allow from $ip to any port 443 proto tcp
+done
+```
+
+---
+
+## The Joy of Owning Your Data
+
+Once the networking plumbing is finished, the fun begins. Having 20TB of storage and 16GB of RAM at your disposal opens up a world of self-hosting possibilities. Here are some of the services I run on Server B:
+
+### 1. Personal Media Streaming (Plex)
+Instead of paying for five different streaming subscriptions that constantly rotate content, I host my own media library. My 20TB external drive is mounted to Server B, and Plex streams my movies and music anywhere in the world. Because Nginx handles the SSL certificates and proxies the connection, I can access it securely via `plex.mydomain.com`.
+
+### 2. Privacy-Respecting Search (Whoogle)
+Tired of Google's search results being cluttered with ads and sponsored links? I run [Whoogle Search](https://github.com/benbusby/whoogle-search) in a Docker container. It fetches Google results but strips out all ads, trackers, search history, and AMP links. It's fast, clean, and completely private.
+
+### 3. Local LLMs (Ollama)
+If you have a machine with a decent GPU (or even a modern CPU with enough RAM), you can host your own large language models using [Ollama](https://github.com/ollama/ollama). I run Llama-3 locally on Server B. I can query it via an API for coding assistance or private document analysis without sending my data to OpenAI.
+
+---
+
+## Wrapping Up
+
+Setting up a home server is easily one of the most rewarding weekend projects you can undertake. It demystifies the magic of the cloud. When you configure Nginx, write firewall rules, and manage Docker networks yourself, concepts like "reverse proxies" and "ingress routing" stop being abstract interview questions and become practical tools in your utility belt.
+
+If you have an old laptop or PC collecting dust in your closet, wipe it, install Linux, and start hosting. Just make sure to double-check your firewall rules—and keep your roommate happy.
